@@ -457,46 +457,53 @@ const SECTIONS = [
       {
         id:'ps1',
         context:{
-          en:'The following is the schedule of Nathan, Sarah, and Violet:\n\nSun: Sarah | Mon: Violet, Nathan | Tue: Sarah, Violet | Wed: Violet, Nathan | Thu: Sarah, Violet | Fri: Nathan | Sat: Sarah\n\nNancy can work any day Nathan or Joy are scheduled. Joy can work any day Sarah or Violet are scheduled.',
-          id:'Berikut adalah jadwal Nathan, Sarah, dan Violet:\n\nMinggu: Sarah | Senin: Violet, Nathan | Selasa: Sarah, Violet | Rabu: Violet, Nathan | Kamis: Sarah, Violet | Jumat: Nathan | Sabtu: Sarah\n\nNancy bisa bekerja di hari mana pun Nathan atau Joy dijadwalkan. Joy bisa bekerja di hari mana pun Sarah atau Violet dijadwalkan.'
+          en:'The following is Ellen, Tony, Mitch, and Paige\'s schedule:\n<table class="sched-tbl"><thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead><tbody><tr><td>Ellen</td><td>Mitch</td><td>Ellen</td><td>Ellen</td><td>Ellen</td><td>Ellen</td><td></td></tr><tr><td>Tony</td><td>Tony</td><td>Mitch</td><td>Mitch</td><td>Paige</td><td>Tony</td><td></td></tr><tr><td></td><td></td><td>Paige</td><td>Paige</td><td></td><td></td><td></td></tr></tbody></table>\nValerie works Saturdays, and can <em>only</em> work on weekdays when Mitch is working. However, Valerie <em>never</em> works with Ellen or Paige.',
+          id:'Berikut adalah jadwal Ellen, Tony, Mitch, dan Paige:\n<table class="sched-tbl"><thead><tr><th>Min</th><th>Sen</th><th>Sel</th><th>Rab</th><th>Kam</th><th>Jum</th><th>Sab</th></tr></thead><tbody><tr><td>Ellen</td><td>Mitch</td><td>Ellen</td><td>Ellen</td><td>Ellen</td><td>Ellen</td><td></td></tr><tr><td>Tony</td><td>Tony</td><td>Mitch</td><td>Mitch</td><td>Paige</td><td>Tony</td><td></td></tr><tr><td></td><td></td><td>Paige</td><td>Paige</td><td></td><td></td><td></td></tr></tbody></table>\nValerie bekerja pada hari Sabtu, dan <em>hanya</em> bisa bekerja pada hari kerja ketika Mitch bekerja. Namun, Valerie <em>tidak pernah</em> bekerja dengan Ellen atau Paige.'
         },
-        text:{en:'Who can be scheduled for any day of the week?', id:'Siapa yang bisa dijadwalkan setiap hari dalam seminggu?'},
+        text:{en:'On which days can Valerie be scheduled?', id:'Pada hari apa saja Valerie bisa dijadwalkan?'},
         type:'single',
-        options:{en:['No one','Nancy','Joy','Joy and Nancy'], id:['Tidak ada','Nancy','Joy','Joy dan Nancy']},
+        options:{
+          en:['Sunday, Monday, Tuesday, Wednesday, and Saturday','Monday, Tuesday, Wednesday, and Saturday','Monday and Saturday','Monday'],
+          id:['Minggu, Senin, Selasa, Rabu, dan Sabtu','Senin, Selasa, Rabu, dan Sabtu','Senin dan Sabtu','Senin']
+        },
         answer:2
       },
       {
         id:'ps2',
-        context:{en:'45 people in a certain company can work together to finish a project in 15 days. For a project of the same workload, the company decided to use 15 people. Assume all people have the same level of productivity.', id:'45 orang di sebuah perusahaan dapat menyelesaikan sebuah proyek bersama dalam 15 hari. Untuk proyek dengan beban kerja yang sama, perusahaan memutuskan menggunakan 15 orang. Asumsikan semua orang memiliki produktivitas yang sama.'},
-        text:{en:'In how many days can this project be completed?', id:'Dalam berapa hari proyek ini bisa diselesaikan?'},
+        context:{
+          en:'The following is Nat, Jodie, and Lola\'s schedule:\n<table class="sched-tbl"><thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead><tbody><tr><td>Nat</td><td>Lola</td><td>Jodie</td><td>Lola</td><td>Jodie</td><td>Lola</td><td>Nat</td></tr><tr><td>Jodie</td><td></td><td>Lola</td><td></td><td>Lola</td><td></td><td>Jodie</td></tr><tr><td>Lola</td><td></td><td></td><td></td><td></td><td></td><td>Lola</td></tr></tbody></table>\nPolly does not work on weekends. Tyler works <em>only</em> with Lola or Polly.',
+          id:'Berikut adalah jadwal Nat, Jodie, dan Lola:\n<table class="sched-tbl"><thead><tr><th>Min</th><th>Sen</th><th>Sel</th><th>Rab</th><th>Kam</th><th>Jum</th><th>Sab</th></tr></thead><tbody><tr><td>Nat</td><td>Lola</td><td>Jodie</td><td>Lola</td><td>Jodie</td><td>Lola</td><td>Nat</td></tr><tr><td>Jodie</td><td></td><td>Lola</td><td></td><td>Lola</td><td></td><td>Jodie</td></tr><tr><td>Lola</td><td></td><td></td><td></td><td></td><td></td><td>Lola</td></tr></tbody></table>\nPolly tidak bekerja pada akhir pekan. Tyler <em>hanya</em> bekerja dengan Lola atau Polly.'
+        },
+        text:{en:'On how many days of the week can Tyler be scheduled?', id:'Pada berapa hari dalam seminggu Tyler bisa dijadwalkan?'},
         type:'single',
-        options:{en:['5 days','10 days','22.5 days','45 days'], id:['5 hari','10 hari','22,5 hari','45 hari']},
-        answer:3
+        options:{en:['2','3','4','7'], id:['2','3','4','7']},
+        answer:1
       },
       {
         id:'ps3',
-        context:{en:'A table shows the order in which ingredients A–F need to be mixed (left = first). A is in position 3, C is in position 5. We also know: A and D are added in consecutive steps; B is added before A; F is not added right before or after C.', id:'Sebuah tabel menunjukkan urutan bahan A–F yang perlu dicampur (kiri = pertama). A ada di posisi 3, C ada di posisi 5. Kita juga tahu: A dan D ditambahkan dalam langkah yang berurutan; B ditambahkan sebelum A; F tidak ditambahkan tepat sebelum atau sesudah C.'},
-        text:{en:'Which ingredient needs to be added last?', id:'Bahan mana yang perlu ditambahkan terakhir?'},
+        context:{en:'10 testers can complete 50 test cases in 40 days. All testers are equally productive. A project team has 40 testers available for 10 days.', id:'10 penguji dapat menyelesaikan 50 kasus uji dalam 40 hari. Semua penguji memiliki produktivitas yang sama. Sebuah tim proyek memiliki 40 penguji yang tersedia selama 10 hari.'},
+        text:{en:'How many test cases can they complete?', id:'Berapa banyak kasus uji yang bisa mereka selesaikan?'},
         type:'single',
-        options:{en:['B','D','E','F'], id:['B','D','E','F']},
-        answer:2
+        options:{en:['40','50','60','120'], id:['40','50','60','120']},
+        answer:1
       },
       {
         id:'ps4',
-        context:{en:'A customer wants an eggless cake with an organic topping.\n\nOrganic toppings: Cherries, Strawberries, Apples, Pears\nNon-organic toppings: Oranges, Kiwis\nEggless cakes: Butter cakes, Sponge cakes, Chiffon cakes\nCakes with egg: Pound cakes, Carrot cakes, Genoise cakes', id:'Seorang pelanggan ingin memesan kue tanpa telur dengan topping organik.\n\nTopping organik: Ceri, Stroberi, Apel, Pir\nTopping non-organik: Jeruk, Kiwi\nKue tanpa telur: Butter cake, Sponge cake, Chiffon cake\nKue dengan telur: Pound cake, Carrot cake, Genoise cake'},
-        text:{en:'Which of the following can she order?', id:'Mana dari pilihan berikut yang bisa ia pesan?'},
+        context:{en:'There are 10 houses in a row. The local municipality plans to plant an oak tree sapling between all neighboring houses. The cost of an oak sapling is $10. The municipality gets a 10% discount on the price.', id:'Ada 10 rumah berjajar. Pemerintah daerah berencana menanam bibit pohon oak di antara semua rumah yang bersebelahan. Harga bibit oak adalah $10. Pemerintah daerah mendapat diskon 10% dari harga tersebut.'},
+        text:{en:'What would be the total budget for planting the saplings?', id:'Berapa total anggaran untuk penanaman bibit tersebut?'},
         type:'single',
-        options:{
-          en:['Pound cake with pear and strawberry toppings','Butter cake with orange and kiwi toppings','Sponge cake with apple and cherry toppings','Carrot cake with strawberry and kiwi toppings'],
-          id:['Pound cake dengan topping pir dan stroberi','Butter cake dengan topping jeruk dan kiwi','Sponge cake dengan topping apel dan ceri','Carrot cake dengan topping stroberi dan kiwi']
-        },
-        answer:2
+        options:{en:['$81','$90','$99','$110'], id:['$81','$90','$99','$110']},
+        answer:0
       },
       {
         id:'ps5',
-        text:{en:'What comes next in the series: 2, 6, 12, 20, 30, __?', id:'Angka berapa yang melanjutkan deret: 2, 6, 12, 20, 30, __?'},
+        context:{en:'Assume that 2 new hires can do the equivalent work of 1 experienced employee. A one month project can be completed by 10 new hires and 5 experienced employees. The salary of a new hire is $10/hour, and that of an experienced employee is $20/hour.', id:'Asumsikan bahwa 2 karyawan baru dapat melakukan pekerjaan setara dengan 1 karyawan berpengalaman. Sebuah proyek satu bulan dapat diselesaikan oleh 10 karyawan baru dan 5 karyawan berpengalaman. Gaji karyawan baru adalah $10/jam, dan karyawan berpengalaman adalah $20/jam.'},
+        text:{en:'Is there a difference in cost if the project were to be completed by just experienced hires?', id:'Apakah ada perbedaan biaya jika proyek diselesaikan hanya oleh karyawan berpengalaman?'},
         type:'single',
-        options:{en:['36','40','42','44'], id:['36','40','42','44']},
+        options:{
+          en:['Yes, that will be lower in cost.','Yes, that will be higher in cost.','No, the cost will be the same.','Cannot be determined.'],
+          id:['Ya, biayanya akan lebih rendah.','Ya, biayanya akan lebih tinggi.','Tidak, biayanya akan sama.','Tidak dapat ditentukan.']
+        },
         answer:2
       },
       {
