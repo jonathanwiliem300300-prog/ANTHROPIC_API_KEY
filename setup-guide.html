@@ -285,25 +285,72 @@
       </div>
 
       <div style="margin-top:20px">
-        <p class="instruction">📋 Copy the code block below and paste it into the editor:</p>
-        <div class="html-editor" style="border-radius:8px">
-<span class="code-line"><span class="kw">function</span> <span class="fn">doPost</span>(e) {</span>
-<span class="code-line">  <span class="kw">var</span> sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();</span>
-<span class="code-line">  <span class="kw">var</span> d = JSON.parse(e.postData.contents);</span>
-<span class="code-line">  <span class="kw">if</span> (sheet.getLastRow() === <span class="nb">0</span>) {</span>
-<span class="code-line">    sheet.appendRow([<span class="str">'Timestamp'</span>,<span class="str">'Name'</span>,<span class="str">'Email'</span>,<span class="str">'Position'</span>,<span class="str">'Language'</span>,</span>
-<span class="code-line">      <span class="str">'PS Score'</span>,<span class="str">'PS %'</span>,<span class="str">'TM Score'</span>,<span class="str">'TM %'</span>,<span class="str">'Comm Score'</span>,<span class="str">'Comm %'</span>,</span>
-<span class="code-line">      <span class="str">'OCEAN Answered'</span>,<span class="str">'E%'</span>,<span class="str">'A%'</span>,<span class="str">'C%'</span>,<span class="str">'N%'</span>,<span class="str">'O%'</span>]);</span>
-<span class="code-line">  }</span>
-<span class="code-line">  sheet.appendRow([d.timestamp, d.name, d.email, d.position, d.language,</span>
-<span class="code-line">    d.ps_score, d.ps_pct, d.tm_score, d.tm_pct, d.comm_score, d.comm_pct,</span>
-<span class="code-line">    d.ocean_answered, d.ocean_E, d.ocean_A, d.ocean_C, d.ocean_N, d.ocean_O]);</span>
-<span class="code-line">  <span class="kw">return</span> ContentService.createTextOutput(JSON.stringify({status:<span class="str">'ok'</span>}))</span>
-<span class="code-line">    .setMimeType(ContentService.MimeType.JSON);</span>
-<span class="code-line">}</span>
+        <p class="instruction">📋 Click the button below to copy the code, then paste it into the Apps Script editor:</p>
+
+        <!-- SAFE COPY BOX — plain text only, no HTML tags -->
+        <div style="background:#1e1e2e;border-radius:8px;overflow:hidden">
+          <div style="background:#2d2d44;padding:10px 16px;display:flex;align-items:center;justify-content:space-between">
+            <span style="color:#888;font-size:12px;font-family:monospace">Code.gs — paste this into Apps Script</span>
+            <button id="copyBtn" onclick="copyCode()"
+              style="background:#34a853;color:#fff;border:none;border-radius:6px;padding:7px 16px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px">
+              📋 Copy Code
+            </button>
+          </div>
+          <!-- This pre is what gets copied — pure plain text, no spans -->
+          <pre id="codeBlock" style="color:#c3e88d;font-family:'Courier New',monospace;font-size:13px;line-height:1.8;padding:20px;margin:0;overflow-x:auto;white-space:pre">function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var d = JSON.parse(e.postData.contents);
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow([
+      'Timestamp', 'Name', 'Email', 'Position', 'Language',
+      'PS Score', 'PS %', 'TM Score', 'TM %', 'Comm Score', 'Comm %',
+      'OCEAN Answered', 'E%', 'A%', 'C%', 'N%', 'O%'
+    ]);
+  }
+  sheet.appendRow([
+    d.timestamp, d.name, d.email, d.position, d.language,
+    d.ps_score, d.ps_pct, d.tm_score, d.tm_pct, d.comm_score, d.comm_pct,
+    d.ocean_answered, d.ocean_E, d.ocean_A, d.ocean_C, d.ocean_N, d.ocean_O
+  ]);
+  return ContentService
+    .createTextOutput(JSON.stringify({ status: 'ok' }))
+    .setMimeType(ContentService.MimeType.JSON);
+}</pre>
         </div>
       </div>
-      <div class="note">💡 Save the file with <strong>Ctrl + S</strong> (Windows) or <strong>Cmd + S</strong> (Mac) after pasting.</div>
+
+      <div class="note" style="margin-top:16px">
+        💡 After pasting, save with <strong>Ctrl + S</strong> (Windows) or <strong>Cmd + S</strong> (Mac).<br>
+        ⚠️ <strong>Do not manually type this code</strong> — always use the Copy button to avoid errors.
+      </div>
+
+      <script>
+        function copyCode() {
+          const code = document.getElementById('codeBlock').textContent;
+          navigator.clipboard.writeText(code).then(() => {
+            const btn = document.getElementById('copyBtn');
+            btn.textContent = '✅ Copied!';
+            btn.style.background = '#1a73e8';
+            setTimeout(() => {
+              btn.innerHTML = '📋 Copy Code';
+              btn.style.background = '#34a853';
+            }, 2500);
+          }).catch(() => {
+            // Fallback for older browsers
+            const ta = document.createElement('textarea');
+            ta.value = document.getElementById('codeBlock').textContent;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            const btn = document.getElementById('copyBtn');
+            btn.textContent = '✅ Copied!';
+            setTimeout(() => { btn.innerHTML = '📋 Copy Code'; }, 2500);
+          });
+        }
+      </script>
     </div>
   </div>
 
