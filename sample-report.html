@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sample Report</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f5f6fa;color:#1a1a2e;padding:40px 24px}
+  .wrap{max-width:720px;margin:0 auto}
+  .card{background:#fff;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,.08);padding:48px}
+  h1{font-size:26px;margin-bottom:12px}
+  h2{font-size:20px;margin-bottom:12px}
+  p{color:#555;line-height:1.7;margin-bottom:12px}
+
+  .candidate-box{background:#f8f9ff;border:2px solid #e8eaf6;border-radius:12px;padding:20px;margin-bottom:24px;display:flex;gap:16px;flex-wrap:wrap}
+  .candidate-box span{font-size:14px;color:#555}
+  .candidate-box strong{color:#1a1a2e}
+
+  .results-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:28px 0}
+  @media(max-width:600px){.results-grid{grid-template-columns:1fr}}
+  .result-card{border-radius:12px;padding:24px;border:2px solid #e8eaf6}
+  .result-card h3{font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:#888;margin-bottom:8px}
+  .result-card .score{font-size:32px;font-weight:800}
+  .score-sub{font-size:13px;color:#888;margin-top:4px}
+  .score-green{color:#2e7d32}
+  .score-yellow{color:#f57f17}
+  .score-red{color:#c62828}
+
+  .ocean-results{margin:24px 0}
+  .ocean-trait{margin-bottom:18px}
+  .ocean-trait-header{display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px}
+  .ocean-bar-bg{background:#f0f0f0;border-radius:8px;height:12px;overflow:hidden}
+  .ocean-bar-fill{height:100%;border-radius:8px;transition:width .7s ease}
+
+  .label-note{font-size:12px;color:#aaa;margin-top:2px}
+  .submit-ok{background:#e8f5e9;color:#2e7d32;border-radius:8px;padding:12px 16px;font-size:14px;margin-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="card">
+
+  <h1>Your Results</h1>
+  <p>Thank you for completing the assessment. Here is a summary of your performance.</p>
+
+  <div class="candidate-box">
+    <span>👤 <strong>Candidate:</strong> Andi Pratama</span>
+    <span>💼 <strong>Position:</strong> Part Time - Content Creator</span>
+    <span>📧 <strong>Email:</strong> andi.pratama@email.com</span>
+  </div>
+
+  <div class="results-grid">
+
+    <div class="result-card">
+      <h3>🧩 Problem Solving</h3>
+      <div class="score score-green">9/12</div>
+      <div class="score-sub">75% correct</div>
+      <div class="score-sub" style="margin-top:6px">⏱ 07:42 / 09:00</div>
+    </div>
+
+    <div class="result-card">
+      <h3>⏱️ Time Management</h3>
+      <div class="score score-yellow">11/16</div>
+      <div class="score-sub">69% correct</div>
+      <div class="score-sub" style="margin-top:6px">⏱ 08:55 / 09:00</div>
+    </div>
+
+    <div class="result-card">
+      <h3>💬 Communication</h3>
+      <div class="score score-green">13/15</div>
+      <div class="score-sub">87% correct</div>
+      <div class="score-sub" style="margin-top:6px">⏱ 06:10 / 08:00</div>
+    </div>
+
+    <div class="result-card">
+      <h3>🧠 Big 5 (OCEAN)</h3>
+      <div class="score" style="color:#5c6bc0">50/50</div>
+      <div class="score-sub">Statements completed</div>
+      <div class="score-sub" style="margin-top:6px">⏱ 09:28 / 10:00</div>
+    </div>
+
+  </div>
+
+  <h2 style="margin-top:28px;margin-bottom:8px">🧠 OCEAN Personality Profile</h2>
+  <p>Self-reported trait scores based on the Big Five personality model.</p>
+
+  <div class="ocean-results">
+
+    <div class="ocean-trait">
+      <div class="ocean-trait-header">
+        <span><strong>E</strong> — Extraversion</span>
+        <span style="color:#5c6bc0;font-weight:700">72%</span>
+      </div>
+      <div class="ocean-bar-bg"><div class="ocean-bar-fill" style="width:72%;background:#5c6bc0"></div></div>
+    </div>
+
+    <div class="ocean-trait">
+      <div class="ocean-trait-header">
+        <span><strong>A</strong> — Agreeableness</span>
+        <span style="color:#26a69a;font-weight:700">85%</span>
+      </div>
+      <div class="ocean-bar-bg"><div class="ocean-bar-fill" style="width:85%;background:#26a69a"></div></div>
+    </div>
+
+    <div class="ocean-trait">
+      <div class="ocean-trait-header">
+        <span><strong>C</strong> — Conscientiousness</span>
+        <span style="color:#66bb6a;font-weight:700">61%</span>
+      </div>
+      <div class="ocean-bar-bg"><div class="ocean-bar-fill" style="width:61%;background:#66bb6a"></div></div>
+    </div>
+
+    <div class="ocean-trait">
+      <div class="ocean-trait-header">
+        <span><strong>N</strong> — Neuroticism</span>
+        <span style="color:#ef5350;font-weight:700">38%</span>
+      </div>
+      <div class="ocean-bar-bg"><div class="ocean-bar-fill" style="width:38%;background:#ef5350"></div></div>
+    </div>
+
+    <div class="ocean-trait">
+      <div class="ocean-trait-header">
+        <span><strong>O</strong> — Openness</span>
+        <span style="color:#ab47bc;font-weight:700">79%</span>
+      </div>
+      <div class="ocean-bar-bg"><div class="ocean-bar-fill" style="width:79%;background:#ab47bc"></div></div>
+    </div>
+
+  </div>
+
+  <div class="submit-ok">✅ Results submitted successfully to Google Sheets.</div>
+
+</div>
+</div>
+</body>
+</html>
