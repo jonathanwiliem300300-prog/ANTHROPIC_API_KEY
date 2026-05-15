@@ -508,47 +508,70 @@ const SECTIONS = [
       },
       {
         id:'ps6',
-        context:{en:'Alex is taller than Sam. Sam is taller than Jordan.', id:'Alex lebih tinggi dari Sam. Sam lebih tinggi dari Jordan.'},
-        text:{en:'Which of the following must be true?', id:'Mana dari pernyataan berikut yang pasti benar?'},
+        context:{
+          en:'Assume a four-part opera.\n<ul style="margin:8px 0 0 16px;padding:0"><li>The Obbligato is played immediately before the Coloratura</li><li>The Cadenza is played right after the Coloratura</li><li>The Diva\'s solo is played first</li></ul>',
+          id:'Asumsikan sebuah opera empat bagian.\n<ul style="margin:8px 0 0 16px;padding:0"><li>Obbligato dimainkan tepat sebelum Coloratura</li><li>Cadenza dimainkan tepat setelah Coloratura</li><li>Solo Diva dimainkan pertama</li></ul>'
+        },
+        text:{en:'Which part of the opera is played last?', id:'Bagian opera mana yang dimainkan terakhir?'},
         type:'single',
         options:{
-          en:['Jordan is taller than Alex','Alex is the tallest of the three','Sam is the shortest of the three','Jordan is shorter than Sam'],
-          id:['Jordan lebih tinggi dari Alex','Alex adalah yang tertinggi dari ketiganya','Sam adalah yang terpendek dari ketiganya','Jordan lebih pendek dari Sam']
+          en:['Obbligato','Diva\'s solo','Coloratura','Cadenza'],
+          id:['Obbligato','Solo Diva','Coloratura','Cadenza']
         },
-        answer:1
+        answer:3
       },
       {
         id:'ps7',
-        context:{en:'A train travels from City A to City B at 60 km/h and returns at 40 km/h.', id:'Sebuah kereta berjalan dari Kota A ke Kota B dengan kecepatan 60 km/jam dan kembali dengan kecepatan 40 km/jam.'},
-        text:{en:'What is the average speed for the entire round trip?', id:'Berapa kecepatan rata-rata untuk keseluruhan perjalanan pulang-pergi?'},
+        context:{
+          en:'In a cafe, items are displayed in the following order:\n<div style="display:flex;gap:4px;margin:10px 0"><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">Scones</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">?</span></div>\nAdditionally,\n<ul style="margin:8px 0 0 16px;padding:0"><li>Cakes and Scones are kept next to each other</li><li>Cakes and Burgers are kept next to each other</li><li>Pastries and Waffles are kept next to each other</li></ul>',
+          id:'Di sebuah kafe, item ditampilkan dalam urutan berikut:\n<div style="display:flex;gap:4px;margin:10px 0"><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">Scones</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">?</span></div>\nTambahan,\n<ul style="margin:8px 0 0 16px;padding:0"><li>Cakes dan Scones diletakkan berdampingan</li><li>Cakes dan Burgers diletakkan berdampingan</li><li>Pastries dan Waffles diletakkan berdampingan</li></ul>'
+        },
+        text:{en:'Which item is displayed last?', id:'Item mana yang ditampilkan terakhir?'},
         type:'single',
-        options:{en:['48 km/h','50 km/h','52 km/h','45 km/h'], id:['48 km/jam','50 km/jam','52 km/jam','45 km/jam']},
-        answer:0
+        options:{
+          en:['Pastries','Pastries or Waffles','Waffles','Burgers'],
+          id:['Pastries','Pastries atau Waffles','Waffles','Burgers']
+        },
+        answer:1
       },
       {
         id:'ps8',
-        context:{en:"A company's quarterly sales (in thousands): Q1 = 120, Q2 = 150, Q3 = 90, Q4 = 180.", id:'Penjualan kuartalan perusahaan (dalam ribuan): Q1 = 120, Q2 = 150, Q3 = 90, Q4 = 180.'},
-        text:{en:'What percentage of total annual sales occurred in Q4?', id:'Berapa persen dari total penjualan tahunan yang terjadi di Q4?'},
+        context:{
+          en:'The following is the order of priority for 6 steps (D, E, L, O, S, and V):\n<div style="display:flex;gap:4px;margin:10px 0"><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">L</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">V</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">?</span></div>\nAdditionally,\n<ul style="margin:8px 0 0 16px;padding:0"><li>V and D are not consecutive</li><li>L is performed before both D and E</li></ul>',
+          id:'Berikut adalah urutan prioritas untuk 6 langkah (D, E, L, O, S, dan V):\n<div style="display:flex;gap:4px;margin:10px 0"><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">L</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">V</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">?</span></div>\nTambahan,\n<ul style="margin:8px 0 0 16px;padding:0"><li>V dan D tidak berurutan</li><li>L dilakukan sebelum D dan E</li></ul>'
+        },
+        text:{en:'What is the last step to be performed?', id:'Langkah apa yang terakhir dilakukan?'},
         type:'single',
-        options:{en:['25%','30%','33%','40%'], id:['25%','30%','33%','40%']},
-        answer:2
+        options:{
+          en:['Step E','Step D','Step O','Step S'],
+          id:['Langkah E','Langkah D','Langkah O','Langkah S']
+        },
+        answer:1
       },
       {
         id:'ps9',
-        text:{en:'A product costs $80 after a 20% discount. What was the original price?', id:'Sebuah produk berharga $80 setelah diskon 20%. Berapa harga aslinya?'},
+        context:{
+          en:'Observe the following menu:\n<table class="sched-tbl"><thead><tr><th colspan="2">Salad</th><th colspan="2">Dressing</th></tr><tr><th>Vegetarian</th><th>Non-Vegetarian</th><th>Standard</th><th>Premium</th></tr></thead><tbody><tr><td>Carrot salad</td><td>Caesar salad</td><td>Balsamic vinegar</td><td>Coconut cream</td></tr><tr><td>Barley salad</td><td>Waldorf salad</td><td>Ranch dressing</td><td>Zesty lemon</td></tr><tr><td>Bean salad</td><td></td><td>Honey mustard dressing</td><td>Apple cider</td></tr><tr><td>Apple salad</td><td></td><td></td><td></td></tr></tbody></table>\nA customer wants a vegetarian salad with standard dressings.',
+          id:'Perhatikan menu berikut:\n<table class="sched-tbl"><thead><tr><th colspan="2">Salad</th><th colspan="2">Saus</th></tr><tr><th>Vegetarian</th><th>Non-Vegetarian</th><th>Standar</th><th>Premium</th></tr></thead><tbody><tr><td>Carrot salad</td><td>Caesar salad</td><td>Balsamic vinegar</td><td>Coconut cream</td></tr><tr><td>Barley salad</td><td>Waldorf salad</td><td>Ranch dressing</td><td>Zesty lemon</td></tr><tr><td>Bean salad</td><td></td><td>Honey mustard dressing</td><td>Apple cider</td></tr><tr><td>Apple salad</td><td></td><td></td><td></td></tr></tbody></table>\nSeorang pelanggan menginginkan salad vegetarian dengan saus standar.'
+        },
+        text:{en:'Which of the following can he order?', id:'Mana dari pilihan berikut yang bisa ia pesan?'},
         type:'single',
-        options:{en:['$88','$96','$100','$64'], id:['$88','$96','$100','$64']},
-        answer:2
+        options:{
+          en:['Caesar salad with zesty lemon dressing','Carrot salad with honey mustard dressing','Bean salad with apple cider dressing','Waldorf salad with coconut cream dressing'],
+          id:['Caesar salad dengan saus zesty lemon','Carrot salad dengan saus honey mustard','Bean salad dengan saus apple cider','Waldorf salad dengan saus coconut cream']
+        },
+        answer:1
       },
       {
         id:'ps10',
-        text:{en:'All managers are employees. Some employees are remote workers. Which conclusion definitely follows?', id:'Semua manajer adalah karyawan. Beberapa karyawan adalah pekerja jarak jauh. Kesimpulan mana yang pasti benar?'},
-        type:'single',
-        options:{
-          en:['All managers are remote workers','Some managers may be remote workers','No managers are remote workers','All remote workers are managers'],
-          id:['Semua manajer adalah pekerja jarak jauh','Beberapa manajer mungkin adalah pekerja jarak jauh','Tidak ada manajer yang merupakan pekerja jarak jauh','Semua pekerja jarak jauh adalah manajer']
+        context:{
+          en:'In a class of 100 students, the following is an analysis of the student\'s majors, with some information missing:\n<table class="sched-tbl"><thead><tr><th></th><th>Physics</th><th>Chemistry</th><th>Math</th><th>Total</th></tr></thead><tbody><tr><td><strong>Male</strong></td><td>?</td><td>15</td><td></td><td></td></tr><tr><td><strong>Female</strong></td><td></td><td>25</td><td>0</td><td>70</td></tr><tr><td><strong>Total</strong></td><td>50</td><td>40</td><td></td><td>100</td></tr></tbody></table>',
+          id:'Dalam kelas 100 siswa, berikut adalah analisis jurusan siswa dengan beberapa informasi yang hilang:\n<table class="sched-tbl"><thead><tr><th></th><th>Fisika</th><th>Kimia</th><th>Matematika</th><th>Total</th></tr></thead><tbody><tr><td><strong>Pria</strong></td><td>?</td><td>15</td><td></td><td></td></tr><tr><td><strong>Wanita</strong></td><td></td><td>25</td><td>0</td><td>70</td></tr><tr><td><strong>Total</strong></td><td>50</td><td>40</td><td></td><td>100</td></tr></tbody></table>'
         },
-        answer:1
+        text:{en:'How many male Physics majors are there in the class?', id:'Berapa banyak mahasiswa pria jurusan Fisika di kelas tersebut?'},
+        type:'single',
+        options:{en:['5','15','30','45'], id:['5','15','30','45']},
+        answer:0
       },
       {
         id:'ps11',
