@@ -135,6 +135,29 @@
   .submit-status.ok{background:#e8f5e9;color:#2e7d32;display:block}
   .submit-status.fail{background:#ffeaea;color:#c62828;display:block}
 
+  /* OCEAN table format */
+  .ocean-wrap{background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,.07);overflow:hidden}
+  .ocean-dim-header{background:#f8f9ff;border-bottom:2px solid #e8eaf6;padding:20px 24px}
+  .ocean-dim-title{font-size:16px;font-weight:700;color:#1a1a2e;margin-bottom:2px}
+  .ocean-dim-sub{font-size:13px;color:#888}
+  .ocean-table-wrap{overflow-x:auto}
+  .ocean-tbl{width:100%;border-collapse:collapse}
+  .ocean-tbl .scale-head{text-align:center;font-size:11px;color:#666;padding:10px 4px;line-height:1.4;width:72px;border-bottom:2px solid #e0e0e0;vertical-align:bottom}
+  .ocean-tbl .stmt-head{text-align:left;padding:10px 20px;border-bottom:2px solid #e0e0e0;font-size:12px;color:#999;text-transform:uppercase;letter-spacing:.5px}
+  .ocean-tbl tr:nth-child(even) td{background:#f8f9ff}
+  .ocean-tbl td.stmt{padding:13px 20px;font-size:14px;color:#333;line-height:1.5}
+  .ocean-tbl td.scale-cell{text-align:center;padding:8px 4px}
+  .ocean-num{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:9px;border:2px solid #e0e0e0;font-size:14px;font-weight:700;color:#aaa;cursor:pointer;transition:all .15s}
+  .ocean-num:hover{border-color:#5c6bc0;color:#5c6bc0;background:#f0f2ff}
+  .ocean-num.sel{background:#6d28d9;border-color:#6d28d9;color:#fff}
+  /* Dimension sidebar tabs */
+  .dim-tabs{display:flex;flex-direction:column;gap:6px;padding:4px 0}
+  .dim-tab{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;border:2px solid #e0e0e0;background:#fafafa;transition:all .15s;font-size:13px;font-weight:600;color:#888}
+  .dim-tab:hover{border-color:#5c6bc0;color:#5c6bc0}
+  .dim-tab.active{border-color:#5c6bc0;background:#e8eaf6;color:#3f4faa}
+  .dim-tab.done{border-color:#43a047;background:#e8f5e9;color:#2e7d32}
+  .dim-tab.done.active{background:#43a047;color:#fff;border-color:#43a047}
+  .dim-tab .dim-count{margin-left:auto;font-size:11px;opacity:.7}
   .hidden{display:none!important}
   p{color:#555;line-height:1.7;margin-bottom:12px}
   h1{font-size:26px;margin-bottom:12px}
@@ -221,10 +244,7 @@
     <div class="form-group">
       <label class="form-label" id="lblPosition">Position Applied For</label>
       <input class="form-input" type="text" id="inpPosition" list="positionList" placeholder="e.g. Marketing Manager" autocomplete="off">
-      <datalist id="positionList">
-        <option value="Part Time - Content Creator">
-        <option value="Part Time - Community & Partnership Officer">
-      </datalist>
+      <datalist id="positionList"></datalist>
       <div class="form-error" id="errPosition">Please enter the position you are applying for.</div>
     </div>
     <div class="form-group">
@@ -891,71 +911,89 @@ const SECTIONS = [
 
   // ── BIG 5 OCEAN ──────────────────────────────────────
   {
-    id:'oc', icon:'🧠', timeSeconds:10*60, scoreable:false,
+    id:'oc', icon:'🧠', timeSeconds:10*60, scoreable:false, isDimensional:true,
     name:{en:'Big 5 (OCEAN)', id:'Big 5 (OCEAN)'},
-    oceanDimensions:{
-      E:{name:{en:'Extraversion',      id:'Ekstraversi'},      color:'#5c6bc0', qs:[0,1,2,3,4,5,6,7,8,9]},
-      A:{name:{en:'Agreeableness',     id:'Keramahan'},        color:'#26a69a', qs:[10,11,12,13,14,15,16,17,18,19]},
-      C:{name:{en:'Conscientiousness', id:'Kehati-hatian'},    color:'#66bb6a', qs:[20,21,22,23,24,25,26,27,28,29]},
-      N:{name:{en:'Neuroticism',       id:'Neurotisisme'},     color:'#ef5350', qs:[30,31,32,33,34,35,36,37,38,39]},
-      O:{name:{en:'Openness',          id:'Keterbukaan'},      color:'#ab47bc', qs:[40,41,42,43,44,45,46,47,48,49]}
-    },
-    questions:[
-      // E
-      {id:'oc1',  text:{en:'I am the life of the party.',                         id:'Saya adalah pusat keramaian.'},                                  type:'likert', rev:false},
-      {id:'oc2',  text:{en:'I feel comfortable around people.',                    id:'Saya merasa nyaman di sekitar orang lain.'},                     type:'likert', rev:false},
-      {id:'oc3',  text:{en:'I start conversations easily.',                        id:'Saya mudah memulai percakapan.'},                                type:'likert', rev:false},
-      {id:'oc4',  text:{en:'I talk to a lot of different people at parties.',      id:'Saya berbicara dengan banyak orang yang berbeda di pesta.'},      type:'likert', rev:false},
-      {id:'oc5',  text:{en:"I don't mind being the center of attention.",          id:'Saya tidak keberatan menjadi pusat perhatian.'},                  type:'likert', rev:false},
-      {id:'oc6',  text:{en:"I don't talk a lot.",                                  id:'Saya tidak terlalu banyak bicara.'},                             type:'likert', rev:true},
-      {id:'oc7',  text:{en:'I keep in the background in social situations.',       id:'Saya cenderung berada di latar belakang dalam situasi sosial.'},  type:'likert', rev:true},
-      {id:'oc8',  text:{en:'I have little to say in group settings.',              id:'Saya memiliki sedikit hal untuk dikatakan dalam kelompok.'},      type:'likert', rev:true},
-      {id:'oc9',  text:{en:"I don't like to draw attention to myself.",            id:'Saya tidak suka menarik perhatian kepada diri saya.'},            type:'likert', rev:true},
-      {id:'oc10', text:{en:'I am quiet around strangers.',                         id:'Saya pendiam di sekitar orang yang tidak dikenal.'},             type:'likert', rev:true},
-      // A
-      {id:'oc11', text:{en:"I am interested in other people's lives.",             id:'Saya tertarik dengan kehidupan orang lain.'},                    type:'likert', rev:false},
-      {id:'oc12', text:{en:"I sympathize with others' feelings.",                  id:'Saya bersimpati dengan perasaan orang lain.'},                   type:'likert', rev:false},
-      {id:'oc13', text:{en:'I have a soft heart and care for others.',             id:'Saya memiliki hati yang lembut dan peduli terhadap orang lain.'}, type:'likert', rev:false},
-      {id:'oc14', text:{en:'I take time out for others when they need help.',      id:'Saya meluangkan waktu untuk orang lain saat mereka butuh bantuan.'}, type:'likert', rev:false},
-      {id:'oc15', text:{en:'I make people feel at ease around me.',                id:'Saya membuat orang merasa nyaman di sekitar saya.'},              type:'likert', rev:false},
-      {id:'oc16', text:{en:'I feel little concern for others.',                    id:'Saya tidak terlalu peduli dengan orang lain.'},                  type:'likert', rev:true},
-      {id:'oc17', text:{en:'I am not really interested in other people.',          id:'Saya tidak terlalu tertarik pada orang lain.'},                  type:'likert', rev:true},
-      {id:'oc18', text:{en:'I insult or belittle people.',                         id:'Saya menghina atau meremehkan orang lain.'},                     type:'likert', rev:true},
-      {id:'oc19', text:{en:"I am not interested in other people's problems.",      id:'Saya tidak tertarik dengan masalah orang lain.'},                type:'likert', rev:true},
-      {id:'oc20', text:{en:'I start quarrels with others.',                        id:'Saya sering memulai pertengkaran dengan orang lain.'},            type:'likert', rev:true},
-      // C
-      {id:'oc21', text:{en:'I am always prepared before starting a task.',         id:'Saya selalu mempersiapkan diri sebelum memulai tugas.'},          type:'likert', rev:false},
-      {id:'oc22', text:{en:'I pay careful attention to details.',                  id:'Saya memperhatikan detail dengan seksama.'},                     type:'likert', rev:false},
-      {id:'oc23', text:{en:'I get chores and tasks done right away.',              id:'Saya menyelesaikan tugas dan pekerjaan dengan segera.'},          type:'likert', rev:false},
-      {id:'oc24', text:{en:'I like order and structure in my work.',               id:'Saya menyukai keteraturan dan struktur dalam pekerjaan saya.'},   type:'likert', rev:false},
-      {id:'oc25', text:{en:'I follow a schedule and stick to plans.',              id:'Saya mengikuti jadwal dan berpegang pada rencana.'},              type:'likert', rev:false},
-      {id:'oc26', text:{en:'I leave my belongings around.',                        id:'Saya sering meninggalkan barang-barang saya sembarangan.'},       type:'likert', rev:true},
-      {id:'oc27', text:{en:'I make a mess of things.',                             id:'Saya sering membuat kekacauan.'},                                type:'likert', rev:true},
-      {id:'oc28', text:{en:'I often forget to put things back in their place.',    id:'Saya sering lupa mengembalikan barang ke tempatnya.'},            type:'likert', rev:true},
-      {id:'oc29', text:{en:'I shirk or neglect my duties.',                        id:'Saya mengabaikan atau menghindari kewajiban saya.'},              type:'likert', rev:true},
-      {id:'oc30', text:{en:'I do just enough work to get by.',                     id:'Saya hanya bekerja sekadar cukup untuk memenuhi syarat.'},        type:'likert', rev:true},
-      // N
-      {id:'oc31', text:{en:'I get stressed out easily.',                           id:'Saya mudah merasa stres.'},                                      type:'likert', rev:false},
-      {id:'oc32', text:{en:'I am easily disturbed by events around me.',           id:'Saya mudah terganggu oleh kejadian di sekitar saya.'},           type:'likert', rev:false},
-      {id:'oc33', text:{en:'I get upset easily when things go wrong.',             id:'Saya mudah kesal ketika sesuatu berjalan tidak sesuai rencana.'}, type:'likert', rev:false},
-      {id:'oc34', text:{en:'I change my mood a lot throughout the day.',           id:'Suasana hati saya sering berubah sepanjang hari.'},              type:'likert', rev:false},
-      {id:'oc35', text:{en:'I have frequent mood swings.',                         id:'Saya sering mengalami perubahan suasana hati yang drastis.'},    type:'likert', rev:false},
-      {id:'oc36', text:{en:'I am relaxed most of the time.',                       id:'Saya merasa rileks sebagian besar waktu.'},                      type:'likert', rev:true},
-      {id:'oc37', text:{en:'I seldom feel blue or down.',                          id:'Saya jarang merasa sedih atau murung.'},                         type:'likert', rev:true},
-      {id:'oc38', text:{en:'I am not easily bothered by things.',                  id:'Saya tidak mudah terganggu oleh hal-hal tertentu.'},             type:'likert', rev:true},
-      {id:'oc39', text:{en:'I rarely get irritated.',                              id:'Saya jarang merasa jengkel.'},                                   type:'likert', rev:true},
-      {id:'oc40', text:{en:"I don't get emotional easily.",                        id:'Saya tidak mudah terbawa emosi.'},                               type:'likert', rev:true},
-      // O
-      {id:'oc41', text:{en:'I have a rich vocabulary and enjoy using language.',   id:'Saya memiliki kosakata yang kaya dan suka menggunakan bahasa.'}, type:'likert', rev:false},
-      {id:'oc42', text:{en:'I have a vivid imagination.',                          id:'Saya memiliki imajinasi yang kaya.'},                            type:'likert', rev:false},
-      {id:'oc43', text:{en:'I have excellent and creative ideas.',                 id:'Saya memiliki ide-ide yang sangat baik dan kreatif.'},           type:'likert', rev:false},
-      {id:'oc44', text:{en:'I am quick to understand new things.',                 id:'Saya cepat dalam memahami hal-hal baru.'},                       type:'likert', rev:false},
-      {id:'oc45', text:{en:'I enjoy thinking about abstract concepts.',            id:'Saya menikmati pemikiran tentang konsep-konsep abstrak.'},       type:'likert', rev:false},
-      {id:'oc46', text:{en:'I have difficulty understanding abstract ideas.',      id:'Saya kesulitan memahami ide-ide abstrak.'},                      type:'likert', rev:true},
-      {id:'oc47', text:{en:'I am not interested in new or abstract ideas.',        id:'Saya tidak tertarik dengan ide-ide baru atau abstrak.'},         type:'likert', rev:true},
-      {id:'oc48', text:{en:'I do not have a good imagination.',                    id:'Saya tidak memiliki imajinasi yang baik.'},                      type:'likert', rev:true},
-      {id:'oc49', text:{en:'I avoid philosophical or deep discussions.',           id:'Saya menghindari diskusi filosofis atau mendalam.'},             type:'likert', rev:true},
-      {id:'oc50', text:{en:'I prefer routine and familiarity over new experiences.',id:'Saya lebih suka rutinitas dan hal yang familiar daripada pengalaman baru.'}, type:'likert', rev:true}
+    dimensions:[
+      {
+        key:'E', color:'#5c6bc0',
+        name:{en:'Extraversion', id:'Ekstraversi'},
+        questions:[
+          {id:'E1',  text:{en:'I am the life of the party.',                    id:'Saya adalah pusat keramaian.'},                                rev:false},
+          {id:'E2',  text:{en:"I don't talk a lot.",                            id:'Saya tidak terlalu banyak bicara.'},                           rev:true},
+          {id:'E3',  text:{en:'I feel comfortable around people.',              id:'Saya merasa nyaman di sekitar orang lain.'},                   rev:false},
+          {id:'E4',  text:{en:'I keep in the background.',                      id:'Saya cenderung berada di latar belakang.'},                    rev:true},
+          {id:'E5',  text:{en:'I start conversations.',                         id:'Saya mudah memulai percakapan.'},                              rev:false},
+          {id:'E6',  text:{en:'I have little to say.',                          id:'Saya tidak banyak hal yang ingin dikatakan.'},                 rev:true},
+          {id:'E7',  text:{en:'I talk to a lot of different people at parties.',id:'Saya berbicara dengan banyak orang yang berbeda di pesta.'},   rev:false},
+          {id:'E8',  text:{en:"I don't like to draw attention to myself.",      id:'Saya tidak suka menarik perhatian kepada diri saya.'},         rev:true},
+          {id:'E9',  text:{en:"I don't mind being the center of attention.",    id:'Saya tidak keberatan menjadi pusat perhatian.'},               rev:false},
+          {id:'E10', text:{en:'I am quiet around strangers.',                   id:'Saya pendiam di sekitar orang yang tidak dikenal.'},           rev:true}
+        ]
+      },
+      {
+        key:'A', color:'#26a69a',
+        name:{en:'Agreeableness', id:'Keramahan'},
+        questions:[
+          {id:'A1',  text:{en:'I feel little concern for others.',              id:'Saya tidak terlalu peduli dengan orang lain.'},                rev:true},
+          {id:'A2',  text:{en:'I am interested in people.',                     id:'Saya tertarik pada orang lain.'},                              rev:false},
+          {id:'A3',  text:{en:'I insult people.',                               id:'Saya menghina orang lain.'},                                   rev:true},
+          {id:'A4',  text:{en:"I sympathize with others' feelings.",            id:'Saya bersimpati dengan perasaan orang lain.'},                 rev:false},
+          {id:'A5',  text:{en:"I am not interested in other people's problems.",id:'Saya tidak tertarik dengan masalah orang lain.'},              rev:true},
+          {id:'A6',  text:{en:'I have a soft heart.',                           id:'Saya memiliki hati yang lembut.'},                             rev:false},
+          {id:'A7',  text:{en:'I am not really interested in others.',          id:'Saya tidak terlalu tertarik pada orang lain.'},                rev:true},
+          {id:'A8',  text:{en:'I take time out for others.',                    id:'Saya meluangkan waktu untuk orang lain.'},                     rev:false},
+          {id:'A9',  text:{en:"I feel others' emotions.",                       id:'Saya merasakan emosi orang lain.'},                            rev:false},
+          {id:'A10', text:{en:'I make people feel at ease.',                    id:'Saya membuat orang merasa nyaman.'},                           rev:false}
+        ]
+      },
+      {
+        key:'C', color:'#66bb6a',
+        name:{en:'Conscientiousness', id:'Kehati-hatian'},
+        questions:[
+          {id:'C1',  text:{en:'I am always prepared.',                                  id:'Saya selalu mempersiapkan diri.'},                              rev:false},
+          {id:'C2',  text:{en:'I leave my belongings around.',                          id:'Saya sering meninggalkan barang-barang saya sembarangan.'},     rev:true},
+          {id:'C3',  text:{en:'I pay attention to details.',                            id:'Saya memperhatikan detail dengan seksama.'},                    rev:false},
+          {id:'C4',  text:{en:'I make a mess of things.',                               id:'Saya sering membuat kekacauan.'},                               rev:true},
+          {id:'C5',  text:{en:'I get chores done right away.',                          id:'Saya menyelesaikan tugas dengan segera.'},                      rev:false},
+          {id:'C6',  text:{en:'I often forget to put things back in their proper place.',id:'Saya sering lupa mengembalikan barang ke tempatnya.'},          rev:true},
+          {id:'C7',  text:{en:'I like order.',                                          id:'Saya menyukai keteraturan.'},                                   rev:false},
+          {id:'C8',  text:{en:'I shirk my duties.',                                     id:'Saya mengabaikan kewajiban saya.'},                             rev:true},
+          {id:'C9',  text:{en:'I follow a schedule.',                                   id:'Saya mengikuti jadwal.'},                                       rev:false},
+          {id:'C10', text:{en:'I am exacting in my work.',                              id:'Saya sangat teliti dalam pekerjaan saya.'},                     rev:false}
+        ]
+      },
+      {
+        key:'N', color:'#ef5350',
+        name:{en:'Neuroticism', id:'Neurotisisme'},
+        questions:[
+          {id:'N1',  text:{en:'I get stressed out easily.',        id:'Saya mudah merasa stres.'},                                      rev:false},
+          {id:'N2',  text:{en:'I am relaxed most of the time.',    id:'Saya merasa rileks sebagian besar waktu.'},                      rev:true},
+          {id:'N3',  text:{en:'I worry about things.',             id:'Saya sering mengkhawatirkan berbagai hal.'},                     rev:false},
+          {id:'N4',  text:{en:'I seldom feel blue.',               id:'Saya jarang merasa murung.'},                                    rev:true},
+          {id:'N5',  text:{en:'I am easily disturbed.',            id:'Saya mudah terganggu.'},                                         rev:false},
+          {id:'N6',  text:{en:'I get upset easily.',               id:'Saya mudah merasa kesal.'},                                      rev:false},
+          {id:'N7',  text:{en:'I change my mood a lot.',           id:'Suasana hati saya sering berubah.'},                            rev:false},
+          {id:'N8',  text:{en:'I have frequent mood swings.',      id:'Saya sering mengalami perubahan suasana hati yang drastis.'},    rev:false},
+          {id:'N9',  text:{en:'I get irritated easily.',           id:'Saya mudah merasa jengkel.'},                                    rev:false},
+          {id:'N10', text:{en:'I often feel blue.',                id:'Saya sering merasa murung.'},                                    rev:false}
+        ]
+      },
+      {
+        key:'O', color:'#ab47bc',
+        name:{en:'Openness', id:'Keterbukaan'},
+        questions:[
+          {id:'O1',  text:{en:'I have a rich vocabulary.',                        id:'Saya memiliki kosakata yang kaya.'},                           rev:false},
+          {id:'O2',  text:{en:'I have difficulty understanding abstract ideas.',  id:'Saya kesulitan memahami ide-ide abstrak.'},                    rev:true},
+          {id:'O3',  text:{en:'I have a vivid imagination.',                      id:'Saya memiliki imajinasi yang kaya.'},                          rev:false},
+          {id:'O4',  text:{en:'I am not interested in abstract ideas.',           id:'Saya tidak tertarik dengan ide-ide abstrak.'},                 rev:true},
+          {id:'O5',  text:{en:'I have excellent ideas.',                          id:'Saya memiliki ide-ide yang sangat baik.'},                     rev:false},
+          {id:'O6',  text:{en:'I do not have a good imagination.',               id:'Saya tidak memiliki imajinasi yang baik.'},                    rev:true},
+          {id:'O7',  text:{en:'I am quick to understand things.',                 id:'Saya cepat memahami hal-hal baru.'},                           rev:false},
+          {id:'O8',  text:{en:'I use difficult words.',                           id:'Saya menggunakan kata-kata yang sulit.'},                      rev:false},
+          {id:'O9',  text:{en:'I spend time reflecting on things.',              id:'Saya meluangkan waktu untuk merenungkan berbagai hal.'},        rev:false},
+          {id:'O10', text:{en:'I am full of ideas.',                              id:'Saya penuh dengan ide-ide.'},                                  rev:false}
+        ]
+      }
     ]
   }
 ];
@@ -977,6 +1015,8 @@ function t(key){ return UI[state.lang][key] || UI.en[key] || key; }
 function q_text(q){ return q.text[state.lang] || q.text.en; }
 function q_ctx(q){ return q.context ? (q.context[state.lang] || q.context.en) : null; }
 function q_opts(q){ return q.options ? (q.options[state.lang] || q.options.en) : null; }
+function oceanAllQ(sec){ return sec.dimensions.flatMap(d=>d.questions); }
+function oceanDimIdx(sec){ return state.questionIdx; } // questionIdx = dimension index for OCEAN
 
 // ═══════════════════════════════════════════════════════
 //  LANGUAGE SCREEN
@@ -1121,25 +1161,33 @@ function startSection(idx){
 
 function renderSection(){
   const sec = SECTIONS[state.sectionIdx];
-  const q   = sec.questions[state.questionIdx];
-
-  document.getElementById('headerProgress').textContent =
-    `${sec.name[state.lang]} · ${t('qOf')} ${state.questionIdx+1} / ${sec.questions.length}`;
 
   const levelKey = sec.scoreable
     ? (sec.id==='cm' ? 'level_entry' : 'level_intermediate')
     : 'level_self';
-
   document.getElementById('sectionBadge').innerHTML =
     `${sec.icon} ${sec.name[state.lang]} <span style="color:#999;font-weight:400;margin-left:4px">· ${t(levelKey)}</span>`;
 
-  buildSidebar();
-  renderQuestion(q);
-
-  document.getElementById('prevBtn').disabled = state.questionIdx===0;
-  const isLast = state.questionIdx===sec.questions.length-1;
-  document.getElementById('nextBtn').innerHTML =
-    isLast ? t('finishSection') : `${t('nextLabel')} →`;
+  if(sec.isDimensional){
+    const dim = sec.dimensions[state.questionIdx];
+    const total = sec.dimensions.length;
+    document.getElementById('headerProgress').textContent =
+      `${sec.name[state.lang]} · ${dim.name[state.lang]} (${state.questionIdx+1}/${total})`;
+    buildSidebarOcean(sec);
+    renderOceanDim(sec, dim);
+    document.getElementById('prevBtn').disabled = state.questionIdx===0;
+    const isLast = state.questionIdx===total-1;
+    document.getElementById('nextBtn').innerHTML = isLast ? t('finishSection') : `${t('nextLabel')} →`;
+  } else {
+    const q = sec.questions[state.questionIdx];
+    document.getElementById('headerProgress').textContent =
+      `${sec.name[state.lang]} · ${t('qOf')} ${state.questionIdx+1} / ${sec.questions.length}`;
+    buildSidebar();
+    renderQuestion(q);
+    document.getElementById('prevBtn').disabled = state.questionIdx===0;
+    const isLast = state.questionIdx===sec.questions.length-1;
+    document.getElementById('nextBtn').innerHTML = isLast ? t('finishSection') : `${t('nextLabel')} →`;
+  }
 }
 
 function buildSidebar(){
@@ -1157,6 +1205,60 @@ function buildSidebar(){
     d.onclick = ()=>{ state.questionIdx=i; renderSection(); };
     grid.appendChild(d);
   });
+}
+
+function buildSidebarOcean(sec){
+  document.getElementById('sidebarTitle').textContent = `${sec.icon} ${sec.name[state.lang]}`;
+  const grid = document.getElementById('qGrid');
+  grid.innerHTML='';
+  const tabs = document.createElement('div');
+  tabs.className='dim-tabs';
+  sec.dimensions.forEach((dim,i)=>{
+    const answered = dim.questions.filter(q=>state.answers[q.id]!==undefined).length;
+    const done = answered===dim.questions.length;
+    const active = i===state.questionIdx;
+    const tab = document.createElement('div');
+    tab.className='dim-tab'+(active?' active':'')+(done?' done':'');
+    tab.innerHTML=`<span style="font-size:18px;width:24px;text-align:center">${['🔵','🟢','🟡','🔴','🟣'][i]}</span>
+      <span>${dim.name[state.lang]}</span>
+      <span class="dim-count">${answered}/10</span>`;
+    tab.onclick=()=>{ state.questionIdx=i; renderSection(); };
+    tabs.appendChild(tab);
+  });
+  grid.appendChild(tabs);
+}
+
+function renderOceanDim(sec, dim){
+  const lang = state.lang;
+  const scaleLabels = lang==='id'
+    ? ['Sangat<br>Tidak Tepat','Kurang<br>Tepat','Netral','Cukup<br>Tepat','Sangat<br>Tepat']
+    : ['Very<br>Inaccurate','Moderately<br>Inaccurate','Neither<br>Inaccurate<br>nor Accurate','Moderately<br>Accurate','Very<br>Accurate'];
+
+  let html = `<div class="ocean-wrap">
+    <div class="ocean-dim-header" style="border-left:5px solid ${dim.color}">
+      <div class="ocean-dim-title">${dim.name[lang]}</div>
+      <div class="ocean-dim-sub">${lang==='id'?'Nilai seberapa akurat setiap pernyataan menggambarkan diri Anda:':'Rate how accurately each statement describes you:'}</div>
+    </div>
+    <div class="ocean-table-wrap">
+    <table class="ocean-tbl">
+      <thead><tr>
+        <th class="stmt-head">${lang==='id'?'Pernyataan':'Statement'}</th>
+        ${[1,2,3,4,5].map((n,i)=>`<th class="scale-head">${n}<br><span style="font-size:10px;color:#999">${scaleLabels[i]}</span></th>`).join('')}
+      </tr></thead>
+      <tbody>`;
+
+  dim.questions.forEach(q=>{
+    const saved = state.answers[q.id];
+    html += `<tr>
+      <td class="stmt">${q.text[lang]||q.text.en}</td>
+      ${[1,2,3,4,5].map(n=>`<td class="scale-cell">
+        <span class="ocean-num${saved===n?' sel':''}" onclick="selectOcean('${q.id}',${n})">${n}</span>
+      </td>`).join('')}
+    </tr>`;
+  });
+
+  html += `</tbody></table></div></div>`;
+  document.getElementById('questionCard').innerHTML = html;
 }
 
 function renderQuestion(q){
@@ -1241,11 +1343,26 @@ function selectLikert(qid,idx){
     .forEach((el,i)=>el.classList.toggle('selected',i===idx));
 }
 
+function selectOcean(qid, val){
+  state.answers[qid] = val;
+  // update all cells for this question
+  document.querySelectorAll(`.ocean-num`).forEach(el=>{
+    if(el.getAttribute('onclick')===`selectOcean('${qid}',${el.textContent})`||
+       el.getAttribute('onclick').startsWith(`selectOcean('${qid}',`)){
+      el.classList.toggle('sel', parseInt(el.textContent)===val);
+    }
+  });
+  // update sidebar
+  const sec = SECTIONS[state.sectionIdx];
+  if(sec.isDimensional) buildSidebarOcean(sec);
+}
+
 function navigate(dir){
   const sec=SECTIONS[state.sectionIdx];
+  const limit = sec.isDimensional ? sec.dimensions.length : sec.questions.length;
   const ni=state.questionIdx+dir;
   if(ni<0) return;
-  if(ni>=sec.questions.length){ showSectionEnd(false); return; }
+  if(ni>=limit){ showSectionEnd(false); return; }
   state.questionIdx=ni;
   renderSection();
 }
@@ -1259,8 +1376,9 @@ function showSectionEnd(timedOut){
   document.getElementById('timerDisplay').classList.add('hidden');
 
   const sec     = SECTIONS[state.sectionIdx];
-  const answered= sec.questions.filter(q=>state.answers[q.id]!==undefined).length;
-  const total   = sec.questions.length;
+  const allQ    = sec.isDimensional ? oceanAllQ(sec) : sec.questions;
+  const answered= allQ.filter(q=>state.answers[q.id]!==undefined).length;
+  const total   = allQ.length;
   const isLast  = state.sectionIdx===SECTIONS.length-1;
   const next    = !isLast ? SECTIONS[state.sectionIdx+1] : null;
 
@@ -1269,7 +1387,8 @@ function showSectionEnd(timedOut){
   html += `<p>${t('answeredOf')} <strong>${answered} ${t('of')} ${total}</strong> ${t('questions')}</p>`;
 
   if(!isLast){
-    html += `<p style="margin-top:8px">${t('nextSection')} <strong>${next.icon} ${next.name[state.lang]}</strong> · ${next.questions.length} ${t('questions')} · ${Math.floor(next.timeSeconds/60)} min</p><br>`;
+    const nextQLen = next.isDimensional ? oceanAllQ(next).length : next.questions.length;
+    html += `<p style="margin-top:8px">${t('nextSection')} <strong>${next.icon} ${next.name[state.lang]}</strong> · ${nextQLen} ${t('questions')} · ${Math.floor(next.timeSeconds/60)} min</p><br>`;
     html += `<button class="btn btn-primary" onclick="startSection(${state.sectionIdx+1})">${t('btnNextSection')}</button>`;
   } else {
     html += `<br><button class="btn btn-success" onclick="showResults()">${t('btnViewResults')}</button>`;
@@ -1299,13 +1418,13 @@ function scoreSection(sec){
   return {correct, total, pct: total?Math.round(correct/total*100):0};
 }
 
-function calcOceanDim(sec, qs){
-  const vals = qs.map(qi=>{
-    const q   = sec.questions[qi];
+function calcOceanDim(sec, dimKey){
+  const dim = sec.dimensions.find(d=>d.key===dimKey);
+  if(!dim) return 0;
+  const vals = dim.questions.map(q=>{
     const ans = state.answers[q.id];
     if(ans===undefined) return null;
-    const raw = 5-ans; // Very Accurate(0) → 5pts
-    return q.rev ? (6-raw) : raw;
+    return q.rev ? (6-ans) : ans;
   }).filter(v=>v!==null);
   if(!vals.length) return 0;
   const avg = vals.reduce((a,b)=>a+b,0)/vals.length;
@@ -1333,14 +1452,13 @@ function showResults(){
   const tm = scoreSection(SECTIONS[1]);
   const cm = scoreSection(SECTIONS[2]);
   const oc = SECTIONS[3];
-  const ocAnswered = oc.questions.filter(q=>state.answers[q.id]!==undefined).length;
+  const ocAnswered = oceanAllQ(oc).filter(q=>state.answers[q.id]!==undefined).length;
 
-  const dims = oc.oceanDimensions;
-  const ocE  = calcOceanDim(oc, dims.E.qs);
-  const ocA  = calcOceanDim(oc, dims.A.qs);
-  const ocC  = calcOceanDim(oc, dims.C.qs);
-  const ocN  = calcOceanDim(oc, dims.N.qs);
-  const ocO  = calcOceanDim(oc, dims.O.qs);
+  const ocE = calcOceanDim(oc, 'E');
+  const ocA = calcOceanDim(oc, 'A');
+  const ocC = calcOceanDim(oc, 'C');
+  const ocN = calcOceanDim(oc, 'N');
+  const ocO = calcOceanDim(oc, 'O');
 
   const payload = {
     timestamp: new Date().toISOString(),
@@ -1396,17 +1514,16 @@ function buildResultsHTML(ps, tm, cm, ocAnswered){
   };
 
   const oc = SECTIONS[3];
-  const dims = oc.oceanDimensions;
 
   let oceanBars='';
-  Object.entries(dims).forEach(([k,d])=>{
+  oc.dimensions.forEach(d=>{
     oceanBars += `<div class="ocean-trait">
       <div class="ocean-trait-header">
-        <span><strong>${k}</strong> — ${d.name[state.lang]}</span>
-        <span id="bar-lbl-${k}" style="color:${d.color};font-weight:700">–</span>
+        <span><strong>${d.key}</strong> — ${d.name[state.lang]}</span>
+        <span id="bar-lbl-${d.key}" style="color:${d.color};font-weight:700">–</span>
       </div>
       <div class="ocean-bar-bg">
-        <div class="ocean-bar-fill" id="bar-${k}" style="width:0%;background:${d.color}"></div>
+        <div class="ocean-bar-fill" id="bar-${d.key}" style="width:0%;background:${d.color}"></div>
       </div>
     </div>`;
   });
