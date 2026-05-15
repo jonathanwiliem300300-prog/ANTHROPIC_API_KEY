@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Sheets Setup Guide</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f5f6fa;color:#1a1a2e;line-height:1.6}
+
+  .page-header{background:linear-gradient(135deg,#1a73e8,#0d47a1);color:#fff;padding:48px 32px;text-align:center}
+  .page-header h1{font-size:28px;margin-bottom:8px}
+  .page-header p{font-size:15px;opacity:.85;max-width:560px;margin:0 auto}
+
+  .container{max-width:860px;margin:0 auto;padding:40px 24px}
+
+  /* Step card */
+  .step{background:#fff;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.08);margin-bottom:40px;overflow:hidden}
+  .step-header{display:flex;align-items:center;gap:16px;padding:20px 28px;border-bottom:2px solid #f0f0f0;background:#fafbff}
+  .step-num{width:40px;height:40px;border-radius:50%;background:#1a73e8;color:#fff;font-size:18px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .step-title{font-size:17px;font-weight:700;color:#1a1a2e}
+  .step-sub{font-size:13px;color:#888;margin-top:2px}
+  .step-body{padding:28px}
+
+  /* Instruction text */
+  .instruction{font-size:15px;color:#444;margin-bottom:20px}
+  .instruction strong{color:#1a1a2e}
+  .click-label{display:inline-block;background:#fff3cd;border:1.5px solid #ffc107;border-radius:6px;padding:2px 8px;font-size:13px;font-weight:700;color:#856404}
+  .note{background:#e8f4fd;border-left:4px solid #1a73e8;border-radius:0 8px 8px 0;padding:12px 16px;font-size:13px;color:#1565c0;margin-top:16px}
+
+  /* ── MOCKUP STYLES ── */
+  .mockup{border:2px solid #dadce0;border-radius:10px;overflow:hidden;font-family:'Google Sans',Roboto,sans-serif;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+
+  /* Browser chrome */
+  .browser-bar{background:#f1f3f4;border-bottom:1px solid #dadce0;padding:8px 12px;display:flex;align-items:center;gap:8px}
+  .browser-dots span{width:12px;height:12px;border-radius:50%;display:inline-block;margin-right:4px}
+  .dot-r{background:#ff5f57}.dot-y{background:#febc2e}.dot-g{background:#28c840}
+  .browser-url{flex:1;background:#fff;border:1px solid #dadce0;border-radius:20px;padding:4px 14px;font-size:12px;color:#444;margin:0 8px}
+
+  /* Sheets header */
+  .sheets-header{background:#fff;border-bottom:1px solid #e0e0e0;padding:0 16px;display:flex;align-items:center;height:48px;gap:12px}
+  .sheets-logo{display:flex;align-items:center;gap:6px}
+  .sheets-logo-icon{width:28px;height:28px;background:linear-gradient(135deg,#34a853,#0f9d58);border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700}
+  .sheets-logo-text{font-size:16px;color:#5f6368;font-weight:500}
+  .sheets-filename{font-size:14px;color:#202124;font-weight:600}
+  .sheets-menu{display:flex;gap:4px;margin-left:8px}
+  .sheets-menu span{font-size:12px;color:#3c4043;padding:4px 8px;border-radius:4px;cursor:pointer}
+  .sheets-menu span:hover,.sheets-menu span.active{background:#e8f0fe;color:#1a73e8}
+  .highlight-menu{background:#fff3cd!important;border:2px solid #ffc107;border-radius:4px;color:#856404!important;position:relative}
+  .highlight-menu::after{content:'← Click here';position:absolute;left:105%;top:50%;transform:translateY(-50%);background:#ffc107;color:#000;font-size:11px;font-weight:700;padding:3px 7px;border-radius:4px;white-space:nowrap}
+
+  /* Sheet grid */
+  .sheet-grid{background:#fff}
+  .sheet-row{display:grid;grid-template-columns:40px repeat(6,1fr);border-bottom:1px solid #e0e0e0}
+  .sheet-row.header-row .cell{background:#f8f9fa;font-weight:700;color:#444;font-size:11px}
+  .cell{padding:6px 10px;font-size:12px;border-right:1px solid #e0e0e0;color:#333;white-space:nowrap;overflow:hidden}
+  .cell.row-num{background:#f8f9fa;color:#888;font-size:11px;text-align:center}
+  .cell.highlight-col{background:#e8f4fd;color:#1565c0;font-weight:600}
+
+  /* Apps Script UI */
+  .script-header{background:#fff;border-bottom:1px solid #e0e0e0;padding:0 16px;display:flex;align-items:center;height:48px;gap:12px}
+  .script-logo{display:flex;align-items:center;gap:6px}
+  .script-logo-icon{width:28px;height:28px;background:linear-gradient(135deg,#4285f4,#1565c0);border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700}
+  .script-logo-text{font-size:14px;color:#5f6368}
+  .script-body{display:flex;height:260px}
+  .script-sidebar{width:180px;background:#f8f9fa;border-right:1px solid #e0e0e0;padding:12px 0}
+  .script-file{padding:8px 16px;font-size:13px;color:#3c4043;cursor:pointer;display:flex;align-items:center;gap:8px}
+  .script-file.active{background:#e8f0fe;color:#1a73e8;font-weight:600;border-right:3px solid #1a73e8}
+  .script-editor{flex:1;background:#1e1e2e;padding:20px;font-family:'Courier New',monospace;font-size:12px;line-height:1.7;overflow:auto}
+  .code-line{display:block}
+  .kw{color:#c792ea}.fn{color:#82aaff}.str{color:#c3e88d}.cm{color:#546e7a;font-style:italic}.pn{color:#89ddff}.nb{color:#ffcb6b}
+
+  /* Deploy button */
+  .script-toolbar{background:#fff;border-bottom:1px solid #e0e0e0;padding:8px 16px;display:flex;align-items:center;gap:8px}
+  .btn-deploy{background:#1a73e8;color:#fff;border:none;border-radius:6px;padding:7px 16px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px}
+  .btn-deploy.highlight{box-shadow:0 0 0 4px rgba(255,193,7,.6);animation:glow 1.5s infinite}
+  @keyframes glow{0%,100%{box-shadow:0 0 0 4px rgba(255,193,7,.6)}50%{box-shadow:0 0 0 8px rgba(255,193,7,.3)}}
+  .btn-run{background:#fff;color:#1a73e8;border:1px solid #dadce0;border-radius:6px;padding:7px 16px;font-size:13px;cursor:pointer}
+
+  /* Dropdown menu */
+  .dropdown{background:#fff;border:1px solid #dadce0;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,.15);width:200px;margin-top:4px}
+  .dropdown-item{padding:10px 16px;font-size:13px;color:#3c4043;cursor:pointer;display:flex;align-items:center;gap:10px;border-radius:4px;margin:2px}
+  .dropdown-item:hover,.dropdown-item.selected{background:#e8f0fe;color:#1a73e8}
+  .dropdown-item .di-icon{font-size:16px}
+
+  /* Modal */
+  .modal-overlay{background:rgba(0,0,0,.4);padding:20px;display:flex;align-items:center;justify-content:center}
+  .modal{background:#fff;border-radius:12px;width:100%;max-width:480px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.2)}
+  .modal-header{padding:20px 24px;border-bottom:1px solid #e0e0e0}
+  .modal-header h3{font-size:16px;color:#202124}
+  .modal-body{padding:24px}
+  .modal-row{margin-bottom:16px}
+  .modal-label{font-size:12px;font-weight:700;color:#5f6368;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+  .modal-select{width:100%;padding:10px 12px;border:1px solid #dadce0;border-radius:6px;font-size:14px;color:#202124;background:#fff}
+  .modal-select.highlight{border-color:#1a73e8;box-shadow:0 0 0 3px rgba(26,115,232,.2)}
+  .modal-footer{padding:16px 24px;border-top:1px solid #e0e0e0;display:flex;justify-content:flex-end;gap:8px}
+  .modal-btn{padding:8px 20px;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;border:none}
+  .modal-btn-cancel{background:#fff;color:#1a73e8;border:1px solid #dadce0}
+  .modal-btn-deploy{background:#1a73e8;color:#fff}
+  .modal-btn-deploy.pulse{animation:glow 1.5s infinite}
+
+  /* URL copy box */
+  .url-box{background:#f8f9fa;border:2px solid #1a73e8;border-radius:8px;padding:14px 16px;display:flex;align-items:center;gap:12px;margin-top:16px}
+  .url-text{font-family:'Courier New',monospace;font-size:12px;color:#1a73e8;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .copy-btn{background:#1a73e8;color:#fff;border:none;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0}
+
+  /* HTML editor mockup */
+  .html-editor{background:#1e1e2e;border-radius:8px;padding:16px 20px;font-family:'Courier New',monospace;font-size:12px;line-height:1.8;overflow:auto}
+  .hl-line{background:rgba(255,193,7,.15);border-left:3px solid #ffc107;padding-left:8px;margin:0 -20px;padding-right:20px}
+
+  /* Arrow */
+  .arrow{text-align:center;font-size:28px;color:#1a73e8;margin:8px 0;line-height:1}
+
+  /* Final result sheet */
+  .sheet-wide{grid-template-columns:40px 120px 160px 140px 120px 70px 50px 50px 50px 50px 50px}
+  .cell.sm{font-size:10px}
+
+  /* Step connector */
+  .connector{text-align:center;margin:0 0 40px;color:#bbb;font-size:13px;display:flex;align-items:center;gap:12px}
+  .connector::before,.connector::after{content:'';flex:1;height:1px;background:#ddd}
+
+  code{background:#f0f0f0;border-radius:4px;padding:1px 6px;font-family:'Courier New',monospace;font-size:13px;color:#c7254e}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>📊 Google Sheets Integration — Step by Step</h1>
+  <p>Follow these 6 steps to automatically send every candidate's results to your Google Sheet</p>
+</div>
+
+<div class="container">
+
+  <!-- ══ STEP 1 ══════════════════════════════════════════ -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-title">Create a new Google Sheet</div>
+        <div class="step-sub">Go to sheets.google.com and create a blank spreadsheet</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p class="instruction">Go to <strong>sheets.google.com</strong> → click <span class="click-label">+ Blank</span> to create a new spreadsheet. Give it a name like <strong>"Hiring Test Results"</strong>.</p>
+
+      <div class="mockup">
+        <div class="browser-bar">
+          <div class="browser-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          <div class="browser-url">sheets.google.com</div>
+        </div>
+        <div class="sheets-header">
+          <div class="sheets-logo">
+            <div class="sheets-logo-icon">S</div>
+            <span class="sheets-logo-text">Google Sheets</span>
+          </div>
+          <div class="sheets-filename">Hiring Test Results</div>
+          <div class="sheets-menu">
+            <span>File</span><span>Edit</span><span>View</span><span>Insert</span><span>Format</span><span>Data</span><span>Tools</span>
+            <span class="highlight-menu">Extensions</span>
+          </div>
+        </div>
+        <div class="sheet-grid">
+          <div class="sheet-row header-row">
+            <div class="cell row-num"></div>
+            <div class="cell">A</div><div class="cell">B</div><div class="cell">C</div>
+            <div class="cell">D</div><div class="cell">E</div><div class="cell">F</div>
+          </div>
+          <div class="sheet-row">
+            <div class="cell row-num">1</div>
+            <div class="cell" style="color:#bbb;font-style:italic">Results will appear here automatically...</div>
+            <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+          </div>
+          <div class="sheet-row"><div class="cell row-num">2</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+          <div class="sheet-row"><div class="cell row-num">3</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+        </div>
+      </div>
+      <div class="note">💡 Keep this tab open — you'll come back to it in Step 2.</div>
+    </div>
+  </div>
+
+  <div class="connector">then</div>
+
+  <!-- ══ STEP 2 ══════════════════════════════════════════ -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-title">Open Apps Script</div>
+        <div class="step-sub">From the same spreadsheet, go to Extensions → Apps Script</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p class="instruction">In your Google Sheet, click the <strong>Extensions</strong> menu in the top bar, then click <span class="click-label">Apps Script</span>. A new tab will open.</p>
+
+      <div class="mockup">
+        <div class="browser-bar">
+          <div class="browser-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          <div class="browser-url">docs.google.com/spreadsheets/d/...</div>
+        </div>
+        <div class="sheets-header">
+          <div class="sheets-logo">
+            <div class="sheets-logo-icon">S</div>
+            <span class="sheets-logo-text">Sheets</span>
+          </div>
+          <div class="sheets-filename">Hiring Test Results</div>
+          <div class="sheets-menu">
+            <span>File</span><span>Edit</span><span>View</span><span>Insert</span><span>Format</span><span>Data</span><span>Tools</span>
+            <span class="active" style="background:#e8f0fe;color:#1a73e8;border-radius:4px">Extensions ▾</span>
+          </div>
+        </div>
+        <div style="display:flex;padding:16px;gap:16px">
+          <div class="dropdown">
+            <div class="dropdown-item"><span class="di-icon">🔌</span> Add-ons</div>
+            <div class="dropdown-item selected"><span class="di-icon">📜</span> <strong>Apps Script</strong></div>
+            <div class="dropdown-item"><span class="di-icon">🔄</span> Macros</div>
+            <div class="dropdown-item"><span class="di-icon">⏰</span> AppSheet</div>
+          </div>
+          <div style="font-size:13px;color:#c62828;font-weight:600;padding-top:12px">← Click "Apps Script"</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector">then</div>
+
+  <!-- ══ STEP 3 ══════════════════════════════════════════ -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-title">Paste the script code</div>
+        <div class="step-sub">Delete the default code and paste the provided script</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p class="instruction">The Apps Script editor will open with some default code. <strong>Select all of it and delete it</strong>, then paste the code below:</p>
+
+      <div class="mockup">
+        <div class="browser-bar">
+          <div class="browser-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          <div class="browser-url">script.google.com/d/.../edit</div>
+        </div>
+        <div class="script-header">
+          <div class="script-logo">
+            <div class="script-logo-icon">AS</div>
+            <span class="script-logo-text">Apps Script — Hiring Test Results</span>
+          </div>
+        </div>
+        <div class="script-toolbar">
+          <button class="btn-run">▶ Run</button>
+          <button class="btn-deploy highlight" style="margin-left:auto">🚀 Deploy ▾</button>
+        </div>
+        <div class="script-body">
+          <div class="script-sidebar">
+            <div class="script-file active">📄 Code.gs</div>
+            <div class="script-file">+ Add file</div>
+          </div>
+          <div class="script-editor">
+<span class="code-line"><span class="cm">// Paste ALL of this code here:</span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="kw">function</span> <span class="fn">doPost</span><span class="pn">(</span>e<span class="pn">) {</span></span>
+<span class="code-line">  <span class="kw">var</span> sheet <span class="pn">=</span> SpreadsheetApp</span>
+<span class="code-line">    .getActiveSpreadsheet()</span>
+<span class="code-line">    .getActiveSheet<span class="pn">();</span></span>
+<span class="code-line">  <span class="kw">var</span> d <span class="pn">=</span> JSON.parse<span class="pn">(</span>e.postData.contents<span class="pn">);</span></span>
+<span class="code-line">  <span class="kw">if</span> <span class="pn">(</span>sheet.getLastRow<span class="pn">()</span> <span class="pn">=== 0) {</span></span>
+<span class="code-line">    sheet.appendRow<span class="pn">([</span><span class="str">'Timestamp'</span><span class="pn">,</span><span class="str">'Name'</span><span class="pn">,</span></span>
+<span class="code-line">      <span class="str">'Email'</span><span class="pn">,</span><span class="str">'Position'</span><span class="pn">,</span><span class="str">'Language'</span><span class="pn">,</span></span>
+<span class="code-line">      <span class="str">'PS Score'</span><span class="pn">,</span><span class="str">'PS %'</span><span class="pn">,</span><span class="str">'TM Score'</span><span class="pn">,</span></span>
+<span class="code-line">      <span class="str">'TM %'</span><span class="pn">,</span><span class="str">'Comm Score'</span><span class="pn">,</span><span class="str">'Comm %'</span><span class="pn">,</span></span>
+<span class="code-line">      <span class="str">'OCEAN'</span><span class="pn">,</span><span class="str">'E%'</span><span class="pn">,</span><span class="str">'A%'</span><span class="pn">,</span><span class="str">'C%'</span><span class="pn">,</span><span class="str">'N%'</span><span class="pn">,</span><span class="str">'O%'</span><span class="pn">]);</span></span>
+<span class="code-line">  <span class="pn">}</span></span>
+<span class="code-line">  sheet.appendRow<span class="pn">([</span>d.timestamp<span class="pn">,</span>d.name<span class="pn">,</span></span>
+<span class="code-line">    d.email<span class="pn">,</span>d.position<span class="pn">,</span>d.language<span class="pn">,</span></span>
+<span class="code-line">    d.ps_score<span class="pn">,</span>d.ps_pct<span class="pn">,</span>d.tm_score<span class="pn">,</span></span>
+<span class="code-line">    d.tm_pct<span class="pn">,</span>d.comm_score<span class="pn">,</span>d.comm_pct<span class="pn">,</span></span>
+<span class="code-line">    d.ocean_answered<span class="pn">,</span>d.ocean_E<span class="pn">,</span>d.ocean_A<span class="pn">,</span></span>
+<span class="code-line">    d.ocean_C<span class="pn">,</span>d.ocean_N<span class="pn">,</span>d.ocean_O<span class="pn">]);</span></span>
+<span class="code-line">  <span class="kw">return</span> ContentService</span>
+<span class="code-line">    .createTextOutput<span class="pn">(</span>JSON.stringify<span class="pn">({</span>status<span class="pn">:</span><span class="str">'ok'</span><span class="pn">}))</span></span>
+<span class="code-line">    .setMimeType<span class="pn">(</span>ContentService.MimeType.JSON<span class="pn">);</span></span>
+<span class="code-line"><span class="pn">}</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px">
+        <p class="instruction">📋 Copy the code block below and paste it into the editor:</p>
+        <div class="html-editor" style="border-radius:8px">
+<span class="code-line"><span class="kw">function</span> <span class="fn">doPost</span>(e) {</span>
+<span class="code-line">  <span class="kw">var</span> sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();</span>
+<span class="code-line">  <span class="kw">var</span> d = JSON.parse(e.postData.contents);</span>
+<span class="code-line">  <span class="kw">if</span> (sheet.getLastRow() === <span class="nb">0</span>) {</span>
+<span class="code-line">    sheet.appendRow([<span class="str">'Timestamp'</span>,<span class="str">'Name'</span>,<span class="str">'Email'</span>,<span class="str">'Position'</span>,<span class="str">'Language'</span>,</span>
+<span class="code-line">      <span class="str">'PS Score'</span>,<span class="str">'PS %'</span>,<span class="str">'TM Score'</span>,<span class="str">'TM %'</span>,<span class="str">'Comm Score'</span>,<span class="str">'Comm %'</span>,</span>
+<span class="code-line">      <span class="str">'OCEAN Answered'</span>,<span class="str">'E%'</span>,<span class="str">'A%'</span>,<span class="str">'C%'</span>,<span class="str">'N%'</span>,<span class="str">'O%'</span>]);</span>
+<span class="code-line">  }</span>
+<span class="code-line">  sheet.appendRow([d.timestamp, d.name, d.email, d.position, d.language,</span>
+<span class="code-line">    d.ps_score, d.ps_pct, d.tm_score, d.tm_pct, d.comm_score, d.comm_pct,</span>
+<span class="code-line">    d.ocean_answered, d.ocean_E, d.ocean_A, d.ocean_C, d.ocean_N, d.ocean_O]);</span>
+<span class="code-line">  <span class="kw">return</span> ContentService.createTextOutput(JSON.stringify({status:<span class="str">'ok'</span>}))</span>
+<span class="code-line">    .setMimeType(ContentService.MimeType.JSON);</span>
+<span class="code-line">}</span>
+        </div>
+      </div>
+      <div class="note">💡 Save the file with <strong>Ctrl + S</strong> (Windows) or <strong>Cmd + S</strong> (Mac) after pasting.</div>
+    </div>
+  </div>
+
+  <div class="connector">then</div>
+
+  <!-- ══ STEP 4 ══════════════════════════════════════════ -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">4</div>
+      <div>
+        <div class="step-title">Deploy as a Web App</div>
+        <div class="step-sub">Click Deploy → New deployment → configure settings → Deploy</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p class="instruction">Click the <span class="click-label">🚀 Deploy</span> button (top-right), then choose <strong>"New deployment"</strong>.</p>
+
+      <div class="mockup" style="margin-bottom:20px">
+        <div class="script-toolbar">
+          <button class="btn-run">▶ Run</button>
+          <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+            <button class="btn-deploy highlight">🚀 Deploy ▾</button>
+          </div>
+        </div>
+        <div style="display:flex;padding:12px;gap:16px;align-items:flex-start">
+          <div style="flex:1"></div>
+          <div>
+            <div class="dropdown">
+              <div class="dropdown-item selected"><span class="di-icon">✨</span> <strong>New deployment</strong></div>
+              <div class="dropdown-item"><span class="di-icon">📋</span> Manage deployments</div>
+              <div class="dropdown-item"><span class="di-icon">🧪</span> Test deployments</div>
+            </div>
+            <div style="font-size:13px;color:#c62828;font-weight:600;margin-top:8px">← Click "New deployment"</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="instruction">A dialog box will appear. Set the two dropdowns exactly as shown below:</p>
+
+      <div class="mockup">
+        <div class="modal-overlay">
+          <div class="modal">
+            <div class="modal-header">
+              <h3>New deployment</h3>
+            </div>
+            <div class="modal-body">
+              <div class="modal-row">
+                <div class="modal-label">Select type</div>
+                <select class="modal-select highlight">
+                  <option selected>Web app</option>
+                  <option>API executable</option>
+                </select>
+                <div style="font-size:12px;color:#c62828;font-weight:600;margin-top:4px">← Must be set to "Web app"</div>
+              </div>
+              <div class="modal-row">
+                <div class="modal-label">Execute as</div>
+                <select class="modal-select highlight">
+                  <option selected>Me (yourname@gmail.com)</option>
+                  <option>User accessing the web app</option>
+                </select>
+                <div style="font-size:12px;color:#c62828;font-weight:600;margin-top:4px">← Must be "Me"</div>
+              </div>
+              <div class="modal-row">
+                <div class="modal-label">Who has access</div>
+                <select class="modal-select highlight">
+                  <option>Only myself</option>
+                  <option selected>Anyone</option>
+                </select>
+                <div style="font-size:12px;color:#c62828;font-weight:600;margin-top:4px">← Must be "Anyone"</div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="modal-btn modal-btn-cancel">Cancel</button>
+              <button class="modal-btn modal-btn-deploy pulse">Deploy</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="note" style="margin-top:16px">⚠️ Google may ask you to <strong>Authorize access</strong> — click "Allow". This lets the script write to your sheet.</div>
+    </div>
+  </div>
+
+  <div class="connector">then</div>
+
+  <!-- ══ STEP 5 ══════════════════════════════════════════ -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">5</div>
+      <div>
+        <div class="step-title">Copy the Web App URL</div>
+        <div class="step-sub">After deploying, copy the URL shown in the success dialog</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p class="instruction">After clicking Deploy, a success screen appears with your <strong>Web App URL</strong>. Click <span class="click-label">Copy</span> to copy it.</p>
+
+      <div class="mockup">
+        <div class="modal-overlay">
+          <div class="modal">
+            <div class="modal-header">
+              <h3>✅ Deployment complete</h3>
+            </div>
+            <div class="modal-body">
+              <p style="font-size:14px;color:#444;margin-bottom:16px">Your app is now deployed. Copy the Web App URL below and paste it into your <code>index.html</code> file.</p>
+              <div class="modal-label">Web App URL</div>
+              <div class="url-box">
+                <div class="url-text">https://script.google.com/macros/s/AKfycbxXXX...XXXX/exec</div>
+                <button class="copy-btn">📋 Copy</button>
+              </div>
+              <div style="font-size:12px;color:#c62828;font-weight:600;margin-top:8px">← Copy this entire URL</div>
+            </div>
+            <div class="modal-footer">
+              <button class="modal-btn modal-btn-deploy">Done</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="note">💡 The URL looks like: <code>https://script.google.com/macros/s/AKfycb.../exec</code> — it will be long. Copy the whole thing.</div>
+    </div>
+  </div>
+
+  <div class="connector">then</div>
+
+  <!-- ══ STEP 6 ══════════════════════════════════════════ -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">6</div>
+      <div>
+        <div class="step-title">Paste the URL into index.html</div>
+        <div class="step-sub">Replace YOUR_APPS_SCRIPT_URL with the copied URL</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p class="instruction">Open your <code>index.html</code> file and find line 3 near the top of the <code>&lt;script&gt;</code> section. Replace <code>YOUR_APPS_SCRIPT_URL</code> with the URL you copied.</p>
+
+      <div class="html-editor">
+<span class="code-line"><span class="cm">// ⚙️ CONFIG — paste your Google Apps Script URL here</span></span>
+<span class="code-line" style="background:rgba(255,80,80,.15);border-left:3px solid #ef5350;padding-left:8px;margin:0 -20px;padding-right:20px"><span class="kw">const</span> SHEET_ENDPOINT = <span class="str">'YOUR_APPS_SCRIPT_URL'</span>;  <span class="cm">// ← BEFORE (delete this)</span></span>
+<span class="code-line"></span>
+<span class="code-line" style="background:rgba(52,168,83,.15);border-left:3px solid #34a853;padding-left:8px;margin:0 -20px;padding-right:20px"><span class="kw">const</span> SHEET_ENDPOINT = <span class="str">'https://script.google.com/macros/s/AKfycb.../exec'</span>;  <span class="cm">// ← AFTER</span></span>
+      </div>
+
+      <div style="margin-top:20px">
+        <p class="instruction">Then <strong>save</strong> the file and <strong>push it to GitHub</strong>. The integration is now live.</p>
+        <div class="html-editor" style="font-size:13px">
+<span class="code-line" style="color:#ccc">git add index.html</span>
+<span class="code-line" style="color:#ccc">git commit -m "Add Google Sheets endpoint"</span>
+<span class="code-line" style="color:#ccc">git push</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector">done!</div>
+
+  <!-- ══ RESULT PREVIEW ══════════════════════════════════ -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">✓</div>
+      <div>
+        <div class="step-title">Your sheet will automatically fill up like this</div>
+        <div class="step-sub">One row per candidate — filter by Position column to compare applicants</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p class="instruction">Every time a candidate finishes the test, a new row is added automatically. Use <strong>Data → Create a filter</strong> in Google Sheets to filter by any column — e.g. <strong>Position = "Marketing Manager"</strong>.</p>
+
+      <div class="mockup" style="overflow-x:auto">
+        <div class="sheets-header" style="padding:0 12px">
+          <div class="sheets-logo">
+            <div class="sheets-logo-icon">S</div>
+            <span class="sheets-logo-text" style="font-size:13px">Hiring Test Results</span>
+          </div>
+          <div style="margin-left:auto;display:flex;gap:8px">
+            <span style="background:#e8f0fe;color:#1a73e8;border-radius:4px;padding:4px 10px;font-size:12px;font-weight:600;cursor:pointer">▽ Filter by Position</span>
+          </div>
+        </div>
+        <div class="sheet-grid" style="min-width:900px">
+          <div class="sheet-row header-row" style="display:grid;grid-template-columns:30px 100px 120px 120px 110px 60px 45px 60px 45px 60px 45px 40px">
+            <div class="cell row-num"></div>
+            <div class="cell">Timestamp</div>
+            <div class="cell">Name</div>
+            <div class="cell">Email</div>
+            <div class="cell highlight-col">Position</div>
+            <div class="cell">Language</div>
+            <div class="cell">PS Score</div>
+            <div class="cell">PS %</div>
+            <div class="cell">TM Score</div>
+            <div class="cell">TM %</div>
+            <div class="cell">Comm</div>
+            <div class="cell">E%</div>
+          </div>
+          <div class="sheet-row" style="display:grid;grid-template-columns:30px 100px 120px 120px 110px 60px 45px 45px 60px 45px 60px 40px">
+            <div class="cell row-num">1</div>
+            <div class="cell sm">2026-05-15 09:12</div>
+            <div class="cell sm">Budi Santoso</div>
+            <div class="cell sm">budi@email.com</div>
+            <div class="cell highlight-col sm">Marketing Mgr</div>
+            <div class="cell sm">Indonesian</div>
+            <div class="cell sm">9/12</div>
+            <div class="cell sm" style="color:#2e7d32;font-weight:700">75%</div>
+            <div class="cell sm">12/16</div>
+            <div class="cell sm" style="color:#2e7d32;font-weight:700">75%</div>
+            <div class="cell sm">11/15</div>
+            <div class="cell sm">68%</div>
+          </div>
+          <div class="sheet-row" style="display:grid;grid-template-columns:30px 100px 120px 120px 110px 60px 45px 45px 60px 45px 60px 40px">
+            <div class="cell row-num">2</div>
+            <div class="cell sm">2026-05-15 10:45</div>
+            <div class="cell sm">Siti Rahayu</div>
+            <div class="cell sm">siti@email.com</div>
+            <div class="cell highlight-col sm">HR Manager</div>
+            <div class="cell sm">Indonesian</div>
+            <div class="cell sm">7/12</div>
+            <div class="cell sm" style="color:#f57f17;font-weight:700">58%</div>
+            <div class="cell sm">14/16</div>
+            <div class="cell sm" style="color:#2e7d32;font-weight:700">88%</div>
+            <div class="cell sm">13/15</div>
+            <div class="cell sm">72%</div>
+          </div>
+          <div class="sheet-row" style="display:grid;grid-template-columns:30px 100px 120px 120px 110px 60px 45px 45px 60px 45px 60px 40px">
+            <div class="cell row-num">3</div>
+            <div class="cell sm">2026-05-15 14:20</div>
+            <div class="cell sm">John Smith</div>
+            <div class="cell sm">john@email.com</div>
+            <div class="cell highlight-col sm">Marketing Mgr</div>
+            <div class="cell sm">English</div>
+            <div class="cell sm">10/12</div>
+            <div class="cell sm" style="color:#2e7d32;font-weight:700">83%</div>
+            <div class="cell sm">15/16</div>
+            <div class="cell sm" style="color:#2e7d32;font-weight:700">94%</div>
+            <div class="cell sm">14/15</div>
+            <div class="cell sm">55%</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="note" style="margin-top:16px">💡 To filter: click <strong>Data → Create a filter</strong> → click the dropdown arrow on the <strong>Position</strong> column header → select which position to view.</div>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div style="background:#fff;border-radius:16px;padding:28px 32px;box-shadow:0 4px 20px rgba(0,0,0,.08);margin-bottom:40px">
+    <h2 style="margin-bottom:16px">📋 Quick Summary</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+      <div style="background:#e8f5e9;border-radius:10px;padding:16px;font-size:14px"><strong>Step 1</strong><br>Create Google Sheet</div>
+      <div style="background:#e8f5e9;border-radius:10px;padding:16px;font-size:14px"><strong>Step 2</strong><br>Extensions → Apps Script</div>
+      <div style="background:#e8f5e9;border-radius:10px;padding:16px;font-size:14px"><strong>Step 3</strong><br>Paste &amp; save the code</div>
+      <div style="background:#e8f5e9;border-radius:10px;padding:16px;font-size:14px"><strong>Step 4</strong><br>Deploy → New deployment</div>
+      <div style="background:#e8f5e9;border-radius:10px;padding:16px;font-size:14px"><strong>Step 5</strong><br>Copy the Web App URL</div>
+      <div style="background:#e8f5e9;border-radius:10px;padding:16px;font-size:14px"><strong>Step 6</strong><br>Paste URL into index.html</div>
+    </div>
+    <div style="margin-top:20px;text-align:center">
+      <a href="index.html" style="background:#1a73e8;color:#fff;text-decoration:none;padding:12px 28px;border-radius:10px;font-weight:600;font-size:15px;display:inline-block">← Back to Test</a>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
