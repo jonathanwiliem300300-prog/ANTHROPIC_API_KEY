@@ -575,17 +575,27 @@ const SECTIONS = [
       },
       {
         id:'ps11',
-        text:{en:'In a race, if you overtake the person in 2nd place, what position are you in?', id:'Dalam sebuah perlombaan, jika Anda menyalip orang di posisi ke-2, posisi berapa Anda sekarang?'},
+        context:{
+          en:'In a class, all students fall in one or more of the following categories: International, Scholarship-awardees, or Industry-sponsored.\n<ul style="margin:8px 0 0 16px;padding:0"><li>International ∩ Scholarship (overlap) = 40</li><li>Scholarship ∩ Industry Sponsored (overlap) = 90</li><li>Industry Sponsored only = 210</li></ul>\nAdditionally:\n<ul style="margin:8px 0 0 16px;padding:0"><li>There are 100 International students in total</li><li>There are 200 Scholarship-awardees in total</li></ul>',
+          id:'Dalam sebuah kelas, semua siswa masuk dalam satu atau lebih kategori berikut: Internasional, Penerima Beasiswa, atau Disponsori Industri.\n<ul style="margin:8px 0 0 16px;padding:0"><li>Internasional ∩ Beasiswa (tumpang tindih) = 40</li><li>Beasiswa ∩ Disponsori Industri (tumpang tindih) = 90</li><li>Hanya Disponsori Industri = 210</li></ul>\nTambahan:\n<ul style="margin:8px 0 0 16px;padding:0"><li>Terdapat 100 siswa Internasional secara keseluruhan</li><li>Terdapat 200 Penerima Beasiswa secara keseluruhan</li></ul>'
+        },
+        text:{en:'How many total students are there in the class?', id:'Berapa total siswa dalam kelas tersebut?'},
         type:'single',
-        options:{en:['1st place','2nd place','3rd place','4th place'], id:['Posisi ke-1','Posisi ke-2','Posisi ke-3','Posisi ke-4']},
-        answer:1
+        options:{en:['470','550','600','640'], id:['470','550','600','640']},
+        answer:0
       },
       {
         id:'ps12',
-        context:{en:'You have a 3×3 grid of squares. You draw a straight diagonal line from the top-left corner to the bottom-right corner.', id:'Anda memiliki kisi 3×3 kotak. Anda menggambar garis diagonal lurus dari sudut kiri atas ke sudut kanan bawah.'},
-        text:{en:'How many individual squares does the line pass through?', id:'Berapa kotak individual yang dilalui garis tersebut?'},
+        context:{
+          en:'Observe the following menu:\n<table class="sched-tbl"><thead><tr><th colspan="2">Salad</th><th colspan="2">Dressing</th></tr><tr><th>Vegetarian</th><th>Non-Vegetarian</th><th>Standard</th><th>Premium</th></tr></thead><tbody><tr><td>Carrot salad</td><td>Caesar salad</td><td>Balsamic vinegar</td><td>Coconut cream</td></tr><tr><td>Barley salad</td><td>Waldorf salad</td><td>Ranch dressing</td><td>Zesty lemon</td></tr><tr><td>Bean salad</td><td></td><td>Honey mustard dressing</td><td>Apple cider</td></tr><tr><td>Apple salad</td><td></td><td></td><td></td></tr></tbody></table>\nA customer wants a vegetarian salad with standard dressings.',
+          id:'Perhatikan menu berikut:\n<table class="sched-tbl"><thead><tr><th colspan="2">Salad</th><th colspan="2">Saus</th></tr><tr><th>Vegetarian</th><th>Non-Vegetarian</th><th>Standar</th><th>Premium</th></tr></thead><tbody><tr><td>Carrot salad</td><td>Caesar salad</td><td>Balsamic vinegar</td><td>Coconut cream</td></tr><tr><td>Barley salad</td><td>Waldorf salad</td><td>Ranch dressing</td><td>Zesty lemon</td></tr><tr><td>Bean salad</td><td></td><td>Honey mustard dressing</td><td>Apple cider</td></tr><tr><td>Apple salad</td><td></td><td></td><td></td></tr></tbody></table>\nSeorang pelanggan menginginkan salad vegetarian dengan saus standar.'
+        },
+        text:{en:'Which of the following can he order?', id:'Mana dari pilihan berikut yang bisa ia pesan?'},
         type:'single',
-        options:{en:['2','3','4','5'], id:['2','3','4','5']},
+        options:{
+          en:['Caesar salad with zesty lemon dressing','Carrot salad with honey mustard dressing','Bean salad with apple cider dressing','Waldorf salad with coconut cream dressing'],
+          id:['Caesar salad dengan saus zesty lemon','Carrot salad dengan saus honey mustard','Bean salad dengan saus apple cider','Waldorf salad dengan saus coconut cream']
+        },
         answer:1
       }
     ]
