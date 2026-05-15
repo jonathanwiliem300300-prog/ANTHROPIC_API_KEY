@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Manage Positions</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f5f6fa;color:#1a1a2e;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+
+  .card{background:#fff;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,.1);padding:40px;width:100%;max-width:520px}
+  h1{font-size:22px;margin-bottom:6px}
+  .sub{font-size:14px;color:#888;margin-bottom:28px}
+
+  /* Login */
+  .form-group{margin-bottom:16px}
+  .form-label{display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
+  .form-input{width:100%;padding:11px 14px;border:2px solid #e0e0e0;border-radius:10px;font-size:15px;font-family:inherit;transition:border-color .15s}
+  .form-input:focus{outline:none;border-color:#5c6bc0}
+  .form-input.error{border-color:#e53935}
+  .err-msg{color:#e53935;font-size:12px;margin-top:5px;display:none}
+  .err-msg.show{display:block}
+
+  .btn{width:100%;padding:13px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .18s}
+  .btn-primary{background:#5c6bc0;color:#fff}
+  .btn-primary:hover{background:#3f4faa}
+  .btn-danger{background:#e53935;color:#fff;width:auto;padding:6px 14px;font-size:13px;border-radius:7px}
+  .btn-danger:hover{background:#c62828}
+  .btn-add{background:#43a047;color:#fff;width:auto;padding:11px 20px;font-size:14px;font-weight:600;border-radius:10px;cursor:pointer;border:none;white-space:nowrap;transition:all .18s}
+  .btn-add:hover{background:#2e7d32}
+
+  /* Position manager */
+  .section-title{font-size:13px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px}
+  .add-row{display:flex;gap:10px;margin-bottom:20px}
+  .add-row .form-input{margin:0}
+
+  .position-list{display:flex;flex-direction:column;gap:8px;margin-bottom:24px;min-height:48px}
+  .position-item{display:flex;align-items:center;justify-content:space-between;background:#f8f9ff;border:2px solid #e8eaf6;border-radius:10px;padding:12px 16px}
+  .position-name{font-size:14px;font-weight:600;color:#1a1a2e}
+  .empty-state{text-align:center;padding:24px;color:#bbb;font-size:14px;border:2px dashed #e0e0e0;border-radius:10px}
+
+  .divider{border:none;border-top:1px solid #f0f0f0;margin:24px 0}
+  .logout-row{display:flex;justify-content:space-between;align-items:center}
+  .logout-btn{background:none;border:none;color:#888;font-size:13px;cursor:pointer;text-decoration:underline}
+  .logout-btn:hover{color:#333}
+
+  .badge{background:#e8f5e9;color:#2e7d32;border-radius:20px;padding:3px 10px;font-size:12px;font-weight:700}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:12px 24px;border-radius:10px;font-size:14px;font-weight:500;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;z-index:999}
+  .toast.show{opacity:1}
+
+  .hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<!-- ── LOGIN ── -->
+<div class="card" id="loginCard">
+  <h1>🔐 Admin Login</h1>
+  <p class="sub">Enter your password to manage open positions.</p>
+  <div class="form-group">
+    <label class="form-label">Password</label>
+    <input class="form-input" type="password" id="pwdInput" placeholder="Enter password" onkeydown="if(event.key==='Enter') login()">
+    <div class="err-msg" id="pwdErr">Incorrect password. Please try again.</div>
+  </div>
+  <button class="btn btn-primary" onclick="login()">Login →</button>
+</div>
+
+<!-- ── MANAGER ── -->
+<div class="card hidden" id="managerCard">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+    <h1>⚙️ Manage Positions</h1>
+    <span class="badge" id="countBadge">0 positions</span>
+  </div>
+  <p class="sub">Changes apply to the test immediately — no coding needed.</p>
+
+  <div class="section-title">Add New Position</div>
+  <div class="add-row">
+    <input class="form-input" type="text" id="newPosition" placeholder="e.g. Full Time - Marketing Manager" onkeydown="if(event.key==='Enter') addPosition()">
+    <button class="btn-add" onclick="addPosition()">+ Add</button>
+  </div>
+
+  <div class="section-title">Open Positions</div>
+  <div class="position-list" id="positionList"></div>
+
+  <hr class="divider">
+  <div class="logout-row">
+    <a href="index.html" style="font-size:13px;color:#5c6bc0;text-decoration:none">← Back to Test</a>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── Change this password to whatever you want ──
+  const ADMIN_PASSWORD = 'hiring2024';
+  const POSITIONS_KEY  = 'hiretest_positions_v1';
+
+  // ── Default positions (first time only) ──
+  const DEFAULT_POSITIONS = [
+    'Part Time - Content Creator',
+    'Part Time - Community & Partnership Officer'
+  ];
+
+  function getPositions() {
+    try {
+      const stored = localStorage.getItem(POSITIONS_KEY);
+      if (stored) return JSON.parse(stored);
+      // First visit — seed defaults
+      savePositions(DEFAULT_POSITIONS);
+      return DEFAULT_POSITIONS;
+    } catch(e) { return DEFAULT_POSITIONS; }
+  }
+
+  function savePositions(list) {
+    localStorage.setItem(POSITIONS_KEY, JSON.stringify(list));
+  }
+
+  function renderList() {
+    const list = getPositions();
+    const el   = document.getElementById('positionList');
+    const badge = document.getElementById('countBadge');
+    badge.textContent = list.length + ' position' + (list.length !== 1 ? 's' : '');
+
+    if (!list.length) {
+      el.innerHTML = '<div class="empty-state">No positions added yet. Add one above.</div>';
+      return;
+    }
+
+    el.innerHTML = list.map((p, i) => `
+      <div class="position-item">
+        <span class="position-name">${p}</span>
+        <button class="btn-danger" onclick="removePosition(${i})">Remove</button>
+      </div>
+    `).join('');
+  }
+
+  function addPosition() {
+    const inp = document.getElementById('newPosition');
+    const val = inp.value.trim();
+    if (!val) { inp.focus(); return; }
+    const list = getPositions();
+    if (list.includes(val)) { showToast('Position already exists.'); return; }
+    list.push(val);
+    savePositions(list);
+    inp.value = '';
+    renderList();
+    showToast('✅ Position added!');
+  }
+
+  function removePosition(idx) {
+    const list = getPositions();
+    const name = list[idx];
+    list.splice(idx, 1);
+    savePositions(list);
+    renderList();
+    showToast(`🗑️ "${name}" removed.`);
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  function login() {
+    const pwd = document.getElementById('pwdInput').value;
+    if (pwd === ADMIN_PASSWORD) {
+      document.getElementById('loginCard').classList.add('hidden');
+      document.getElementById('managerCard').classList.remove('hidden');
+      renderList();
+    } else {
+      document.getElementById('pwdErr').classList.add('show');
+      document.getElementById('pwdInput').classList.add('error');
+      document.getElementById('pwdInput').value = '';
+    }
+  }
+
+  function logout() {
+    document.getElementById('managerCard').classList.add('hidden');
+    document.getElementById('loginCard').classList.remove('hidden');
+    document.getElementById('pwdInput').value = '';
+    document.getElementById('pwdErr').classList.remove('show');
+  }
+</script>
+</body>
+</html>
