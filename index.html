@@ -1367,7 +1367,16 @@ function updateTimerDisplay(){
   el.className = 'timer-box' + (state.secondsLeft<=60?' warning':'');
 }
 
-function timeUp(){ showSectionEnd(true); }
+function timeUp(){
+  if(state.practiceMode){
+    state.practiceMode = false;
+    document.getElementById('testView').classList.add('hidden');
+    document.getElementById('timerDisplay').classList.add('hidden');
+    state.practiceDone();
+  } else {
+    showSectionEnd(true);
+  }
+}
 
 // ═══════════════════════════════════════════════════════
 //  TEST FLOW
@@ -1391,8 +1400,8 @@ function runPractice(sectionIdx, onDone){
   ['screenWelcome','screenSectionEnd','screenBreak','screenIntro','screenPracticeIntro','screenResults'].forEach(id=>{
     const el=document.getElementById(id); if(el) el.classList.add('hidden');
   });
-  document.getElementById('timerDisplay').classList.add('hidden');
   document.getElementById('testView').classList.remove('hidden');
+  startTimer(5*60);
   renderPracticeQ();
 }
 
@@ -1486,8 +1495,10 @@ function navigate(dir){
     const ni = state.practiceQIdx + dir;
     if(ni<0) return;
     if(ni>=total){
+      clearInterval(state.timerInterval);
       state.practiceMode = false;
       document.getElementById('testView').classList.add('hidden');
+      document.getElementById('timerDisplay').classList.add('hidden');
       state.practiceDone();
       return;
     }
