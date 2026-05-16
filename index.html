@@ -947,7 +947,51 @@ const SECTIONS = [
   {
     id:'cm', icon:'💬', timeSeconds:8*60, scoreable:true,
     meta:{en:'16 questions · 8 minutes · Entry Level', id:'16 soal · 8 menit · Dasar'},
-    practiceCount:4, practiceQuestions:[],
+    practiceCount:3,
+    practiceQuestions:[
+      {
+        id:'pcp1',
+        context:{
+          en:'What is the main point of the message below?\n\n<div style="border-left:4px solid #bbb;padding:12px 16px;background:#f9f9f9;border-radius:0 8px 8px 0;font-style:italic;color:#333;line-height:1.7">"Thanks for checking in. We\'re busier than ever here at the clinic. It\'s a busy time of year—more and more people are wanting to get procedures done here instead of the hospital. I think we\'re going to have to put this off until next spring. Sorry to string you along. We usually slow down a bit in April and May. I\'ll reach out to you early next year."</div>',
+          id:'Apa inti pesan di bawah ini?\n\n<div style="border-left:4px solid #bbb;padding:12px 16px;background:#f9f9f9;border-radius:0 8px 8px 0;font-style:italic;color:#333;line-height:1.7">"Terima kasih sudah menghubungi. Kami sangat sibuk di klinik ini. Ini musim sibuk—semakin banyak orang ingin melakukan prosedur di sini daripada di rumah sakit. Saya rasa kita harus menunda ini hingga musim semi tahun depan. Maaf sudah membuat Anda menunggu. Kami biasanya lebih santai di bulan April dan Mei. Saya akan menghubungi Anda di awal tahun depan."</div>'
+        },
+        text:{en:'What is the main point of the message?', id:'Apa inti dari pesan tersebut?'},
+        type:'single',
+        options:{
+          en:['The sender does not want to work with the recipient.','The sender is upset that the recipient has delayed things.','The sender is very busy due to health issues.','The sender wants to work with the recipient at a later time.'],
+          id:['Pengirim tidak ingin bekerja sama dengan penerima.','Pengirim kecewa karena penerima telah menunda hal-hal.','Pengirim sangat sibuk karena masalah kesehatan.','Pengirim ingin bekerja sama dengan penerima di waktu yang lebih tepat.']
+        },
+        answer:3
+      },
+      {
+        id:'pcp2',
+        context:{
+          en:'You are told by your supervisor that a colleague is avoiding you because you hurt their feelings with something you said.',
+          id:'Supervisor Anda memberi tahu bahwa seorang rekan menghindari Anda karena Anda menyakiti perasaan mereka dengan sesuatu yang Anda katakan.'
+        },
+        text:{en:"What's the best way to move forward to address the situation?", id:'Apa cara terbaik untuk mengatasi situasi ini?'},
+        type:'single',
+        options:{
+          en:['Leave the colleague alone because you make them uncomfortable.','Ask the colleague for a private conversation so you can apologize and find out exactly what hurt their feelings.','Ask your supervisor to apologize for you, and then send an email yourself apologizing to your colleague.','Ask your supervisor what part of what you said has hurt your colleague\'s feelings, so you can avoid that in the future.'],
+          id:['Biarkan rekan tersebut sendiri karena Anda membuat mereka tidak nyaman.','Ajak rekan bicara secara pribadi agar Anda bisa meminta maaf dan mengetahui apa yang menyakiti perasaan mereka.','Minta supervisor Anda meminta maaf untuk Anda, lalu kirim email sendiri untuk meminta maaf kepada rekan.','Tanyakan kepada supervisor apa yang Anda katakan sehingga menyakiti perasaan rekan, agar Anda bisa menghindarinya di masa depan.']
+        },
+        answer:1
+      },
+      {
+        id:'pcp3',
+        context:{
+          en:'You forgot to set your out-of-office message and were gone for a week. You have three voice messages from the same colleague, getting progressively more urgent.',
+          id:'Anda lupa mengatur pesan tidak di kantor dan pergi selama seminggu. Anda memiliki tiga pesan suara dari rekan yang sama, dengan nada yang semakin mendesak.'
+        },
+        text:{en:'What is the first action you take?', id:'Apa tindakan pertama yang Anda lakukan?'},
+        type:'single',
+        options:{
+          en:['Email the colleague to explain that you were out of the office.','Forward the voice messages to your supervisor to handle.','Call the colleague to apologize.','Email the colleague and copy your supervisor so they know what\'s going on.'],
+          id:['Kirim email ke rekan untuk menjelaskan bahwa Anda sedang tidak di kantor.','Teruskan pesan suara ke supervisor Anda untuk ditangani.','Hubungi rekan tersebut untuk meminta maaf.','Kirim email ke rekan dan salin supervisor agar mereka tahu apa yang terjadi.']
+        },
+        answer:2
+      }
+    ],
     name:{en:'Communication', id:'Komunikasi'},
     questions:[
       {
