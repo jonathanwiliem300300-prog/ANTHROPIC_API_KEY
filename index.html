@@ -141,6 +141,15 @@
   .break-next-name{font-size:18px;font-weight:700;color:#1a1a2e;margin-bottom:6px}
   .break-next-meta{font-size:13px;color:#666}
 
+  /* Section intro / countdown */
+  .intro-label{font-size:14px;color:#888;margin-bottom:12px}
+  .intro-name{font-size:32px;font-weight:800;color:#1a1a2e;margin-bottom:16px}
+  .intro-tagline{font-size:15px;color:#555;margin-bottom:28px}
+  .intro-divider{border:none;border-top:1.5px solid #e0e0e0;margin:28px 0}
+  .intro-countdown-label{font-size:15px;color:#444;margin-bottom:12px}
+  .intro-countdown-num{font-size:28px;font-weight:800;color:#e65100;display:inline}
+  .intro-warning{font-size:14px;color:#555;line-height:1.7;margin-top:16px}
+
   /* Candidate info box */
   .candidate-box{background:#f8f9ff;border:2px solid #e8eaf6;border-radius:12px;padding:20px;margin-bottom:24px;display:flex;gap:16px;flex-wrap:wrap}
   .candidate-box span{font-size:14px;color:#555}
@@ -311,7 +320,7 @@
     </div>
     <p><strong id="totalLabel">Total:</strong> <span id="totalDetail">93 questions · 4 sections · 36 minutes</span></p>
     <br>
-    <button class="btn btn-primary" onclick="startSection(0)" id="btnBegin">Begin Test →</button>
+    <button class="btn btn-primary" onclick="showSectionIntro(0,()=>startSection(0))" id="btnBegin">Begin Test →</button>
   </div>
 </div>
 
@@ -359,6 +368,18 @@
       <div class="break-next-meta" id="breakNextMeta"></div>
     </div>
     <button class="btn btn-primary" id="btnBreakContinue" onclick="continueFromBreak()"></button>
+  </div>
+</div>
+
+<!-- ══════ SCREEN 4c: SECTION INTRO / COUNTDOWN ══════ -->
+<div id="screenIntro" class="screen hidden">
+  <div class="card" style="text-align:left">
+    <p class="intro-label" id="introLabel">This is the next test:</p>
+    <p class="intro-name" id="introName"></p>
+    <p class="intro-tagline" id="introTagline">The actual test starts now. Good luck!</p>
+    <hr class="intro-divider">
+    <p class="intro-countdown-label" id="introCountdownLabel">The test will start in <span class="intro-countdown-num" id="introCountdownNum">12</span> seconds</p>
+    <p class="intro-warning" id="introWarning">Please stay on this screen. The timer for your next test has <strong>started</strong> and <strong>cannot be paused</strong>. The timer continues even when you close the browser.</p>
   </div>
 </div>
 
@@ -414,6 +435,11 @@ const UI = {
     breakRestDesc: 'Rest your eyes, grab some water, and come back when you\'re ready.',
     breakNextLabel: 'Up Next',
     breakContinue: 'Continue to Next Section →',
+    introLabel: 'This is the next test:',
+    introTagline: 'The actual test starts now. Good luck!',
+    introCountdownLabel: 'The test will start in',
+    introCountdownSuffix: 'seconds',
+    introWarning: 'Please stay on this screen. The timer for your next test has <strong>started</strong> and <strong>cannot be paused</strong>. The timer continues even when you close the browser.',
     resultsTitle: 'Assessment Results',
     resultsSub: 'Here is a summary of your performance across all four sections.',
     oceanSub: 'This section has no right or wrong answers. The bars reflect your self-reported tendencies on each dimension.',
@@ -472,6 +498,11 @@ const UI = {
     breakRestDesc: 'Istirahatkan mata Anda, minum air, dan kembali saat Anda siap.',
     breakNextLabel: 'Selanjutnya',
     breakContinue: 'Lanjut ke Bagian Berikutnya →',
+    introLabel: 'Tes berikutnya adalah:',
+    introTagline: 'Tes yang sebenarnya dimulai sekarang. Semoga berhasil!',
+    introCountdownLabel: 'Tes akan dimulai dalam',
+    introCountdownSuffix: 'detik',
+    introWarning: 'Harap tetap di layar ini. Timer untuk tes berikutnya telah <strong>dimulai</strong> dan <strong>tidak dapat dijeda</strong>. Timer terus berjalan meski Anda menutup browser.',
     resultsTitle: 'Hasil Penilaian',
     resultsSub: 'Berikut adalah ringkasan performa Anda di keempat bagian.',
     oceanSub: 'Bagian ini tidak memiliki jawaban benar atau salah. Grafik mencerminkan kecenderungan yang Anda laporkan sendiri pada setiap dimensi.',
@@ -1258,12 +1289,40 @@ function timeUp(){ showSectionEnd(true); }
 // ═══════════════════════════════════════════════════════
 //  TEST FLOW
 // ═══════════════════════════════════════════════════════
+function showSectionIntro(idx, callback){
+  const sec = SECTIONS[idx];
+  ['screenWelcome','screenSectionEnd','screenBreak','screenResults'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.classList.add('hidden');
+  });
+  document.getElementById('introLabel').textContent   = t('introLabel');
+  document.getElementById('introName').textContent    = `${sec.icon} ${sec.name[state.lang]}`;
+  document.getElementById('introTagline').textContent = t('introTagline');
+  document.getElementById('introWarning').innerHTML   = t('introWarning');
+  document.getElementById('screenIntro').classList.remove('hidden');
+
+  let secs = 12;
+  const numEl = document.getElementById('introCountdownNum');
+  const labelEl = document.getElementById('introCountdownLabel');
+  function updateLabel(){
+    labelEl.innerHTML = `${t('introCountdownLabel')} <span class="intro-countdown-num" id="introCountdownNum">${secs}</span> ${t('introCountdownSuffix')}`;
+  }
+  updateLabel();
+  const iv = setInterval(()=>{
+    secs--;
+    updateLabel();
+    if(secs<=0){
+      clearInterval(iv);
+      document.getElementById('screenIntro').classList.add('hidden');
+      callback();
+    }
+  },1000);
+}
+
 function startSection(idx){
   state.sectionIdx = idx;
   state.questionIdx = 0;
   state.sectionStartTime = Date.now();
-  ['screenWelcome','screenSectionEnd','screenResults'].forEach(id=>
-    document.getElementById(id).classList.add('hidden'));
   document.getElementById('testView').classList.remove('hidden');
   startTimer(SECTIONS[idx].timeSeconds);
   renderSection();
@@ -1526,7 +1585,8 @@ function showSectionEnd(timedOut){
 
 function continueFromBreak(){
   document.getElementById('screenBreak').classList.add('hidden');
-  startSection(state.sectionIdx+1);
+  const nextIdx = state.sectionIdx+1;
+  showSectionIntro(nextIdx, ()=>startSection(nextIdx));
 }
 
 // ═══════════════════════════════════════════════════════
