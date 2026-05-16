@@ -608,58 +608,57 @@ const SECTIONS = [
     questions:[
       {
         id:'tm1',
-        context:{en:"You're a mid-level professional at an audit department of a large company.", id:'Anda adalah profesional tingkat menengah di departemen audit sebuah perusahaan besar.'},
-        text:{en:'Who should ideally set your goals at work?', id:'Siapa yang idealnya menetapkan tujuan kerja Anda?'},
-        type:'single',
+        text:{en:'Why is it important to formulate your goals and actions so that they are concrete and measurable? (Select all that apply)', id:'Mengapa penting untuk merumuskan tujuan dan tindakan Anda agar konkret dan terukur? (Pilih semua yang sesuai)'},
+        type:'multi',
         options:{
-          en:['The HR department; my goals are in my job description','I set my own goals at work; I have that autonomy','My manager and I compose my goals together','My manager hands them out to me'],
-          id:['Departemen HR; tujuan saya sudah ada di deskripsi pekerjaan','Saya sendiri yang menetapkan tujuan; saya punya otonomi itu','Manajer dan saya menyusun tujuan bersama-sama','Manajer yang memberikannya kepada saya']
+          en:['It makes you reconsider whether they\'re feasible at all.','It makes it clearer what needs to be executed and when.','It gives you time to think whether it is important after all.','It gives your manager the idea that you\'re on top of things.','It gives you more of a sense of pride in your work.'],
+          id:['Membuat Anda mempertimbangkan kembali apakah itu layak dilakukan.','Membuat lebih jelas apa yang perlu dilaksanakan dan kapan.','Memberi Anda waktu untuk memikirkan apakah itu penting.','Memberi manajer kesan bahwa Anda menguasai segalanya.','Memberi Anda rasa bangga yang lebih terhadap pekerjaan Anda.']
         },
-        answer:2
+        answer:[0,1]
       },
       {
         id:'tm2',
-        context:{en:"You have a busy job and often run out of time for short daily emails you can't seem to finish during your normal day.", id:'Anda memiliki pekerjaan yang sibuk dan sering kehabisan waktu untuk membalas email singkat harian yang tidak bisa diselesaikan dalam hari kerja normal.'},
-        text:{en:'How should you handle responding to these emails?', id:'Bagaimana cara terbaik Anda menangani balasan email-email tersebut?'},
+        context:{en:"You're a researcher at a legal firm. You work on a combination of urgent tasks, important tasks, and routine tasks. You have already completed your most important tasks for the day and have half an hour at the end of your day.", id:'Anda adalah peneliti di sebuah firma hukum. Anda mengerjakan kombinasi tugas mendesak, tugas penting, dan tugas rutin. Anda sudah menyelesaikan tugas terpenting hari ini dan masih punya setengah jam di akhir hari.'},
+        text:{en:'How should you use this time?', id:'Bagaimana sebaiknya Anda menggunakan waktu ini?'},
         type:'single',
         options:{
-          en:['Process these emails over your lunch break','Schedule dedicated blocks of time during the day only for responding to these emails','Multitask and reply during other meetings','Process these emails first thing every morning'],
-          id:['Proses email ini saat jam makan siang','Jadwalkan blok waktu khusus untuk membalas email-email ini','Multitasking dengan membalas email saat rapat lain berlangsung','Proses email ini pertama kali setiap pagi']
+          en:['Divide your time between planning the next day and allocating time to urgent matters.','Complete the tasks you had avoided earlier in the day that are due next week.','Start your most important task of the week.','Answer any unread emails.'],
+          id:['Bagi waktu Anda antara merencanakan hari berikutnya dan mengalokasikan waktu untuk hal mendesak.','Selesaikan tugas yang Anda hindari sebelumnya yang jatuh tempo minggu depan.','Mulai tugas terpenting minggu ini.','Balas email yang belum dibaca.']
+        },
+        answer:0
+      },
+      {
+        id:'tm3',
+        context:{en:'You are an office worker who has just received two urgent tasks that are supposed to be completed by the end of the day. The first task is to prepare a presentation for a client meeting that is scheduled for tomorrow morning, and the second task is to review and approve a report that needs to be sent to your boss by the end of the day. Both tasks require your immediate attention.', id:'Anda adalah pekerja kantor yang baru saja menerima dua tugas mendesak yang harus diselesaikan pada akhir hari. Tugas pertama adalah menyiapkan presentasi untuk pertemuan klien yang dijadwalkan besok pagi, dan tugas kedua adalah meninjau dan menyetujui laporan yang harus dikirim ke atasan Anda pada akhir hari. Kedua tugas memerlukan perhatian segera.'},
+        text:{en:'Which of the following should you do?', id:'Mana dari pilihan berikut yang harus Anda lakukan?'},
+        type:'single',
+        options:{
+          en:['Work on the report approval first and hope you\'ll have enough time to prepare for the client meeting.','Inform your boss that you\'ll work on the client meeting first and do your best to approve the report on time, but it might be late.','Work on both tasks simultaneously, dividing your time equally between them.','Work for a maximum of one hour preparing for the client meeting and spend the rest of your time on the report for your boss.'],
+          id:['Kerjakan persetujuan laporan terlebih dahulu dan berharap masih ada cukup waktu untuk mempersiapkan pertemuan klien.','Beritahu atasan bahwa Anda akan mengerjakan pertemuan klien terlebih dahulu dan berusaha menyelesaikan laporan tepat waktu, tapi mungkin terlambat.','Kerjakan kedua tugas secara bersamaan dengan membagi waktu secara merata.','Gunakan maksimal satu jam untuk mempersiapkan pertemuan klien dan sisanya untuk laporan atasan.']
         },
         answer:1
       },
       {
-        id:'tm3',
-        context:{en:"You're an IT project manager using both email and Slack.", id:'Anda adalah manajer proyek IT yang menggunakan email dan Slack.'},
-        text:{en:'When is the best time to process your emails?', id:'Kapan waktu terbaik untuk memproses email Anda?'},
+        id:'tm4',
+        context:{en:'You are an HR professional designing a presentation for employees about using planning and time blocking to increase efficiency. Some employees at your company work remotely and some work in the office, but they all generally must be working from 9 a.m. to 5 p.m. with a standard lunch break.', id:'Anda adalah profesional HR yang merancang presentasi untuk karyawan tentang penggunaan perencanaan dan time blocking untuk meningkatkan efisiensi. Beberapa karyawan bekerja dari jarak jauh dan beberapa bekerja di kantor, namun semua umumnya bekerja dari pukul 09.00 hingga 17.00 dengan istirahat makan siang standar.'},
+        text:{en:'When should you suggest most employees plan the tasks that require most of their concentration?', id:'Kapan sebaiknya Anda menyarankan karyawan merencanakan tugas-tugas yang membutuhkan konsentrasi tinggi?'},
         type:'single',
         options:{
-          en:['All the time — you need to respond as quickly as possible','In the morning when you have the most energy','At dedicated moments in the day/week depending on required response time','Once a week because emails are a distraction'],
-          id:['Setiap saat — Anda harus merespons secepat mungkin','Di pagi hari ketika energi Anda paling tinggi','Pada momen khusus di hari/minggu tergantung waktu respons yang dibutuhkan','Seminggu sekali karena email adalah gangguan']
+          en:['Just before ending the work day.','When their energy levels are at their highest.','When they\'re not in the office.','During a break at work.'],
+          id:['Tepat sebelum mengakhiri hari kerja.','Ketika tingkat energi mereka sedang paling tinggi.','Ketika mereka tidak sedang di kantor.','Saat istirahat kerja.']
         },
-        answer:2
-      },
-      {
-        id:'tm4',
-        context:{en:"You work in a hectic environment. Every morning feels derailed by emails, crises, and interruptions from colleagues.", id:'Anda bekerja di lingkungan yang sibuk dan kacau. Setiap pagi terasa terganggu oleh email, krisis, dan interupsi dari rekan kerja.'},
-        text:{en:'What are good strategies to deal with this? (Select all that apply)', id:'Strategi apa yang baik untuk menghadapi situasi ini? (Pilih semua yang sesuai)'},
-        type:'multi',
-        options:{
-          en:['Make a daily plan including time for contingencies','Accept the chaos and stop planning altogether','Establish a morning routine to handle the most important tasks first','Shut out all distractions including your colleagues','Ask your boss to hire an assistant'],
-          id:['Buat rencana harian termasuk waktu untuk hal tak terduga','Terima kekacauan dan berhenti membuat rencana','Buat rutinitas pagi untuk menyelesaikan tugas terpenting terlebih dahulu','Abaikan semua gangguan termasuk rekan kerja','Minta bos Anda merekrut asisten']
-        },
-        answer:[0,2]
+        answer:1
       },
       {
         id:'tm5',
-        context:{en:'You have two important deadlines on the same day but can only complete one on time.', id:'Anda memiliki dua tenggat waktu penting pada hari yang sama tetapi hanya bisa menyelesaikan satu tepat waktu.'},
-        text:{en:'What should you do?', id:'Apa yang harus Anda lakukan?'},
+        context:{en:'Halfway through a one-hour meeting, you think of a solution to a relatively minor problem from a separate project. You need to remember the idea while still ensuring the meeting is productive.', id:'Di tengah-tengah rapat satu jam, Anda terpikirkan solusi untuk masalah kecil dari proyek lain. Anda perlu mengingat ide tersebut sambil tetap memastikan rapat berjalan produktif.'},
+        text:{en:'What is usually the best way to capture the idea in such a situation?', id:'Apa cara terbaik untuk menangkap ide dalam situasi seperti ini?'},
         type:'single',
         options:{
-          en:['Complete the internal report first','Complete whichever task you started first','Communicate with both stakeholders and negotiate a solution','Work overtime even if quality suffers'],
-          id:['Selesaikan laporan internal terlebih dahulu','Selesaikan tugas yang lebih dulu Anda mulai','Komunikasikan kepada kedua pihak dan negosiasikan solusi','Lembur meskipun kualitas menurun']
+          en:['You write down the full solution to your problem during the meeting.','You write it down discreetly, using a couple of keywords to be expanded on later.','You step out of the meeting to capture your idea fully.','You focus on remembering the idea during the meeting and write it down afterward.'],
+          id:['Anda menuliskan solusi lengkap selama rapat.','Anda menuliskannya secara diam-diam dengan beberapa kata kunci untuk dikembangkan nanti.','Anda keluar dari rapat untuk mencatat ide sepenuhnya.','Anda fokus mengingat ide selama rapat dan menuliskannya setelah selesai.']
         },
-        answer:2
+        answer:1
       },
       {
         id:'tm6',
