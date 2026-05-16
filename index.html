@@ -125,6 +125,22 @@
   .ocean-bar-bg{background:#f0f0f0;border-radius:8px;height:12px;overflow:hidden}
   .ocean-bar-fill{height:100%;border-radius:8px;transition:width .7s ease}
 
+  /* Break page */
+  .break-divider{border:none;border-top:1.5px solid #e8eaf6;margin:28px 0}
+  .break-done-badge{display:inline-flex;align-items:center;gap:10px;background:#e8f5e9;border:2px solid #43a047;border-radius:12px;padding:14px 22px;margin-bottom:24px}
+  .break-done-icon{font-size:28px}
+  .break-done-text{text-align:left}
+  .break-done-title{font-size:17px;font-weight:700;color:#2e7d32}
+  .break-done-sub{font-size:13px;color:#555;margin-top:2px}
+  .break-rest{text-align:center;padding:20px 0}
+  .break-rest-icon{font-size:40px;margin-bottom:10px}
+  .break-rest-title{font-size:16px;font-weight:700;color:#444;margin-bottom:6px}
+  .break-rest-desc{font-size:14px;color:#777;line-height:1.6}
+  .break-next-card{background:#f8f9ff;border:2px solid #c5cae9;border-radius:12px;padding:20px 24px;margin:8px 0 28px}
+  .break-next-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#888;margin-bottom:10px}
+  .break-next-name{font-size:18px;font-weight:700;color:#1a1a2e;margin-bottom:6px}
+  .break-next-meta{font-size:13px;color:#666}
+
   /* Candidate info box */
   .candidate-box{background:#f8f9ff;border:2px solid #e8eaf6;border-radius:12px;padding:20px;margin-bottom:24px;display:flex;gap:16px;flex-wrap:wrap}
   .candidate-box span{font-size:14px;color:#555}
@@ -320,6 +336,32 @@
   <div class="card" id="sectionEndCard"></div>
 </div>
 
+<!-- ══════ SCREEN 4b: BREAK ══════ -->
+<div id="screenBreak" class="screen hidden">
+  <div class="card" style="text-align:center">
+    <div id="breakDoneBadge" class="break-done-badge" style="display:inline-flex">
+      <div class="break-done-icon">✅</div>
+      <div class="break-done-text">
+        <div class="break-done-title" id="breakDoneTitle"></div>
+        <div class="break-done-sub" id="breakDoneSub"></div>
+      </div>
+    </div>
+    <hr class="break-divider">
+    <div class="break-rest">
+      <div class="break-rest-icon">☕</div>
+      <div class="break-rest-title" id="breakRestTitle">Take a short break</div>
+      <div class="break-rest-desc" id="breakRestDesc">Rest your eyes, grab some water, and come back when you're ready.</div>
+    </div>
+    <hr class="break-divider">
+    <div class="break-next-label" id="breakNextLabel">Up Next</div>
+    <div class="break-next-card">
+      <div class="break-next-name" id="breakNextName"></div>
+      <div class="break-next-meta" id="breakNextMeta"></div>
+    </div>
+    <button class="btn btn-primary" id="btnBreakContinue" onclick="continueFromBreak()"></button>
+  </div>
+</div>
+
 <!-- ══════ SCREEN 5: RESULTS ══════ -->
 <div id="screenResults" class="screen wide hidden">
   <div class="card" id="resultsCard"></div>
@@ -368,6 +410,10 @@ const UI = {
     nextSection: 'Next section:',
     btnNextSection: 'Start Next Section →',
     btnViewResults: 'View Full Results →',
+    breakRestTitle: 'Take a short break',
+    breakRestDesc: 'Rest your eyes, grab some water, and come back when you\'re ready.',
+    breakNextLabel: 'Up Next',
+    breakContinue: 'Continue to Next Section →',
     resultsTitle: 'Assessment Results',
     resultsSub: 'Here is a summary of your performance across all four sections.',
     oceanSub: 'This section has no right or wrong answers. The bars reflect your self-reported tendencies on each dimension.',
@@ -422,6 +468,10 @@ const UI = {
     nextSection: 'Bagian berikutnya:',
     btnNextSection: 'Mulai Bagian Berikutnya →',
     btnViewResults: 'Lihat Hasil Lengkap →',
+    breakRestTitle: 'Istirahat sejenak',
+    breakRestDesc: 'Istirahatkan mata Anda, minum air, dan kembali saat Anda siap.',
+    breakNextLabel: 'Selanjutnya',
+    breakContinue: 'Lanjut ke Bagian Berikutnya →',
     resultsTitle: 'Hasil Penilaian',
     resultsSub: 'Berikut adalah ringkasan performa Anda di keempat bagian.',
     oceanSub: 'Bagian ini tidak memiliki jawaban benar atau salah. Grafik mencerminkan kecenderungan yang Anda laporkan sendiri pada setiap dimensi.',
@@ -452,6 +502,7 @@ const SECTIONS = [
   // ── PROBLEM SOLVING ──────────────────────────────────
   {
     id:'ps', icon:'🧩', timeSeconds:9*60, scoreable:true,
+    meta:{en:'12 questions · 9 minutes · Intermediate', id:'12 soal · 9 menit · Menengah'},
     name:{en:'Problem Solving', id:'Pemecahan Masalah'},
     questions:[
       {
@@ -604,6 +655,7 @@ const SECTIONS = [
   // ── TIME MANAGEMENT ──────────────────────────────────
   {
     id:'tm', icon:'⏱️', timeSeconds:9*60, scoreable:true,
+    meta:{en:'16 questions · 9 minutes · Intermediate', id:'16 soal · 9 menit · Menengah'},
     name:{en:'Time Management', id:'Manajemen Waktu'},
     questions:[
       {
@@ -785,6 +837,7 @@ const SECTIONS = [
   // ── COMMUNICATION ─────────────────────────────────────
   {
     id:'cm', icon:'💬', timeSeconds:8*60, scoreable:true,
+    meta:{en:'16 questions · 8 minutes · Entry Level', id:'16 soal · 8 menit · Dasar'},
     name:{en:'Communication', id:'Komunikasi'},
     questions:[
       {
@@ -965,6 +1018,7 @@ const SECTIONS = [
   // ── BIG 5 OCEAN ──────────────────────────────────────
   {
     id:'oc', icon:'🧠', timeSeconds:10*60, scoreable:false, isDimensional:true,
+    meta:{en:'50 statements · 10 minutes · Self-Assessment', id:'50 pernyataan · 10 menit · Penilaian Diri'},
     name:{en:'Big 5 (OCEAN)', id:'Big 5 (OCEAN)'},
     dimensions:[
       {
@@ -1438,6 +1492,7 @@ function showSectionEnd(timedOut){
   state.timeTaken[sec.id] = timedOut ? sec.timeSeconds : elapsed;
   document.getElementById('testView').classList.add('hidden');
   document.getElementById('timerDisplay').classList.add('hidden');
+  document.getElementById('headerProgress').textContent='';
 
   const allQ    = sec.isDimensional ? oceanAllQ(sec) : sec.questions;
   const answered= allQ.filter(q=>state.answers[q.id]!==undefined).length;
@@ -1445,21 +1500,33 @@ function showSectionEnd(timedOut){
   const isLast  = state.sectionIdx===SECTIONS.length-1;
   const next    = !isLast ? SECTIONS[state.sectionIdx+1] : null;
 
-  let html = `<h2>${sec.icon} ${sec.name[state.lang]} ${t('secCompleteLabel')}</h2>`;
-  if(timedOut) html += `<p style="color:#e53935;font-weight:600">${t('timeUpMsg')}</p>`;
-  html += `<p>${t('answeredOf')} <strong>${answered} ${t('of')} ${total}</strong> ${t('questions')}</p>`;
-
   if(!isLast){
-    const nextQLen = next.isDimensional ? oceanAllQ(next).length : next.questions.length;
-    html += `<p style="margin-top:8px">${t('nextSection')} <strong>${next.icon} ${next.name[state.lang]}</strong> · ${nextQLen} ${t('questions')} · ${Math.floor(next.timeSeconds/60)} min</p><br>`;
-    html += `<button class="btn btn-primary" onclick="startSection(${state.sectionIdx+1})">${t('btnNextSection')}</button>`;
+    // Show break page
+    document.getElementById('breakDoneTitle').textContent = `${sec.icon} ${sec.name[state.lang]} — ${t('secCompleteLabel').replace('—','').trim()}`;
+    let sub = `${t('answeredOf')} ${answered} ${t('of')} ${total} ${t('questions')}`;
+    if(timedOut) sub = `⏱ ${t('timeUpMsg')} · ` + sub;
+    document.getElementById('breakDoneSub').textContent = sub;
+    document.getElementById('breakRestTitle').textContent = t('breakRestTitle');
+    document.getElementById('breakRestDesc').textContent  = t('breakRestDesc');
+    document.getElementById('breakNextLabel').textContent = t('breakNextLabel');
+    document.getElementById('breakNextName').textContent  = `${next.icon} ${next.name[state.lang]}`;
+    document.getElementById('breakNextMeta').textContent  = next.meta ? next.meta[state.lang] : '';
+    document.getElementById('btnBreakContinue').textContent = t('breakContinue');
+    document.getElementById('screenBreak').classList.remove('hidden');
   } else {
+    // Last section — show simple end card then go to results
+    let html = `<h2>${sec.icon} ${sec.name[state.lang]} ${t('secCompleteLabel')}</h2>`;
+    if(timedOut) html += `<p style="color:#e53935;font-weight:600">${t('timeUpMsg')}</p>`;
+    html += `<p>${t('answeredOf')} <strong>${answered} ${t('of')} ${total}</strong> ${t('questions')}</p>`;
     html += `<br><button class="btn btn-success" onclick="showResults()">${t('btnViewResults')}</button>`;
+    document.getElementById('sectionEndCard').innerHTML = html;
+    document.getElementById('screenSectionEnd').classList.remove('hidden');
   }
+}
 
-  document.getElementById('sectionEndCard').innerHTML = html;
-  document.getElementById('screenSectionEnd').classList.remove('hidden');
-  document.getElementById('headerProgress').textContent='';
+function continueFromBreak(){
+  document.getElementById('screenBreak').classList.add('hidden');
+  startSection(state.sectionIdx+1);
 }
 
 // ═══════════════════════════════════════════════════════
