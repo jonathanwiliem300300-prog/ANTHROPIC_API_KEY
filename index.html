@@ -662,57 +662,58 @@ const SECTIONS = [
       },
       {
         id:'tm6',
-        context:{en:'You have back-to-back meetings all day and no time for focused work.', id:'Anda memiliki rapat yang terus-menerus sepanjang hari dan tidak ada waktu untuk kerja fokus.'},
-        text:{en:'What is the best long-term strategy?', id:'Apa strategi jangka panjang terbaik?'},
+        context:{en:'You have a complicated task with many steps, and you need to register this task in your task management system. Your task management system is quite flexible and allows tasks, steps to achieve the task, and goals to be entered in many different ways.', id:'Anda memiliki tugas yang rumit dengan banyak langkah dan perlu mendaftarkan tugas ini ke sistem manajemen tugas Anda. Sistem manajemen tugas Anda cukup fleksibel dan memungkinkan tugas, langkah-langkah untuk mencapai tugas, dan tujuan dimasukkan dengan berbagai cara.'},
+        text:{en:'Which is the most efficient way to quickly register your task in this system?', id:'Cara mana yang paling efisien untuk mendaftarkan tugas Anda dengan cepat di sistem ini?'},
         type:'single',
         options:{
-          en:['Stay late every day to make up for it','Proactively block focused work time on your calendar before others can schedule meetings','Skip meetings without telling anyone','Ask your manager to reduce your workload'],
-          id:['Lembur setiap hari untuk menggantinya','Blokir waktu kerja fokus di kalender Anda secara proaktif sebelum orang lain menjadwalkan rapat','Bolos rapat tanpa memberitahu siapa pun','Minta manajer mengurangi beban kerja Anda']
+          en:['Include the end goal of the task and the first action to take.','Include only the end goal that you want to accomplish with your task.','Include every step individually.','Include only the subject of the task in a couple of keywords.'],
+          id:['Cantumkan tujuan akhir tugas dan tindakan pertama yang harus dilakukan.','Cantumkan hanya tujuan akhir yang ingin Anda capai.','Cantumkan setiap langkah satu per satu.','Cantumkan hanya subjek tugas dalam beberapa kata kunci.']
         },
-        answer:1
+        answer:0
       },
       {
         id:'tm7',
-        text:{en:'A task is important but not urgent. According to the Eisenhower Matrix, what should you do?', id:'Sebuah tugas penting tetapi tidak mendesak. Menurut Matriks Eisenhower, apa yang harus Anda lakukan?'},
+        context:{en:"You're working from home but are regularly distracted by family members who wander into your office.", id:'Anda bekerja dari rumah tetapi sering terganggu oleh anggota keluarga yang masuk ke ruang kerja Anda.'},
+        text:{en:'How do you handle these wandering family members?', id:'Bagaimana cara Anda menangani anggota keluarga yang sering masuk ini?'},
         type:'single',
         options:{
-          en:["Do it immediately — it's important",'Delegate it to someone else','Schedule dedicated time for it in the near future','Drop it since it\'s not urgent'],
-          id:['Kerjakan segera — itu penting','Delegasikan kepada orang lain','Jadwalkan waktu khusus untuk itu dalam waktu dekat','Abaikan karena tidak mendesak']
+          en:['Make an agreement with them to leave you alone when the door is closed.','Tell them to leave you alone at all times.','Let them wander in.','Ignore them by using earplugs/noise reduction headphones.'],
+          id:['Buat kesepakatan agar mereka membiarkan Anda sendiri saat pintu tertutup.','Beritahu mereka untuk selalu membiarkan Anda sendiri.','Biarkan mereka masuk.','Abaikan mereka dengan menggunakan earplug/headphone peredam suara.']
         },
-        answer:2
+        answer:0
       },
       {
         id:'tm8',
-        context:{en:'You are working on a high-priority project when a colleague stops by with a non-urgent question.', id:'Anda sedang mengerjakan proyek berprioritas tinggi ketika seorang rekan kerja datang dengan pertanyaan yang tidak mendesak.'},
-        text:{en:'What is the best response?', id:'Apa respons terbaik?'},
+        context:{en:"You're a team leader at a production company. You're often struggling with important tasks being crowded out because you need to respond to daily issues, such as questions from machine operators on your team.", id:'Anda adalah pemimpin tim di perusahaan produksi. Anda sering kesulitan menyelesaikan tugas-tugas penting karena harus merespons isu harian, seperti pertanyaan dari operator mesin di tim Anda.'},
+        text:{en:'What is the best way to get enough important tasks done?', id:'Apa cara terbaik agar tugas-tugas penting tetap dapat diselesaikan?'},
         type:'single',
         options:{
-          en:['Stop and help immediately','Tell them you are busy and will never help','Politely let them know you are focused and arrange a specific time to connect later','Ignore them'],
-          id:['Berhenti dan bantu segera','Katakan Anda sibuk dan tidak akan pernah bisa membantu','Dengan sopan beri tahu bahwa Anda sedang fokus dan atur waktu khusus untuk bicara nanti','Abaikan mereka']
-        },
-        answer:2
-      },
-      {
-        id:'tm9',
-        context:{en:'You are overwhelmed with tasks and have a junior team member who could handle some with guidance.', id:'Anda kewalahan dengan tugas dan memiliki anggota tim junior yang bisa menangani beberapa tugas dengan bimbingan.'},
-        text:{en:'What is the best approach?', id:'Apa pendekatan terbaik?'},
-        type:'single',
-        options:{
-          en:['Keep all tasks yourself to ensure quality','Delegate appropriate tasks with clear instructions and check-ins','Delegate everything and never follow up','Ask your manager to reassign their work to you'],
-          id:['Pertahankan semua tugas sendiri untuk menjaga kualitas','Delegasikan tugas yang sesuai dengan instruksi jelas dan pemantauan berkala','Delegasikan semuanya dan tidak pernah memantau','Minta manajer memindahkan pekerjaan mereka kepada Anda']
+          en:['Create a calendar reminder at the end of the day to remind you of the "most important thing."','Schedule enough dedicated time to work only on important tasks.','Reward yourself with a break every time you complete something important.','Force yourself to complete any task you didn\'t finish during the work day during your evening.'],
+          id:['Buat pengingat kalender di akhir hari untuk mengingatkan Anda tentang "hal terpenting."','Jadwalkan waktu khusus yang cukup untuk hanya mengerjakan tugas-tugas penting.','Hadiahi diri sendiri dengan istirahat setiap kali menyelesaikan sesuatu yang penting.','Paksa diri untuk menyelesaikan tugas yang tidak selesai di siang hari pada malam hari.']
         },
         answer:1
       },
       {
-        id:'tm10',
-        context:{en:"You often feel you haven't accomplished your goals by the end of the day.", id:'Anda sering merasa tidak mencapai tujuan Anda di akhir hari.'},
-        text:{en:'What is the best strategy to fix this?', id:'Strategi terbaik apa untuk memperbaiki ini?'},
-        type:'single',
+        id:'tm9',
+        context:{en:'You want to limit your email inflow using effective time management practices.', id:'Anda ingin membatasi masuknya email menggunakan praktik manajemen waktu yang efektif.'},
+        text:{en:'Which of the following strategies should you use? (Select all that apply)', id:'Strategi mana dari berikut ini yang harus Anda gunakan? (Pilih semua yang sesuai)'},
+        type:'multi',
         options:{
-          en:['Set an unrealistically large number of goals','Avoid setting daily goals and just react','Set 3–5 clear prioritized daily goals each morning','Review your goals only at month-end'],
-          id:['Tetapkan jumlah tujuan yang tidak realistis','Hindari menetapkan tujuan harian dan hanya bereaksi','Tetapkan 3–5 tujuan harian yang jelas dan terurut setiap pagi','Tinjau tujuan Anda hanya di akhir bulan']
+          en:['Ask people to send you WhatsApp messages instead.','Send fewer emails yourself and choose other effective communication channels instead.','Ask your direct colleagues, such as people in your team, not to send you certain types of emails.','Don\'t reply to emails you receive.','Set up a permanent out-of-office response.','Unsubscribe from newsletters, subscriptions, and other clutter.'],
+          id:['Minta orang-orang mengirim pesan WhatsApp sebagai gantinya.','Kirim lebih sedikit email sendiri dan gunakan saluran komunikasi efektif lainnya.','Minta rekan langsung Anda, seperti orang-orang di tim Anda, untuk tidak mengirim jenis email tertentu kepada Anda.','Jangan balas email yang Anda terima.','Siapkan respons tidak ada di kantor secara permanen.','Berhenti berlangganan newsletter, langganan, dan konten yang tidak perlu.']
         },
-        answer:2
+        answer:[1,2,5]
+      },
+      {
+        id:'tm10',
+        context:{en:'You work for a local government department that relies heavily on group texting to communicate internally. You\'re also part of other text groups related to various volunteer initiatives in which you are active. In total, you\'re a part of many texting groups, and the constant stream of messages is becoming quite overwhelming.', id:'Anda bekerja untuk departemen pemerintah daerah yang sangat bergantung pada pesan grup untuk komunikasi internal. Anda juga tergabung dalam grup teks lain terkait berbagai inisiatif sukarela yang Anda ikuti. Secara keseluruhan, Anda tergabung dalam banyak grup teks, dan aliran pesan yang terus-menerus menjadi sangat melelahkan.'},
+        text:{en:'What strategies can you use to limit your stream of messages while still staying up to date with important information? (Select all that apply)', id:'Strategi apa yang dapat Anda gunakan untuk membatasi aliran pesan sambil tetap mengikuti informasi penting? (Pilih semua yang sesuai)'},
+        type:'multi',
+        options:{
+          en:['Mute all notifications from group texts to avoid distractions.','Schedule specific times of the day to check messages from different groups and prioritize based on urgency.','Leave all group texts except for the ones that are relevant to your work.','Respond to all messages as soon as they come in to demonstrate that you are always available.','Disable group text functionality to avoid being constantly bombarded with messages.'],
+          id:['Matikan semua notifikasi dari pesan grup untuk menghindari gangguan.','Jadwalkan waktu tertentu dalam sehari untuk memeriksa pesan dari berbagai grup dan prioritaskan berdasarkan urgensi.','Tinggalkan semua grup teks kecuali yang relevan dengan pekerjaan Anda.','Balas semua pesan segera setelah masuk untuk menunjukkan bahwa Anda selalu tersedia.','Nonaktifkan fungsi pesan grup untuk menghindari dibanjiri pesan.']
+        },
+        answer:[0,1,2]
       },
       {
         id:'tm11',
