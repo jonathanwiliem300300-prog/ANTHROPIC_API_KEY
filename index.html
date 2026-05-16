@@ -141,6 +141,9 @@
   .break-next-name{font-size:18px;font-weight:700;color:#1a1a2e;margin-bottom:6px}
   .break-next-meta{font-size:13px;color:#666}
 
+  /* Practice badge */
+  .practice-badge{display:inline-block;background:#dde8f7;color:#3a6fbd;border-radius:20px;padding:5px 16px;font-size:13px;font-weight:600;margin-bottom:4px}
+
   /* Section intro / countdown */
   .intro-label{font-size:14px;color:#888;margin-bottom:12px}
   .intro-name{font-size:32px;font-weight:800;color:#1a1a2e;margin-bottom:16px}
@@ -320,7 +323,7 @@
     </div>
     <p><strong id="totalLabel">Total:</strong> <span id="totalDetail">93 questions · 4 sections · 36 minutes</span></p>
     <br>
-    <button class="btn btn-primary" onclick="showSectionIntro(0,()=>startSection(0))" id="btnBegin">Begin Test →</button>
+    <button class="btn btn-primary" onclick="launchSection(0)" id="btnBegin">Begin Test →</button>
   </div>
 </div>
 
@@ -368,6 +371,19 @@
       <div class="break-next-meta" id="breakNextMeta"></div>
     </div>
     <button class="btn btn-primary" id="btnBreakContinue" onclick="continueFromBreak()"></button>
+  </div>
+</div>
+
+<!-- ══════ SCREEN 4b-2: PRACTICE INTRO / COUNTDOWN ══════ -->
+<div id="screenPracticeIntro" class="screen hidden">
+  <div class="card" style="text-align:left">
+    <p class="intro-label" id="practiceIntroLabel">This is the next test:</p>
+    <p class="intro-name" id="practiceIntroName"></p>
+    <span class="practice-badge" id="practiceBadge">Practice questions</span>
+    <p class="intro-tagline" style="margin-top:20px" id="practiceIntroTagline"></p>
+    <hr class="intro-divider">
+    <p class="intro-countdown-label" id="practiceCountdownLabel"></p>
+    <p class="intro-warning" id="practiceIntroWarning"></p>
   </div>
 </div>
 
@@ -440,6 +456,10 @@ const UI = {
     introCountdownLabel: 'The test will start in',
     introCountdownSuffix: 'seconds',
     introWarning: 'Please stay on this screen. The timer for your next test has <strong>started</strong> and <strong>cannot be paused</strong>. The timer continues even when you close the browser.',
+    practiceBadge: 'Practice questions',
+    practiceTagline: 'You will first see <strong>{n} practice questions</strong> for this test to get a sense of what to expect. After that, your actual tests will begin.',
+    practiceCountdownLabel: 'Practice questions will start in',
+    practiceCountdownSuffix: 'seconds',
     resultsTitle: 'Assessment Results',
     resultsSub: 'Here is a summary of your performance across all four sections.',
     oceanSub: 'This section has no right or wrong answers. The bars reflect your self-reported tendencies on each dimension.',
@@ -503,6 +523,10 @@ const UI = {
     introCountdownLabel: 'Tes akan dimulai dalam',
     introCountdownSuffix: 'detik',
     introWarning: 'Harap tetap di layar ini. Timer untuk tes berikutnya telah <strong>dimulai</strong> dan <strong>tidak dapat dijeda</strong>. Timer terus berjalan meski Anda menutup browser.',
+    practiceBadge: 'Soal latihan',
+    practiceTagline: 'Anda akan melihat <strong>{n} soal latihan</strong> terlebih dahulu untuk memahami apa yang diharapkan. Setelah itu, tes sesungguhnya akan dimulai.',
+    practiceCountdownLabel: 'Soal latihan akan dimulai dalam',
+    practiceCountdownSuffix: 'detik',
     resultsTitle: 'Hasil Penilaian',
     resultsSub: 'Berikut adalah ringkasan performa Anda di keempat bagian.',
     oceanSub: 'Bagian ini tidak memiliki jawaban benar atau salah. Grafik mencerminkan kecenderungan yang Anda laporkan sendiri pada setiap dimensi.',
@@ -534,6 +558,7 @@ const SECTIONS = [
   {
     id:'ps', icon:'🧩', timeSeconds:9*60, scoreable:true,
     meta:{en:'12 questions · 9 minutes · Intermediate', id:'12 soal · 9 menit · Menengah'},
+    practiceCount:4, practiceQuestions:[],
     name:{en:'Problem Solving', id:'Pemecahan Masalah'},
     questions:[
       {
@@ -687,6 +712,7 @@ const SECTIONS = [
   {
     id:'tm', icon:'⏱️', timeSeconds:9*60, scoreable:true,
     meta:{en:'16 questions · 9 minutes · Intermediate', id:'16 soal · 9 menit · Menengah'},
+    practiceCount:4, practiceQuestions:[],
     name:{en:'Time Management', id:'Manajemen Waktu'},
     questions:[
       {
@@ -869,6 +895,7 @@ const SECTIONS = [
   {
     id:'cm', icon:'💬', timeSeconds:8*60, scoreable:true,
     meta:{en:'16 questions · 8 minutes · Entry Level', id:'16 soal · 8 menit · Dasar'},
+    practiceCount:4, practiceQuestions:[],
     name:{en:'Communication', id:'Komunikasi'},
     questions:[
       {
@@ -1289,9 +1316,44 @@ function timeUp(){ showSectionEnd(true); }
 // ═══════════════════════════════════════════════════════
 //  TEST FLOW
 // ═══════════════════════════════════════════════════════
+function runCountdown(numElId, labelElId, labelFn, seconds, onDone){
+  let secs = seconds;
+  function updateLabel(){ document.getElementById(labelElId).innerHTML = labelFn(secs); }
+  updateLabel();
+  const iv = setInterval(()=>{
+    secs--;
+    updateLabel();
+    if(secs<=0){ clearInterval(iv); onDone(); }
+  },1000);
+}
+
+function showPracticeIntro(idx, onDone){
+  const sec = SECTIONS[idx];
+  ['screenWelcome','screenSectionEnd','screenBreak','screenResults','screenIntro'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.classList.add('hidden');
+  });
+  const n = sec.practiceCount || 4;
+  document.getElementById('practiceIntroLabel').textContent  = t('introLabel');
+  document.getElementById('practiceIntroName').textContent   = `${sec.icon} ${sec.name[state.lang]}`;
+  document.getElementById('practiceBadge').textContent       = t('practiceBadge');
+  document.getElementById('practiceIntroTagline').innerHTML  = t('practiceTagline').replace('{n}', n);
+  document.getElementById('practiceIntroWarning').innerHTML  = t('introWarning');
+  document.getElementById('screenPracticeIntro').classList.remove('hidden');
+
+  runCountdown('_','practiceCountdownLabel',
+    s=>`${t('practiceCountdownLabel')} <strong>${s}</strong> ${t('practiceCountdownSuffix')}`,
+    12,
+    ()=>{
+      document.getElementById('screenPracticeIntro').classList.add('hidden');
+      onDone();
+    }
+  );
+}
+
 function showSectionIntro(idx, callback){
   const sec = SECTIONS[idx];
-  ['screenWelcome','screenSectionEnd','screenBreak','screenResults'].forEach(id=>{
+  ['screenWelcome','screenSectionEnd','screenBreak','screenResults','screenPracticeIntro'].forEach(id=>{
     const el = document.getElementById(id);
     if(el) el.classList.add('hidden');
   });
@@ -1301,22 +1363,11 @@ function showSectionIntro(idx, callback){
   document.getElementById('introWarning').innerHTML   = t('introWarning');
   document.getElementById('screenIntro').classList.remove('hidden');
 
-  let secs = 12;
-  const numEl = document.getElementById('introCountdownNum');
-  const labelEl = document.getElementById('introCountdownLabel');
-  function updateLabel(){
-    labelEl.innerHTML = `${t('introCountdownLabel')} <span class="intro-countdown-num" id="introCountdownNum">${secs}</span> ${t('introCountdownSuffix')}`;
-  }
-  updateLabel();
-  const iv = setInterval(()=>{
-    secs--;
-    updateLabel();
-    if(secs<=0){
-      clearInterval(iv);
-      document.getElementById('screenIntro').classList.add('hidden');
-      callback();
-    }
-  },1000);
+  runCountdown('_','introCountdownLabel',
+    s=>`${t('introCountdownLabel')} <strong>${s}</strong> ${t('introCountdownSuffix')}`,
+    12,
+    ()=>{ document.getElementById('screenIntro').classList.add('hidden'); callback(); }
+  );
 }
 
 function startSection(idx){
@@ -1583,10 +1634,19 @@ function showSectionEnd(timedOut){
   }
 }
 
+function launchSection(idx){
+  const sec = SECTIONS[idx];
+  const hasPractice = !sec.isDimensional;
+  if(hasPractice){
+    showPracticeIntro(idx, ()=>showSectionIntro(idx, ()=>startSection(idx)));
+  } else {
+    showSectionIntro(idx, ()=>startSection(idx));
+  }
+}
+
 function continueFromBreak(){
   document.getElementById('screenBreak').classList.add('hidden');
-  const nextIdx = state.sectionIdx+1;
-  showSectionIntro(nextIdx, ()=>startSection(nextIdx));
+  launchSection(state.sectionIdx+1);
 }
 
 // ═══════════════════════════════════════════════════════
