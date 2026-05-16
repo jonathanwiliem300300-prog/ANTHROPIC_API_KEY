@@ -1439,7 +1439,6 @@ function showSectionEnd(timedOut){
   document.getElementById('testView').classList.add('hidden');
   document.getElementById('timerDisplay').classList.add('hidden');
 
-  const sec     = SECTIONS[state.sectionIdx];
   const allQ    = sec.isDimensional ? oceanAllQ(sec) : sec.questions;
   const answered= allQ.filter(q=>state.answers[q.id]!==undefined).length;
   const total   = allQ.length;
