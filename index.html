@@ -285,7 +285,7 @@
       <div class="category-card">
         <div class="cat-icon">💬</div>
         <div class="cat-name" id="catCM">Communication</div>
-        <div class="cat-meta" id="catCMmeta">15 questions · 8 minutes · Entry Level</div>
+        <div class="cat-meta" id="catCMmeta">16 questions · 8 minutes · Entry Level</div>
       </div>
       <div class="category-card">
         <div class="cat-icon">🧠</div>
@@ -352,7 +352,7 @@ const UI = {
     welcomeDesc: 'This assessment measures four key professional competencies. Please complete each section within the allotted time.',
     catPS: 'Problem Solving',    catPSmeta: '12 questions · 9 minutes · Intermediate',
     catTM: 'Time Management',    catTMmeta: '16 questions · 9 minutes · Intermediate',
-    catCM: 'Communication',      catCMmeta: '15 questions · 8 minutes · Entry Level',
+    catCM: 'Communication',      catCMmeta: '16 questions · 8 minutes · Entry Level',
     catOC: 'Big 5 (OCEAN)',      catOCmeta: '50 questions · 10 minutes · Self-Assessment',
     totalLabel: 'Total:',
     totalDetail: '93 questions · 4 sections · 36 minutes',
@@ -406,7 +406,7 @@ const UI = {
     welcomeDesc: 'Tes ini mengukur empat kompetensi profesional utama. Harap selesaikan setiap bagian dalam waktu yang ditentukan.',
     catPS: 'Pemecahan Masalah',  catPSmeta: '12 soal · 9 menit · Menengah',
     catTM: 'Manajemen Waktu',   catTMmeta: '16 soal · 9 menit · Menengah',
-    catCM: 'Komunikasi',        catCMmeta: '15 soal · 8 menit · Dasar',
+    catCM: 'Komunikasi',        catCMmeta: '16 soal · 8 menit · Dasar',
     catOC: 'Big 5 (OCEAN)',     catOCmeta: '50 pernyataan · 10 menit · Penilaian Diri',
     totalLabel: 'Total:',
     totalDetail: '93 soal · 4 bagian · 36 menit',
@@ -789,58 +789,54 @@ const SECTIONS = [
     questions:[
       {
         id:'cm1',
-        context:{en:'"Thanks for checking in. We\'re busier than ever here at the clinic. It\'s a busy time of year — more and more people are wanting to get procedures done here instead of the hospital. I think we\'re going to have to put this off until next spring. Sorry to string you along. We usually slow down a bit in April and May. I\'ll reach out to you early next year."', id:'"Terima kasih sudah menghubungi. Kami lebih sibuk dari sebelumnya di klinik ini. Ini adalah waktu yang sibuk dalam setahun — semakin banyak orang yang ingin melakukan prosedur di sini daripada di rumah sakit. Saya rasa kita harus menunda ini hingga musim semi berikutnya. Maaf sudah membuat Anda menunggu. Kami biasanya sedikit lebih santai di April dan Mei. Saya akan menghubungi Anda di awal tahun depan."'},
-        text:{en:'What is the main point of the message?', id:'Apa poin utama dari pesan tersebut?'},
+        text:{en:'When you must give a colleague feedback about something they did not complete to your specifications, what is the best way to approach the situation?', id:'Ketika Anda harus memberikan umpan balik kepada rekan tentang sesuatu yang tidak mereka selesaikan sesuai spesifikasi Anda, apa cara terbaik untuk mendekati situasi tersebut?'},
         type:'single',
         options:{
-          en:['The sender does not want to work with the recipient','The sender is upset that the recipient delayed things','The sender is very busy due to health issues','The sender wants to work with the recipient at a later time'],
-          id:['Pengirim tidak ingin bekerja sama dengan penerima','Pengirim kesal karena penerima menunda hal-hal','Pengirim sangat sibuk karena masalah kesehatan','Pengirim ingin bekerja sama dengan penerima di lain waktu']
-        },
-        answer:3
-      },
-      {
-        id:'cm2',
-        context:{en:'A manager says to a team member: "You did a great job on the presentation visuals, but your delivery was a bit unclear."', id:'Seorang manajer berkata kepada anggota tim: "Kamu melakukan pekerjaan yang bagus pada visual presentasi, tapi penyampaianmu agak kurang jelas."'},
-        text:{en:'What is the main issue with how this feedback is communicated?', id:'Apa masalah utama dalam cara umpan balik ini disampaikan?'},
-        type:'single',
-        options:{
-          en:['The word "but" negates and detracts from the compliment','Nothing — it is fine the way it is','The manager should lead with the negative feedback','The manager should not be positive when giving constructive feedback'],
-          id:['Kata "tapi" meniadakan dan mengurangi makna pujian','Tidak ada masalah — sudah baik seperti itu','Manajer sebaiknya memulai dengan umpan balik negatif','Manajer tidak boleh positif ketika memberikan umpan balik konstruktif']
+          en:['Let them know early that you need to talk to them, giving them time to think about what you might want to discuss.','Tell them you need to talk, and schedule a meeting at least three days later to give them time to make improvements.','Wait for your regular check-in meeting with the colleague to address the concern with a specific, written list of what needs to be improved.','As soon as you see the project was not completed to your specifications, confront your colleague with a bullet point list of issues to be understood.'],
+          id:['Beri tahu mereka lebih awal bahwa Anda perlu berbicara, memberi mereka waktu untuk memikirkan apa yang ingin Anda bahas.','Beritahu mereka Anda perlu berbicara, dan jadwalkan pertemuan setidaknya tiga hari kemudian agar mereka punya waktu untuk memperbaiki diri.','Tunggu rapat check-in rutin dengan rekan untuk membahas masalah dengan daftar tertulis tentang apa yang perlu diperbaiki.','Segera setelah Anda melihat proyek tidak selesai sesuai spesifikasi, hadapi rekan Anda dengan daftar poin masalah yang perlu dipahami.']
         },
         answer:0
       },
       {
-        id:'cm3',
-        context:{en:'Your supervisor tells you a colleague is avoiding you because you hurt their feelings with something you said.', id:'Supervisor Anda memberitahu bahwa seorang rekan menghindari Anda karena Anda menyakiti perasaan mereka dengan sesuatu yang Anda katakan.'},
-        text:{en:'What is the best way to address the situation?', id:'Apa cara terbaik untuk menangani situasi ini?'},
+        id:'cm2',
+        text:{en:'When texting a colleague or client, which of these is most clear?', id:'Saat mengirim pesan teks kepada rekan atau klien, mana yang paling jelas?'},
         type:'single',
         options:{
-          en:['Leave the colleague alone since you make them uncomfortable','Ask the colleague privately to apologize and understand exactly what hurt their feelings','Ask your supervisor to apologize on your behalf','Ask your supervisor what specifically hurt your colleague so you can avoid it'],
-          id:['Biarkan rekan tersebut sendiri karena Anda membuat mereka tidak nyaman','Ajak rekan tersebut bicara secara pribadi untuk meminta maaf dan memahami apa yang menyakiti perasaan mereka','Minta supervisor meminta maaf atas nama Anda','Tanyakan kepada supervisor apa yang menyakiti rekan tersebut agar Anda bisa menghindarinya']
+          en:['We are meeting Zach and the others at the office at 10 a.m.','We are meeting Zach Megan Julie at the office at 10 a.m.','We are meeting Zach, Megan, and Julie at the office tomorrow at 10 a.m.','We are meeting Zach Megan and Julie at the office tomorrow at 10 a.m.'],
+          id:['Kita bertemu Zach dan yang lainnya di kantor pukul 10 pagi.','Kita bertemu Zach Megan Julie di kantor pukul 10 pagi.','Kita bertemu Zach, Megan, dan Julie di kantor besok pukul 10 pagi.','Kita bertemu Zach Megan dan Julie di kantor besok pukul 10 pagi.']
+        },
+        answer:2
+      },
+      {
+        id:'cm3',
+        text:{en:'Which of the following messages is written appropriately?', id:'Pesan mana dari berikut ini yang ditulis dengan tepat?'},
+        type:'single',
+        options:{
+          en:['THANK YOU FOR YOUR FEEDBACK ABOUT OUR PRODUCT.','Thank you for the feedback about our product.','Thank you for THE FEEDBACK about our product.','THANK YOU for the feedback about our product!!!'],
+          id:['TERIMA KASIH ATAS MASUKAN ANDA TENTANG PRODUK KAMI.','Terima kasih atas masukan tentang produk kami.','Terima kasih atas MASUKAN tentang produk kami.','TERIMA KASIH atas masukan tentang produk kami!!!']
         },
         answer:1
       },
       {
         id:'cm4',
-        context:{en:'You forgot to set your out-of-office message and were gone for a week. You have three voice messages from the same colleague, getting progressively more urgent.', id:'Anda lupa mengaktifkan pesan tidak ada di kantor dan pergi selama seminggu. Anda memiliki tiga pesan suara dari rekan yang sama, semakin mendesak.'},
-        text:{en:'What is the first action you take?', id:'Apa tindakan pertama yang Anda ambil?'},
+        text:{en:'What is the best tool to accompany a detailed and complicated presentation?', id:'Apa alat terbaik untuk mendampingi presentasi yang mendetail dan rumit?'},
         type:'single',
         options:{
-          en:['Email the colleague to explain you were out of office','Forward the voicemails to your supervisor to handle','Call the colleague directly to apologize and address their concern','Email and copy your supervisor'],
-          id:['Kirim email kepada rekan untuk menjelaskan bahwa Anda tidak ada di kantor','Teruskan pesan suara ke supervisor untuk ditangani','Hubungi rekan secara langsung untuk meminta maaf dan menangani kekhawatiran mereka','Kirim email dan salin supervisor']
+          en:['Detailed black-and-white spreadsheet printouts.','Detailed color-coded spreadsheet printouts.','Detailed PowerPoint slides with printed handouts.','Color-coded spreadsheet printouts with accompanying charts and graphs.'],
+          id:['Cetakan spreadsheet hitam-putih yang mendetail.','Cetakan spreadsheet berkode warna yang mendetail.','Slide PowerPoint mendetail dengan handout cetak.','Cetakan spreadsheet berkode warna dengan grafik dan diagram pendamping.']
         },
-        answer:2
+        answer:3
       },
       {
         id:'cm5',
-        context:{en:'You need to send a company-wide update about a policy change that some employees may find frustrating.', id:'Anda perlu mengirimkan pembaruan kepada seluruh perusahaan tentang perubahan kebijakan yang mungkin dirasakan menjengkelkan oleh sebagian karyawan.'},
-        text:{en:'What is the best approach for this communication?', id:'Apa pendekatan terbaik untuk komunikasi ini?'},
+        context:{en:'"Thanks for checking in. We\'re busier than ever here at the clinic. It\'s a busy time of year—more and more people are wanting to get procedures done here instead of the hospital. I think we\'re going to have to put this off until next spring. Sorry to string you along. We usually slow down a bit in April and May. I\'ll reach out to you early next year."', id:'"Terima kasih sudah menghubungi. Kami lebih sibuk dari sebelumnya di klinik ini. Ini adalah waktu yang sibuk—semakin banyak orang yang ingin melakukan prosedur di sini daripada di rumah sakit. Kami rasa kita perlu menundanya hingga musim semi berikutnya. Maaf sudah membuat Anda menunggu. Kami biasanya sedikit lebih santai di April dan Mei. Saya akan menghubungi Anda di awal tahun depan."'},
+        text:{en:'What is the best response to the following message?', id:'Apa respons terbaik untuk pesan berikut?'},
         type:'single',
         options:{
-          en:['Send a brief email with just the key changes and no context','Send a detailed message explaining the reason, what is changing, and how it affects employees','Ask your manager to send it instead','Post it informally on the company chat'],
-          id:['Kirim email singkat hanya dengan perubahan utama tanpa konteks','Kirim pesan terperinci yang menjelaskan alasan, apa yang berubah, dan bagaimana dampaknya terhadap karyawan','Minta manajer Anda yang mengirimkannya','Posting secara informal di chat perusahaan']
+          en:['"Thanks for following up. I look forward to a conversation next year, and will mark my calendar to check in with you in March."','"Thanks for following up. I\'m adding you to my email list so you can receive my newsletter, which contains great resources for you."','"I\'m sorry to hear that you are delaying our contract. Let me know if you change your mind."','"I don\'t think you\'re right. Now is the best time to work together to improve the situation of your team!"'],
+          id:['"Terima kasih atas kabarnya. Saya menantikan percakapan tahun depan, dan akan menandai kalender saya untuk menghubungi Anda di bulan Maret."','"Terima kasih atas kabarnya. Saya menambahkan Anda ke daftar email saya agar Anda bisa menerima newsletter saya yang berisi sumber daya berguna."','"Saya turut prihatin mendengar Anda menunda kontrak kami. Beri tahu saya jika Anda berubah pikiran."','"Saya rasa Anda tidak tepat. Sekarang adalah waktu terbaik untuk bekerja sama meningkatkan situasi tim Anda!"']
         },
-        answer:1
+        answer:0
       },
       {
         id:'cm6',
