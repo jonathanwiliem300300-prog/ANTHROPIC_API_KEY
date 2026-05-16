@@ -764,7 +764,65 @@ const SECTIONS = [
   {
     id:'tm', icon:'⏱️', timeSeconds:9*60, scoreable:true,
     meta:{en:'16 questions · 9 minutes · Intermediate', id:'16 soal · 9 menit · Menengah'},
-    practiceCount:4, practiceQuestions:[],
+    practiceCount:4,
+    practiceQuestions:[
+      {
+        id:'ptp1',
+        context:{
+          en:"You're a mid-level professional at an audit department of a large company.",
+          id:'Anda adalah profesional tingkat menengah di departemen audit sebuah perusahaan besar.'
+        },
+        text:{en:'Who should ideally set your goals at work?', id:'Siapa yang idealnya menetapkan tujuan kerja Anda?'},
+        type:'single',
+        options:{
+          en:['My manager and I compose my goals together.','The HR department; my goals are in my job description.','I set my own goals at work; I have that autonomy.','My manager hands them out to me.'],
+          id:['Manajer saya dan saya menyusun tujuan bersama-sama.','Departemen HR; tujuan saya ada dalam deskripsi pekerjaan.','Saya menetapkan tujuan sendiri; saya memiliki otonomi itu.','Manajer saya yang memberikannya kepada saya.']
+        },
+        answer:0
+      },
+      {
+        id:'ptp2',
+        context:{
+          en:"You have a busy job and often run out of time to complete all your tasks. In particular, you must respond to some emails every day that typically only require a short and simple response, but you can't seem to get these done during your normal day.",
+          id:'Anda memiliki pekerjaan yang sibuk dan sering kehabisan waktu untuk menyelesaikan semua tugas. Khususnya, Anda harus membalas beberapa email setiap hari yang biasanya hanya memerlukan respons singkat dan sederhana, tetapi Anda tidak dapat menyelesaikannya di hari biasa.'
+        },
+        text:{en:'How should you handle responding to these emails?', id:'Bagaimana cara terbaik untuk menangani balasan email tersebut?'},
+        type:'single',
+        options:{
+          en:['Schedule some blocks of time during the day only for responding to these emails.','Multitask and reply to these emails during other meetings.','Process these emails over your lunch break when you aren\'t working on other tasks.','Process these emails first thing in the morning.'],
+          id:['Jadwalkan beberapa blok waktu di siang hari khusus untuk membalas email-email ini.','Multitasking dan balas email ini selama rapat lainnya.','Proses email ini saat istirahat makan siang ketika Anda tidak mengerjakan tugas lain.','Proses email ini pertama kali di pagi hari.']
+        },
+        answer:0
+      },
+      {
+        id:'ptp3',
+        context:{
+          en:"You're an IT project manager at a tech company. You use both email and Slack (a chat and collaboration app).",
+          id:'Anda adalah manajer proyek IT di perusahaan teknologi. Anda menggunakan email dan Slack (aplikasi obrolan dan kolaborasi).'
+        },
+        text:{en:'When is the best time to process your emails?', id:'Kapan waktu terbaik untuk memproses email Anda?'},
+        type:'single',
+        options:{
+          en:['At various moments in the day or week that you dedicate only to processing emails, depending on the required response time.','Once a week because emails are a distraction from your real work and more urgent communications aren\'t emails.','All the time because you don\'t know what will be in there and need to respond as quickly as possible.','In the morning, when you have the most mental energy and sharpness.'],
+          id:['Pada berbagai momen di hari atau minggu yang Anda dedikasikan khusus untuk memproses email, tergantung waktu respons yang dibutuhkan.','Sekali seminggu karena email adalah gangguan dari pekerjaan nyata dan komunikasi mendesak bukan melalui email.','Sepanjang waktu karena Anda tidak tahu apa yang ada di sana dan perlu merespons secepat mungkin.','Di pagi hari, saat Anda memiliki energi mental dan ketajaman terbesar.']
+        },
+        answer:0
+      },
+      {
+        id:'ptp4',
+        context:{
+          en:"You work at a medium-sized company in an organizational environment that is quite busy and hectic. You've noticed that you have a hard time structuring your day. Your days seem quite chaotic; every morning feels derailed by a sudden inflow of emails, crises that need to be managed, or colleagues interrupting your work.",
+          id:'Anda bekerja di perusahaan menengah dalam lingkungan organisasi yang cukup sibuk dan kacau. Anda menyadari bahwa Anda kesulitan mengatur hari Anda. Hari-hari terasa kacau; setiap pagi terganggu oleh masuknya email mendadak, krisis yang perlu ditangani, atau rekan yang menginterupsi pekerjaan Anda.'
+        },
+        text:{en:'What are good strategies to deal with this?', id:'Apa strategi yang baik untuk menghadapi situasi ini?'},
+        type:'multi',
+        options:{
+          en:['Ignore the chaos and make a big effort to shut all the distractions out of your direct environment, including your colleagues.','Establish a morning routine to deal with at least some of the more important tasks that you need to get done that day.','Accept that you work in a chaotic environment and that it makes no sense to make plans.','Make a plan for the whole day and include some time for contingencies. That way, you\'ll have some extra time in your calendar to deal with incidents.','Ask your boss to hire an assistant to provide structure during your work day.'],
+          id:['Abaikan kekacauan dan lakukan upaya besar untuk menghilangkan semua gangguan dari lingkungan langsung Anda, termasuk rekan kerja.','Tetapkan rutinitas pagi untuk menyelesaikan setidaknya beberapa tugas terpenting yang perlu dilakukan hari itu.','Terima bahwa Anda bekerja di lingkungan yang kacau dan tidak masuk akal untuk membuat rencana.','Buat rencana untuk seluruh hari dan sertakan waktu untuk kemungkinan tak terduga. Dengan begitu, Anda memiliki waktu ekstra untuk menangani insiden.','Minta atasan Anda mempekerjakan asisten untuk memberikan struktur selama hari kerja Anda.']
+        },
+        answer:[1,3]
+      }
+    ],
     name:{en:'Time Management', id:'Manajemen Waktu'},
     questions:[
       {
@@ -1495,12 +1553,15 @@ function renderPracticeQ(){
   html += `<div class="practice-q-banner"><span class="practice-q-banner-icon">ℹ</span> ${bannerText}</div>`;
   if(ctx) html += `<div class="question-context">${ctx.replace(/\n/g,'<br>')}</div>`;
   html += `<div class="question-text">${q.text[state.lang]}</div>`;
-  html += `<p class="question-instruction">${t('selectOne')}</p>`;
+  const isMulti = q.type==='multi';
+  html += `<p class="question-instruction">${isMulti ? t('selectAll') : t('selectOne')}</p>`;
   html += `<div class="options-list">`;
   opts.forEach((opt,i)=>{
-    const sel = saved===i?' selected':'';
-    html += `<div class="option-item${sel}" onclick="selectPracticeAnswer('${q.id}',${i})">
-      <div class="option-radio"></div><div class="option-text">${opt}</div></div>`;
+    const sel = isMulti
+      ? (Array.isArray(saved) && saved.includes(i) ? ' selected' : '')
+      : (saved===i ? ' selected' : '');
+    html += `<div class="option-item${isMulti?' multi':''}${sel}" onclick="selectPracticeAnswer('${q.id}',${i},${isMulti})">
+      <div class="option-radio${isMulti?' multi':''}"></div><div class="option-text">${opt}</div></div>`;
   });
   html += `</div>`;
 
@@ -1512,13 +1573,23 @@ function renderPracticeQ(){
     : `${t('nextLabel')} →`;
 }
 
-function selectPracticeAnswer(qId, idx){
-  state.practiceAnswers[qId] = idx;
-  const items = document.getElementById('questionCard').querySelectorAll('.option-item');
-  items.forEach((el,i)=>el.classList.toggle('selected',i===idx));
+function selectPracticeAnswer(qId, idx, isMulti){
+  if(isMulti){
+    const cur = Array.isArray(state.practiceAnswers[qId]) ? state.practiceAnswers[qId] : [];
+    const pos = cur.indexOf(idx);
+    if(pos>=0) cur.splice(pos,1); else cur.push(idx);
+    state.practiceAnswers[qId] = [...cur];
+    const items = document.getElementById('questionCard').querySelectorAll('.option-item');
+    items.forEach((el,i)=>el.classList.toggle('selected', state.practiceAnswers[qId].includes(i)));
+  } else {
+    state.practiceAnswers[qId] = idx;
+    const items = document.getElementById('questionCard').querySelectorAll('.option-item');
+    items.forEach((el,i)=>el.classList.toggle('selected', i===idx));
+  }
   const qs = SECTIONS[state.sectionIdx].practiceQuestions;
   document.getElementById('qGrid').querySelectorAll('.q-dot').forEach((d,i)=>{
-    d.classList.toggle('answered', state.practiceAnswers[qs[i].id]!==undefined);
+    const ans = state.practiceAnswers[qs[i].id];
+    d.classList.toggle('answered', ans!==undefined && !(Array.isArray(ans) && ans.length===0));
   });
 }
 
