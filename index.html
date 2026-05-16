@@ -141,8 +141,11 @@
   .break-next-name{font-size:18px;font-weight:700;color:#1a1a2e;margin-bottom:6px}
   .break-next-meta{font-size:13px;color:#666}
 
-  /* Practice badge */
+  /* Practice badge (intro screen) */
   .practice-badge{display:inline-block;background:#dde8f7;color:#3a6fbd;border-radius:20px;padding:5px 16px;font-size:13px;font-weight:600;margin-bottom:4px}
+  /* Practice banner inside question card */
+  .practice-q-banner{display:flex;align-items:center;gap:10px;background:#e8eef8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:14px;color:#2c4a8a;font-weight:500}
+  .practice-q-banner-icon{font-size:18px;flex-shrink:0}
 
   /* Section intro / countdown */
   .intro-label{font-size:14px;color:#888;margin-bottom:12px}
@@ -558,7 +561,56 @@ const SECTIONS = [
   {
     id:'ps', icon:'🧩', timeSeconds:9*60, scoreable:true,
     meta:{en:'12 questions · 9 minutes · Intermediate', id:'12 soal · 9 menit · Menengah'},
-    practiceCount:4, practiceQuestions:[],
+    practiceCount:4,
+    practiceQuestions:[
+      {
+        id:'psp1',
+        context:{
+          en:'The following is the schedule of Nathan, Sarah, and Violet:\n<table class="sched-tbl"><thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead><tbody><tr><td>Sarah</td><td>Violet</td><td>Sarah</td><td>Violet</td><td>Sarah</td><td>Nathan</td><td>Sarah</td></tr><tr><td></td><td>Nathan</td><td>Violet</td><td>Nathan</td><td>Violet</td><td></td><td></td></tr></tbody></table>\nNancy can work on any day either Nathan or Joy are scheduled. Joy can work on any day either Sarah or Violet are scheduled.',
+          id:'Berikut adalah jadwal Nathan, Sarah, dan Violet:\n<table class="sched-tbl"><thead><tr><th>Min</th><th>Sen</th><th>Sel</th><th>Rab</th><th>Kam</th><th>Jum</th><th>Sab</th></tr></thead><tbody><tr><td>Sarah</td><td>Violet</td><td>Sarah</td><td>Violet</td><td>Sarah</td><td>Nathan</td><td>Sarah</td></tr><tr><td></td><td>Nathan</td><td>Violet</td><td>Nathan</td><td>Violet</td><td></td><td></td></tr></tbody></table>\nNancy dapat bekerja pada hari apa pun Nathan atau Joy dijadwalkan. Joy dapat bekerja pada hari apa pun Sarah atau Violet dijadwalkan.'
+        },
+        text:{en:'Who can be scheduled for any day of the week?', id:'Siapa yang bisa dijadwalkan setiap hari dalam seminggu?'},
+        type:'single',
+        options:{en:['No one','Joy','Joy and Nancy','Nancy'], id:['Tidak ada','Joy','Joy dan Nancy','Nancy']},
+        answer:3
+      },
+      {
+        id:'psp2',
+        context:{
+          en:'45 people in a certain company can work together to finish a project in 15 days. For a project of the same workload, the company decided to use 15 people. Assume all people have the same level of productivity.',
+          id:'45 orang di suatu perusahaan dapat bekerja bersama untuk menyelesaikan sebuah proyek dalam 15 hari. Untuk proyek dengan beban kerja yang sama, perusahaan memutuskan menggunakan 15 orang. Asumsikan semua orang memiliki tingkat produktivitas yang sama.'
+        },
+        text:{en:'In how many days can this project be completed?', id:'Dalam berapa hari proyek ini dapat diselesaikan?'},
+        type:'single',
+        options:{en:['5 days','10 days','22.5 days','45 days'], id:['5 hari','10 hari','22,5 hari','45 hari']},
+        answer:3
+      },
+      {
+        id:'psp3',
+        context:{
+          en:'The following table shows the order in which certain ingredients, labelled A through F, need to be mixed (left goes first, right goes last).\n<div style="display:flex;gap:6px;margin:14px 0"><div style="background:#1a1a1a;width:48px;height:48px;border-radius:6px"></div><div style="background:#1a1a1a;width:48px;height:48px;border-radius:6px"></div><div style="background:#1a1a1a;width:48px;height:48px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px">A</div><div style="background:#1a1a1a;width:48px;height:48px;border-radius:6px"></div><div style="background:#1a1a1a;width:48px;height:48px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px">C</div><div style="background:#1a1a1a;width:48px;height:48px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px">?</div></div>\nAdditionally, we know that:\n• Ingredients A and D are added in consecutive steps\n• B is added before A\n• F is not added right before or after C',
+          id:'Tabel berikut menunjukkan urutan pencampuran bahan-bahan tertentu, berlabel A hingga F (kiri lebih dulu, kanan terakhir).\n<div style="display:flex;gap:6px;margin:14px 0"><div style="background:#1a1a1a;width:48px;height:48px;border-radius:6px"></div><div style="background:#1a1a1a;width:48px;height:48px;border-radius:6px"></div><div style="background:#1a1a1a;width:48px;height:48px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px">A</div><div style="background:#1a1a1a;width:48px;height:48px;border-radius:6px"></div><div style="background:#1a1a1a;width:48px;height:48px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px">C</div><div style="background:#1a1a1a;width:48px;height:48px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px">?</div></div>\nSelain itu, diketahui bahwa:\n• Bahan A dan D ditambahkan dalam langkah berurutan\n• B ditambahkan sebelum A\n• F tidak ditambahkan tepat sebelum atau sesudah C'
+        },
+        text:{en:'Which ingredient needs to be added last?', id:'Bahan mana yang perlu ditambahkan terakhir?'},
+        type:'single',
+        options:{en:['B','D','E','F'], id:['B','D','E','F']},
+        answer:2
+      },
+      {
+        id:'psp4',
+        context:{
+          en:'A customer wants an eggless cake with an organic topping.\n<table style="border-collapse:collapse;width:100%;margin:12px 0;font-size:13px"><thead><tr><th colspan="2" style="background:#2d6e65;color:#fff;padding:8px;text-align:center;border:1px solid #c0d8d4">Toppings</th><th colspan="2" style="background:#2d6e65;color:#fff;padding:8px;text-align:center;border:1px solid #c0d8d4">Cakes</th></tr><tr><th style="background:#4aaa9a;color:#fff;padding:6px 10px;border:1px solid #c0d8d4">Organic</th><th style="background:#4aaa9a;color:#fff;padding:6px 10px;border:1px solid #c0d8d4">Non-organic</th><th style="background:#4aaa9a;color:#fff;padding:6px 10px;border:1px solid #c0d8d4">Eggless</th><th style="background:#4aaa9a;color:#fff;padding:6px 10px;border:1px solid #c0d8d4">With egg</th></tr></thead><tbody><tr><td style="padding:6px 10px;border:1px solid #ddd">Cherries</td><td style="padding:6px 10px;border:1px solid #ddd">Oranges</td><td style="padding:6px 10px;border:1px solid #ddd">Butter cakes</td><td style="padding:6px 10px;border:1px solid #ddd">Pound cakes</td></tr><tr><td style="padding:6px 10px;border:1px solid #ddd">Strawberries</td><td style="padding:6px 10px;border:1px solid #ddd">Kiwis</td><td style="padding:6px 10px;border:1px solid #ddd">Sponge cakes</td><td style="padding:6px 10px;border:1px solid #ddd">Carrot cakes</td></tr><tr><td style="padding:6px 10px;border:1px solid #ddd">Apples</td><td style="padding:6px 10px;border:1px solid #ddd">Pears</td><td style="padding:6px 10px;border:1px solid #ddd">Chiffon cakes</td><td style="padding:6px 10px;border:1px solid #ddd">Genoise cakes</td></tr><tr><td style="padding:6px 10px;border:1px solid #ddd">Pears</td><td style="padding:6px 10px;border:1px solid #ddd"></td><td style="padding:6px 10px;border:1px solid #ddd"></td><td style="padding:6px 10px;border:1px solid #ddd"></td></tr></tbody></table>',
+          id:'Seorang pelanggan ingin memesan kue tanpa telur dengan topping organik.\n<table style="border-collapse:collapse;width:100%;margin:12px 0;font-size:13px"><thead><tr><th colspan="2" style="background:#2d6e65;color:#fff;padding:8px;text-align:center;border:1px solid #c0d8d4">Topping</th><th colspan="2" style="background:#2d6e65;color:#fff;padding:8px;text-align:center;border:1px solid #c0d8d4">Kue</th></tr><tr><th style="background:#4aaa9a;color:#fff;padding:6px 10px;border:1px solid #c0d8d4">Organik</th><th style="background:#4aaa9a;color:#fff;padding:6px 10px;border:1px solid #c0d8d4">Non-organik</th><th style="background:#4aaa9a;color:#fff;padding:6px 10px;border:1px solid #c0d8d4">Tanpa telur</th><th style="background:#4aaa9a;color:#fff;padding:6px 10px;border:1px solid #c0d8d4">Dengan telur</th></tr></thead><tbody><tr><td style="padding:6px 10px;border:1px solid #ddd">Ceri</td><td style="padding:6px 10px;border:1px solid #ddd">Jeruk</td><td style="padding:6px 10px;border:1px solid #ddd">Butter cake</td><td style="padding:6px 10px;border:1px solid #ddd">Pound cake</td></tr><tr><td style="padding:6px 10px;border:1px solid #ddd">Stroberi</td><td style="padding:6px 10px;border:1px solid #ddd">Kiwi</td><td style="padding:6px 10px;border:1px solid #ddd">Sponge cake</td><td style="padding:6px 10px;border:1px solid #ddd">Carrot cake</td></tr><tr><td style="padding:6px 10px;border:1px solid #ddd">Apel</td><td style="padding:6px 10px;border:1px solid #ddd">Pir</td><td style="padding:6px 10px;border:1px solid #ddd">Chiffon cake</td><td style="padding:6px 10px;border:1px solid #ddd">Genoise cake</td></tr><tr><td style="padding:6px 10px;border:1px solid #ddd">Pir</td><td style="padding:6px 10px;border:1px solid #ddd"></td><td style="padding:6px 10px;border:1px solid #ddd"></td><td style="padding:6px 10px;border:1px solid #ddd"></td></tr></tbody></table>'
+        },
+        text:{en:'Which of the following can she order?', id:'Mana dari pilihan berikut yang dapat dia pesan?'},
+        type:'single',
+        options:{
+          en:['Carrot cake with strawberry and kiwi toppings.','Butter cake with orange and kiwi toppings.','Pound cake with pear and strawberry toppings.','Sponge cake with apple and cherry toppings.'],
+          id:['Carrot cake dengan topping stroberi dan kiwi.','Butter cake dengan topping jeruk dan kiwi.','Pound cake dengan topping pir dan stroberi.','Sponge cake dengan topping apel dan ceri.']
+        },
+        answer:3
+      }
+    ],
     name:{en:'Problem Solving', id:'Pemecahan Masalah'},
     questions:[
       {
@@ -1175,7 +1227,11 @@ const state = {
   timerInterval: null,
   secondsLeft: 0,
   sectionStartTime: 0,
-  timeTaken: {}   // { sectionId: secondsUsed }
+  timeTaken: {},
+  practiceMode: false,
+  practiceQIdx: 0,
+  practiceAnswers: {},
+  practiceDone: null
 };
 
 function t(key){ return UI[state.lang][key] || UI.en[key] || key; }
@@ -1316,6 +1372,103 @@ function timeUp(){ showSectionEnd(true); }
 // ═══════════════════════════════════════════════════════
 //  TEST FLOW
 // ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+//  PRACTICE QUESTIONS
+// ═══════════════════════════════════════════════════════
+const ORDINALS = {
+  en:['1st','2nd','3rd','4th','5th','6th','7th','8th'],
+  id:['ke-1','ke-2','ke-3','ke-4','ke-5','ke-6','ke-7','ke-8']
+};
+
+function runPractice(sectionIdx, onDone){
+  const sec = SECTIONS[sectionIdx];
+  if(!sec.practiceQuestions || sec.practiceQuestions.length===0){ onDone(); return; }
+  state.practiceMode = true;
+  state.practiceQIdx = 0;
+  state.practiceDone = onDone;
+  state.practiceAnswers = {};
+  state.sectionIdx = sectionIdx;
+  ['screenWelcome','screenSectionEnd','screenBreak','screenIntro','screenPracticeIntro','screenResults'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.classList.add('hidden');
+  });
+  document.getElementById('timerDisplay').classList.add('hidden');
+  document.getElementById('testView').classList.remove('hidden');
+  renderPracticeQ();
+}
+
+function renderPracticeQ(){
+  const sec = SECTIONS[state.sectionIdx];
+  const qs  = sec.practiceQuestions;
+  const q   = qs[state.practiceQIdx];
+  const total = qs.length;
+  const isLast = state.practiceQIdx === total-1;
+  const nth = ORDINALS[state.lang][state.practiceQIdx] || (state.practiceQIdx+1)+'';
+
+  let bannerText;
+  if(state.lang==='en'){
+    bannerText = isLast
+      ? `This is the ${nth} and last practice question.`
+      : `This is the ${nth} practice question.`;
+  } else {
+    bannerText = isLast
+      ? `Ini adalah soal latihan ${nth} dan terakhir.`
+      : `Ini adalah soal latihan ${nth}.`;
+  }
+
+  // Sidebar
+  document.getElementById('sidebarTitle').textContent =
+    `${sec.icon} ${sec.name[state.lang]} (${state.lang==='en'?'Practice':'Latihan'})`;
+  const grid = document.getElementById('qGrid');
+  grid.innerHTML='';
+  qs.forEach((_,i)=>{
+    const d = document.createElement('div');
+    d.className='q-dot'+(i===state.practiceQIdx?' active':'')+(state.practiceAnswers[qs[i].id]!==undefined?' answered':'');
+    d.textContent=i+1;
+    d.onclick=()=>{ state.practiceQIdx=i; renderPracticeQ(); };
+    grid.appendChild(d);
+  });
+
+  document.getElementById('sectionBadge').innerHTML =
+    `${sec.icon} ${sec.name[state.lang]} <span style="color:#3a6fbd;font-weight:600;margin-left:6px;font-size:12px">[${state.lang==='en'?'Practice':'Latihan'}]</span>`;
+  document.getElementById('headerProgress').textContent =
+    `${state.lang==='en'?'Practice':'Latihan'} ${state.practiceQIdx+1}/${total}`;
+
+  // Question card
+  const ctx = q.context ? q.context[state.lang] : '';
+  const saved = state.practiceAnswers[q.id];
+  const opts  = q.options[state.lang];
+
+  let html = `<div class="question-number">${state.lang==='en'?'Practice Question':'Soal Latihan'} ${state.practiceQIdx+1} / ${total}</div>`;
+  html += `<div class="practice-q-banner"><span class="practice-q-banner-icon">ℹ</span> ${bannerText}</div>`;
+  if(ctx) html += `<div class="question-context">${ctx.replace(/\n/g,'<br>')}</div>`;
+  html += `<div class="question-text">${q.text[state.lang]}</div>`;
+  html += `<p class="question-instruction">${t('selectOne')}</p>`;
+  html += `<div class="options-list">`;
+  opts.forEach((opt,i)=>{
+    const sel = saved===i?' selected':'';
+    html += `<div class="option-item${sel}" onclick="selectPracticeAnswer('${q.id}',${i})">
+      <div class="option-radio"></div><div class="option-text">${opt}</div></div>`;
+  });
+  html += `</div>`;
+
+  document.getElementById('questionCard').innerHTML = html;
+
+  document.getElementById('prevBtn').disabled = state.practiceQIdx===0;
+  document.getElementById('nextBtn').innerHTML = isLast
+    ? (state.lang==='en'?'Finish Practice ✓':'Selesai Latihan ✓')
+    : `${t('nextLabel')} →`;
+}
+
+function selectPracticeAnswer(qId, idx){
+  state.practiceAnswers[qId] = idx;
+  const items = document.getElementById('questionCard').querySelectorAll('.option-item');
+  items.forEach((el,i)=>el.classList.toggle('selected',i===idx));
+  const qs = SECTIONS[state.sectionIdx].practiceQuestions;
+  document.getElementById('qGrid').querySelectorAll('.q-dot').forEach((d,i)=>{
+    d.classList.toggle('answered', state.practiceAnswers[qs[i].id]!==undefined);
+  });
+}
+
 function runCountdown(numElId, labelElId, labelFn, seconds, onDone){
   let secs = seconds;
   function updateLabel(){ document.getElementById(labelElId).innerHTML = labelFn(secs); }
@@ -1325,6 +1478,30 @@ function runCountdown(numElId, labelElId, labelFn, seconds, onDone){
     updateLabel();
     if(secs<=0){ clearInterval(iv); onDone(); }
   },1000);
+}
+
+function navigate(dir){
+  if(state.practiceMode){
+    const total = SECTIONS[state.sectionIdx].practiceQuestions.length;
+    const ni = state.practiceQIdx + dir;
+    if(ni<0) return;
+    if(ni>=total){
+      state.practiceMode = false;
+      document.getElementById('testView').classList.add('hidden');
+      state.practiceDone();
+      return;
+    }
+    state.practiceQIdx = ni;
+    renderPracticeQ();
+    return;
+  }
+  const sec=SECTIONS[state.sectionIdx];
+  const limit = sec.isDimensional ? sec.dimensions.length : sec.questions.length;
+  const ni=state.questionIdx+dir;
+  if(ni<0) return;
+  if(ni>=limit){ showSectionEnd(false); return; }
+  state.questionIdx=ni;
+  renderSection();
 }
 
 function showPracticeIntro(idx, onDone){
@@ -1346,7 +1523,7 @@ function showPracticeIntro(idx, onDone){
     12,
     ()=>{
       document.getElementById('screenPracticeIntro').classList.add('hidden');
-      onDone();
+      runPractice(idx, onDone);
     }
   );
 }
@@ -1575,16 +1752,6 @@ function selectOcean(qid, val){
   // update sidebar
   const sec = SECTIONS[state.sectionIdx];
   if(sec.isDimensional) buildSidebarOcean(sec);
-}
-
-function navigate(dir){
-  const sec=SECTIONS[state.sectionIdx];
-  const limit = sec.isDimensional ? sec.dimensions.length : sec.questions.length;
-  const ni=state.questionIdx+dir;
-  if(ni<0) return;
-  if(ni>=limit){ showSectionEnd(false); return; }
-  state.questionIdx=ni;
-  renderSection();
 }
 
 // ═══════════════════════════════════════════════════════
