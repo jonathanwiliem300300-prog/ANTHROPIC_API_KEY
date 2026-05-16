@@ -717,56 +717,57 @@ const SECTIONS = [
       },
       {
         id:'tm11',
-        text:{en:'You have significantly higher energy in the morning. How should you best use this?', id:'Anda memiliki energi yang jauh lebih tinggi di pagi hari. Bagaimana sebaiknya Anda memanfaatkannya?'},
+        context:{en:'At work, you get a phone call from a colleague. They ask you to sort something out that will take you about 15 minutes to complete. It\'s urgent but not important. After the phone call, you immediately have to attend a meeting with your boss.', id:'Di tempat kerja, Anda mendapat telepon dari rekan kerja. Mereka meminta Anda menyelesaikan sesuatu yang membutuhkan sekitar 15 menit. Ini mendesak tapi tidak penting. Setelah telepon, Anda langsung harus menghadiri rapat dengan atasan Anda.'},
+        text:{en:'What should you do?', id:'Apa yang harus Anda lakukan?'},
         type:'single',
         options:{
-          en:['Use mornings for routine emails and low-effort tasks','Schedule your most demanding tasks during morning hours','Use mornings for casual team socializing','Save morning energy specifically for afternoon meetings'],
-          id:['Gunakan pagi untuk email rutin dan tugas ringan','Jadwalkan tugas paling menantang di jam pagi','Gunakan pagi untuk sosialisasi santai dengan tim','Simpan energi pagi khusus untuk rapat sore hari']
+          en:['You tell your colleague you can\'t help them right now and attend the meeting.','You tell your boss you will attend in 15 minutes and first complete the task.','You complete the task before you attend the meeting, knowing that you will be late.','You write the task down, attend the meeting, and then complete the task.'],
+          id:['Anda memberi tahu rekan bahwa Anda tidak bisa membantu sekarang dan menghadiri rapat.','Anda memberi tahu atasan bahwa Anda akan hadir dalam 15 menit dan menyelesaikan tugas dulu.','Anda menyelesaikan tugas sebelum menghadiri rapat, meski tahu Anda akan terlambat.','Anda mencatat tugas tersebut, menghadiri rapat, lalu menyelesaikan tugas setelahnya.']
         },
-        answer:1
+        answer:3
       },
       {
         id:'tm12',
-        context:{en:'Your manager gives you an urgent task midway through your day, disrupting your planned work.', id:'Manajer Anda memberikan tugas mendesak di tengah hari, mengganggu rencana kerja Anda.'},
-        text:{en:'What is the best approach?', id:'Apa pendekatan terbaik?'},
+        context:{en:'Your manager asks you to complete a new task that was not in the original project plan you set together. If you want to do this properly, you don\'t think you have enough time to complete the new task and keep the project on schedule.', id:'Manajer Anda meminta Anda menyelesaikan tugas baru yang tidak ada dalam rencana proyek awal yang Anda susun bersama. Jika ingin melakukannya dengan benar, Anda merasa tidak punya cukup waktu untuk menyelesaikan tugas baru dan menjaga proyek tetap sesuai jadwal.'},
+        text:{en:'What should you do?', id:'Apa yang harus Anda lakukan?'},
         type:'single',
         options:{
-          en:['Refuse it since it was not planned','Drop everything and only focus on the new task','Assess what can be postponed, do the urgent task, then reschedule remaining work','Finish all planned work first before the urgent task'],
-          id:['Tolak karena tidak direncanakan','Tinggalkan semua dan fokus hanya pada tugas baru','Nilai apa yang bisa ditunda, kerjakan tugas mendesak, lalu jadwal ulang sisa pekerjaan','Selesaikan semua pekerjaan yang direncanakan sebelum mengerjakan tugas mendesak']
+          en:['Complete the new task poorly so you can finish both within the due date.','Complete the new task well and let the project run past its due date.','Complete your original project well and do as much of the new task as possible by the due date.','Show the impact on the timeline of the inclusion of the new task to your manager, and decide together on the total scope and due date.'],
+          id:['Selesaikan tugas baru dengan kualitas rendah agar bisa menyelesaikan keduanya sebelum tenggat.','Selesaikan tugas baru dengan baik dan biarkan proyek melewati tenggat waktu.','Selesaikan proyek awal dengan baik dan kerjakan sebanyak mungkin tugas baru sebelum tenggat.','Tunjukkan dampak tugas baru pada timeline kepada manajer dan putuskan bersama tentang ruang lingkup dan tenggat waktu total.']
         },
-        answer:2
+        answer:3
       },
       {
         id:'tm13',
-        context:{en:'Your manager believes multitasking significantly increases team productivity.', id:'Manajer Anda percaya bahwa multitasking secara signifikan meningkatkan produktivitas tim.'},
-        text:{en:'What is the most evidence-based response?', id:'Apa respons yang paling berbasis bukti?'},
-        type:'single',
+        context:{en:'In your calendar management, you\'ve been successfully allocating time to complete tasks instead of just using your calendar for meetings. However, you\'ve noticed that your tasks regularly take longer than the time you allow, so you won\'t get everything done that you\'d like to.', id:'Dalam manajemen kalender Anda, Anda telah berhasil mengalokasikan waktu untuk menyelesaikan tugas alih-alih hanya menggunakan kalender untuk rapat. Namun, Anda menyadari bahwa tugas-tugas Anda secara teratur memakan waktu lebih lama dari yang Anda alokasikan, sehingga Anda tidak bisa menyelesaikan semua yang ingin Anda lakukan.'},
+        text:{en:'What could be effective strategies to address this problem? (Select all that apply)', id:'Strategi apa yang efektif untuk mengatasi masalah ini? (Pilih semua yang sesuai)'},
+        type:'multi',
         options:{
-          en:['Agree and start multitasking immediately','Explain that task-switching reduces efficiency and suggest focused work blocks instead','Say nothing and just multitask as requested','Ask to be transferred to another team'],
-          id:['Setuju dan mulai multitasking segera','Jelaskan bahwa perpindahan tugas mengurangi efisiensi dan sarankan blok kerja fokus sebagai gantinya','Diam saja dan lakukan multitasking sesuai permintaan','Minta dipindahkan ke tim lain']
+          en:['Schedule more time for the tasks in question in the future.','Accept a lower level of quality and use shortcuts to complete the tasks within the time allotted.','Find an environment or time where you can be more focused and productive.','Stop allocating time for tasks and go back to using your calendar for just meetings.'],
+          id:['Jadwalkan lebih banyak waktu untuk tugas-tugas tersebut di masa mendatang.','Terima kualitas yang lebih rendah dan gunakan jalan pintas untuk menyelesaikan tugas dalam waktu yang dialokasikan.','Temukan lingkungan atau waktu di mana Anda bisa lebih fokus dan produktif.','Berhenti mengalokasikan waktu untuk tugas dan kembali menggunakan kalender hanya untuk rapat.']
         },
-        answer:1
+        answer:[0,2]
       },
       {
         id:'tm14',
-        context:{en:'You are assigned a complex 3-month project with no existing structure.', id:'Anda ditugaskan pada proyek kompleks 3 bulan tanpa struktur yang sudah ada.'},
-        text:{en:'What is the most effective first step?', id:'Apa langkah pertama yang paling efektif?'},
+        context:{en:'Your manager gives you feedback that Task A, which you perform weekly, is taking too long. You perform it the same way each week and always work hard to complete it.', id:'Manajer Anda memberi tahu bahwa Tugas A, yang Anda lakukan setiap minggu, memakan waktu terlalu lama. Anda melakukannya dengan cara yang sama setiap minggu dan selalu bekerja keras untuk menyelesaikannya.'},
+        text:{en:'What should you say to your manager?', id:'Apa yang harus Anda katakan kepada manajer Anda?'},
         type:'single',
         options:{
-          en:['Start working immediately on whatever comes to mind','Break it into milestones with deadlines and identify dependencies','Wait until the last month to start','Ask your manager to build the project plan'],
-          id:['Mulai bekerja segera pada apapun yang terlintas di pikiran','Bagi menjadi milestone dengan tenggat waktu dan identifikasi dependensi','Tunggu hingga bulan terakhir untuk memulai','Minta manajer Anda membuat rencana proyek']
+          en:['"I am working as fast as I can."','"Do you know of a better way to do it?"','"Have you ever tried to do it?"','"I do it much faster than the previous person."'],
+          id:['"Saya sudah bekerja secepat yang saya bisa."','"Apakah Anda tahu cara yang lebih baik untuk melakukannya?"','"Apakah Anda pernah mencoba melakukannya?"','"Saya melakukannya jauh lebih cepat dari orang sebelumnya."']
         },
         answer:1
       },
       {
         id:'tm15',
-        text:{en:'At the end of each week, what habit is most effective for continuous time management improvement?', id:'Di akhir setiap minggu, kebiasaan apa yang paling efektif untuk perbaikan manajemen waktu berkelanjutan?'},
+        text:{en:'What is the most accurate way to capture and review data on how efficiently you complete tasks?', id:'Apa cara paling akurat untuk mencatat dan meninjau data tentang seberapa efisien Anda menyelesaikan tugas?'},
         type:'single',
         options:{
-          en:['Ignore the past week and only focus on next week','Review accomplishments, identify time wasters, and intentionally plan the next week','Celebrate with social activities','Ask your manager to evaluate your entire week'],
-          id:['Abaikan minggu lalu dan fokus hanya pada minggu depan','Tinjau pencapaian, identifikasi pembuang waktu, dan rencanakan minggu depan secara sengaja','Rayakan dengan kegiatan sosial','Minta manajer mengevaluasi seluruh minggu Anda']
+          en:['Track your time using an app or spreadsheet.','Add a note to your notebook every time you finish a task on time.','Write yourself an email when a task is done.','Ask your coworkers how efficient they think you are.'],
+          id:['Lacak waktu Anda menggunakan aplikasi atau spreadsheet.','Tambahkan catatan di buku Anda setiap kali Anda menyelesaikan tugas tepat waktu.','Tulis email untuk diri sendiri ketika tugas selesai.','Tanya rekan kerja Anda seberapa efisien mereka pikir Anda.']
         },
-        answer:1
+        answer:0
       },
       {
         id:'tm16',
