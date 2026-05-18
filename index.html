@@ -15,6 +15,10 @@
   .timer-box{display:flex;align-items:center;gap:8px;background:#fff3e0;border:1.5px solid #ff9800;border-radius:8px;padding:6px 14px;font-weight:700;font-size:20px;color:#e65100;min-width:110px;justify-content:center}
   .timer-box.warning{background:#ffeaea;border-color:#e53935;color:#c62828;animation:pulse 1s infinite}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+  @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+  .shake{animation:shake .35s ease}
+  .answer-warn{display:none;background:#fff3f3;border:1.5px solid #f44336;border-radius:10px;padding:10px 16px;font-size:13px;font-weight:600;color:#c62828;margin-top:12px}
+  .answer-warn.show{display:block}
   .progress-pill{font-size:13px;color:#666;background:#f0f0f0;border-radius:20px;padding:4px 12px}
 
   /* Screens */
@@ -382,6 +386,7 @@
     <div class="section-badge" id="sectionBadge"></div>
     <div id="oceanDimNav" class="ocean-dim-nav hidden"></div>
     <div class="question-card" id="questionCard"></div>
+    <div id="answerWarn" class="answer-warn"></div>
     <div class="nav-row" style="justify-content:flex-end">
       <button class="btn btn-primary" id="nextBtn" onclick="navigate(1)"><span id="nextLabel">Next</span> →</button>
     </div>
@@ -1675,6 +1680,7 @@ function renderPracticeQ(){
   });
   html += `</div>`;
 
+  document.getElementById('answerWarn').classList.remove('show');
   document.getElementById('questionCard').innerHTML = html;
 
   document.getElementById('nextBtn').innerHTML = isLast
@@ -1708,7 +1714,42 @@ function runCountdown(numElId, labelElId, labelFn, seconds, onDone){
   },1000);
 }
 
+function requireAnswer(){
+  const lang = state.lang;
+  const msg  = lang==='id'
+    ? '⚠ Pilih jawaban terlebih dahulu sebelum melanjutkan.'
+    : '⚠ Please select an answer before continuing.';
+  const warn = document.getElementById('answerWarn');
+  warn.textContent = msg;
+  warn.classList.add('show');
+  const opts = document.getElementById('questionCard').querySelector('.options-list');
+  if(opts){ opts.classList.remove('shake'); void opts.offsetWidth; opts.classList.add('shake'); }
+  setTimeout(()=>warn.classList.remove('show'), 3000);
+}
+
+function hasAnswer(){
+  if(state.practiceMode){
+    const q   = SECTIONS[state.sectionIdx].practiceQuestions[state.practiceQIdx];
+    const ans = state.practiceAnswers[q.id];
+    return ans!==undefined && !(Array.isArray(ans) && ans.length===0);
+  }
+  const sec = SECTIONS[state.sectionIdx];
+  if(sec.isDimensional){
+    const dim = sec.dimensions[state.questionIdx];
+    return dim.questions.every(q=>state.answers[q.id]!==undefined);
+  }
+  const q   = sec.questions[state.questionIdx];
+  const ans = state.answers[q.id];
+  return ans!==undefined && !(Array.isArray(ans) && ans.length===0);
+}
+
 function navigate(dir){
+  // Block forward navigation if no answer selected
+  if(dir===1 && !hasAnswer()){ requireAnswer(); return; }
+
+  // Clear any warning on valid advance
+  document.getElementById('answerWarn').classList.remove('show');
+
   if(state.practiceMode){
     const total = SECTIONS[state.sectionIdx].practiceQuestions.length;
     const ni = state.practiceQIdx + dir;
@@ -1883,6 +1924,7 @@ function renderOceanDim(sec, dim){
   });
 
   html += `</tbody></table></div></div>`;
+  document.getElementById('answerWarn').classList.remove('show');
   document.getElementById('questionCard').innerHTML = html;
 }
 
@@ -1903,6 +1945,7 @@ function renderQuestion(q){
     html += `<div class="question-instruction">${t('selectOne')}</div>`;
     html += buildSingle(q);
   }
+  document.getElementById('answerWarn').classList.remove('show');
   document.getElementById('questionCard').innerHTML = html;
 }
 
