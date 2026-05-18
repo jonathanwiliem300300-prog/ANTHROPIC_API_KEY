@@ -1484,6 +1484,27 @@ function submitRegistration(){
   if(!valid) return;
 
   state.candidate = { name, position, email };
+
+  // Lock the email immediately so the same address cannot be used again,
+  // even if the candidate abandons the test before finishing.
+  markEmailUsed(email);
+
+  // Send a "STARTED" record to the Sheet right now so the admin can
+  // see who registered even if they never reach the results page.
+  submitToSheet({
+    timestamp: new Date().toISOString(),
+    name,
+    email,
+    position,
+    language:  state.lang==='en' ? 'English' : 'Bahasa Indonesia',
+    status:    'STARTED',
+    ps_score:'', ps_pct:'', ps_time:'',
+    tm_score:'', tm_pct:'', tm_time:'',
+    comm_score:'', comm_pct:'', comm_time:'',
+    ocean_answered:'', ocean_time:'',
+    ocean_E:'', ocean_A:'', ocean_C:'', ocean_N:'', ocean_O:''
+  });
+
   document.getElementById('screenReg').classList.add('hidden');
   showCommitmentModal();
 }
@@ -2091,15 +2112,13 @@ function showResults(){
     email:     state.candidate.email,
     position:  state.candidate.position,
     language:  state.lang==='en' ? 'English' : 'Bahasa Indonesia',
+    status:    'COMPLETED',
     ps_score:  `${ps.correct}/${ps.total}`,  ps_pct:  ps.pct,  ps_time: fmtTime(state.timeTaken['ps']||0),
     tm_score:  `${tm.correct}/${tm.total}`,  tm_pct:  tm.pct,  tm_time: fmtTime(state.timeTaken['tm']||0),
     comm_score:`${cm.correct}/${cm.total}`,  comm_pct:cm.pct,  comm_time: fmtTime(state.timeTaken['cm']||0),
     ocean_answered: ocAnswered, ocean_time: fmtTime(state.timeTaken['oc']||0),
     ocean_E: ocE, ocean_A: ocA, ocean_C: ocC, ocean_N: ocN, ocean_O: ocO
   };
-
-  // Mark email as used
-  markEmailUsed(state.candidate.email);
 
   const rc = document.getElementById('resultsCard');
   rc.innerHTML = buildResultsHTML(ps, tm, cm, ocAnswered);
