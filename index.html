@@ -63,17 +63,27 @@
   .btn-sm{padding:8px 18px;font-size:13px}
 
   /* Test layout */
-  .test-wrapper{display:flex;min-height:calc(100vh - 64px)}
-  .sidebar{width:260px;background:#fff;border-right:1px solid #e0e0e0;padding:24px 16px;overflow-y:auto;position:sticky;top:64px;height:calc(100vh - 64px)}
-  .sidebar-title{font-size:12px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px}
-  .q-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
-  .q-dot{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;cursor:pointer;border:2px solid #e0e0e0;color:#888;background:#fafafa;transition:all .15s}
-  .q-dot:hover{border-color:#5c6bc0;color:#5c6bc0}
-  .q-dot.active{border-color:#5c6bc0;background:#5c6bc0;color:#fff}
-  .q-dot.answered{border-color:#43a047;background:#e8f5e9;color:#2e7d32}
-  .q-dot.answered.active{background:#43a047;color:#fff}
-  .main-content{flex:1;padding:32px;max-width:860px}
-  @media(max-width:768px){.sidebar{display:none}}
+  .test-wrapper{display:block;min-height:calc(100vh - 64px)}
+  .main-content{max-width:860px;margin:0 auto;padding:32px}
+  @media(max-width:768px){.main-content{padding:20px 16px}}
+
+  /* Question progress bar (header) */
+  .qp-wrap{display:none;align-items:center;gap:8px}
+  .qp-wrap.show{display:flex}
+  .qp-label{font-size:13px;font-weight:700;color:#444;white-space:nowrap;min-width:38px;text-align:right}
+  .qp-track{width:110px;height:5px;background:#e0e0e0;border-radius:3px;overflow:hidden}
+  .qp-fill{height:100%;background:#5c6bc0;border-radius:3px;transition:width .3s ease}
+  @media(max-width:500px){.qp-track{width:64px}}
+
+  /* OCEAN inline dimension nav */
+  .ocean-dim-nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+  .ocean-dim-nav.hidden{display:none}
+  .odim-tab{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:20px;border:2px solid #e0e0e0;background:#fafafa;cursor:pointer;font-size:13px;font-weight:600;color:#666;transition:all .15s}
+  .odim-tab:hover{border-color:#5c6bc0;color:#5c6bc0}
+  .odim-tab.active{border-color:#5c6bc0;background:#5c6bc0;color:#fff}
+  .odim-tab.done{border-color:#43a047;background:#e8f5e9;color:#2e7d32}
+  .odim-tab.done.active{background:#43a047;color:#fff;border-color:#43a047}
+  .odim-count{font-size:11px;opacity:.8}
 
   /* Section badge */
   .section-badge{display:inline-flex;align-items:center;gap:8px;background:#e8eaf6;color:#3f4faa;border-radius:20px;padding:6px 16px;font-size:13px;font-weight:600;margin-bottom:20px}
@@ -256,6 +266,10 @@
 <div class="header" id="mainHeader">
   <div class="header-title" id="hTitle">Hiring Assessment</div>
   <div class="header-meta">
+    <div class="qp-wrap" id="qProgressWrap">
+      <span class="qp-label" id="qProgressLabel">1/12</span>
+      <div class="qp-track"><div class="qp-fill" id="qProgressFill" style="width:0%"></div></div>
+    </div>
     <span class="progress-pill" id="headerProgress"></span>
     <div class="timer-box hidden" id="timerDisplay">00:00</div>
   </div>
@@ -364,16 +378,12 @@
 
 <!-- ══════ SCREEN 3: TEST VIEW ══════ -->
 <div id="testView" class="test-wrapper hidden">
-  <div class="sidebar">
-    <div class="sidebar-title" id="sidebarTitle">Questions</div>
-    <div class="q-grid" id="qGrid"></div>
-  </div>
   <div class="main-content">
     <div class="section-badge" id="sectionBadge"></div>
+    <div id="oceanDimNav" class="ocean-dim-nav hidden"></div>
     <div class="question-card" id="questionCard"></div>
-    <div class="nav-row">
-      <button class="btn btn-secondary" id="prevBtn" onclick="navigate(-1)">← <span id="prevLabel">Previous</span></button>
-      <button class="btn btn-primary"   id="nextBtn" onclick="navigate(1)"><span id="nextLabel">Next</span> →</button>
+    <div class="nav-row" style="justify-content:flex-end">
+      <button class="btn btn-primary" id="nextBtn" onclick="navigate(1)"><span id="nextLabel">Next</span> →</button>
     </div>
   </div>
 </div>
@@ -1397,7 +1407,7 @@ function applyUIStrings(){
     'errName','errPosition','errEmail','alreadyDoneMsg','alreadyDoneDesc',
     'welcomeTitle','welcomeDesc','catPS','catPSmeta','catTM','catTMmeta',
     'catCM','catCMmeta','catOC','catOCmeta','totalLabel','totalDetail','btnBegin',
-    'prevLabel','nextLabel'];
+    'nextLabel'];
   ids.forEach(id=>{
     const el = document.getElementById(id);
     if(el) el.textContent = t(id);
@@ -1563,6 +1573,7 @@ function timeUp(){
     state.practiceMode = false;
     document.getElementById('testView').classList.add('hidden');
     document.getElementById('timerDisplay').classList.add('hidden');
+    hideQProgress();
     state.practiceDone();
   } else {
     showSectionEnd(true);
@@ -1615,23 +1626,12 @@ function renderPracticeQ(){
       : `Ini adalah soal latihan ${nth}.`;
   }
 
-  // Sidebar
-  document.getElementById('sidebarTitle').textContent =
-    `${sec.icon} ${sec.name[state.lang]} (${state.lang==='en'?'Practice':'Latihan'})`;
-  const grid = document.getElementById('qGrid');
-  grid.innerHTML='';
-  qs.forEach((_,i)=>{
-    const d = document.createElement('div');
-    d.className='q-dot'+(i===state.practiceQIdx?' active':'')+(state.practiceAnswers[qs[i].id]!==undefined?' answered':'');
-    d.textContent=i+1;
-    d.onclick=()=>{ state.practiceQIdx=i; renderPracticeQ(); };
-    grid.appendChild(d);
-  });
+  updateQProgress(state.practiceQIdx, total,
+    `${state.lang==='en'?'Practice':'Latihan'} ${state.practiceQIdx+1}/${total}`);
 
   document.getElementById('sectionBadge').innerHTML =
     `${sec.icon} ${sec.name[state.lang]} <span style="color:#3a6fbd;font-weight:600;margin-left:6px;font-size:12px">[${state.lang==='en'?'Practice':'Latihan'}]</span>`;
-  document.getElementById('headerProgress').textContent =
-    `${state.lang==='en'?'Practice':'Latihan'} ${state.practiceQIdx+1}/${total}`;
+  document.getElementById('headerProgress').textContent = '';
 
   // Question card
   const ctx = q.context ? q.context[state.lang] : '';
@@ -1656,7 +1656,6 @@ function renderPracticeQ(){
 
   document.getElementById('questionCard').innerHTML = html;
 
-  document.getElementById('prevBtn').disabled = state.practiceQIdx===0;
   document.getElementById('nextBtn').innerHTML = isLast
     ? (state.lang==='en'?'Finish Practice ✓':'Selesai Latihan ✓')
     : `${t('nextLabel')} →`;
@@ -1675,11 +1674,6 @@ function selectPracticeAnswer(qId, idx, isMulti){
     const items = document.getElementById('questionCard').querySelectorAll('.option-item');
     items.forEach((el,i)=>el.classList.toggle('selected', i===idx));
   }
-  const qs = SECTIONS[state.sectionIdx].practiceQuestions;
-  document.getElementById('qGrid').querySelectorAll('.q-dot').forEach((d,i)=>{
-    const ans = state.practiceAnswers[qs[i].id];
-    d.classList.toggle('answered', ans!==undefined && !(Array.isArray(ans) && ans.length===0));
-  });
 }
 
 function runCountdown(numElId, labelElId, labelFn, seconds, onDone){
@@ -1703,6 +1697,7 @@ function navigate(dir){
       state.practiceMode = false;
       document.getElementById('testView').classList.add('hidden');
       document.getElementById('timerDisplay').classList.add('hidden');
+      hideQProgress();
       state.practiceDone();
       return;
     }
@@ -1783,61 +1778,58 @@ function renderSection(){
   if(sec.isDimensional){
     const dim = sec.dimensions[state.questionIdx];
     const total = sec.dimensions.length;
-    document.getElementById('headerProgress').textContent =
-      `${sec.name[state.lang]} · ${dim.name[state.lang]} (${state.questionIdx+1}/${total})`;
+    document.getElementById('headerProgress').textContent = '';
     buildSidebarOcean(sec);
     renderOceanDim(sec, dim);
-    document.getElementById('prevBtn').disabled = state.questionIdx===0;
     const isLast = state.questionIdx===total-1;
     document.getElementById('nextBtn').innerHTML = isLast ? t('finishSection') : `${t('nextLabel')} →`;
   } else {
     const q = sec.questions[state.questionIdx];
-    document.getElementById('headerProgress').textContent =
-      `${sec.name[state.lang]} · ${t('qOf')} ${state.questionIdx+1} / ${sec.questions.length}`;
+    document.getElementById('headerProgress').textContent = '';
+    document.getElementById('oceanDimNav').classList.add('hidden');
     buildSidebar();
     renderQuestion(q);
-    document.getElementById('prevBtn').disabled = state.questionIdx===0;
     const isLast = state.questionIdx===sec.questions.length-1;
     document.getElementById('nextBtn').innerHTML = isLast ? t('finishSection') : `${t('nextLabel')} →`;
   }
 }
 
+function updateQProgress(current, total, label){
+  const wrap  = document.getElementById('qProgressWrap');
+  const lbl   = document.getElementById('qProgressLabel');
+  const fill  = document.getElementById('qProgressFill');
+  wrap.classList.add('show');
+  lbl.textContent  = label || `${current+1}/${total}`;
+  fill.style.width = `${Math.round(((current+1)/total)*100)}%`;
+}
+
+function hideQProgress(){
+  document.getElementById('qProgressWrap').classList.remove('show');
+}
+
 function buildSidebar(){
   const sec = SECTIONS[state.sectionIdx];
-  document.getElementById('sidebarTitle').textContent =
-    `${sec.icon} ${sec.name[state.lang]} (${sec.questions.length})`;
-  const grid = document.getElementById('qGrid');
-  grid.innerHTML='';
-  sec.questions.forEach((q,i)=>{
-    const d = document.createElement('div');
-    d.className = 'q-dot'
-      +(i===state.questionIdx?' active':'')
-      +(state.answers[q.id]!==undefined?' answered':'');
-    d.textContent = i+1;
-    d.onclick = ()=>{ state.questionIdx=i; renderSection(); };
-    grid.appendChild(d);
-  });
+  updateQProgress(state.questionIdx, sec.questions.length);
 }
 
 function buildSidebarOcean(sec){
-  document.getElementById('sidebarTitle').textContent = `${sec.icon} ${sec.name[state.lang]}`;
-  const grid = document.getElementById('qGrid');
-  grid.innerHTML='';
-  const tabs = document.createElement('div');
-  tabs.className='dim-tabs';
+  const nav = document.getElementById('oceanDimNav');
+  nav.classList.remove('hidden');
+  nav.innerHTML = '';
+  const emojis = ['🔵','🟢','🟡','🔴','🟣'];
   sec.dimensions.forEach((dim,i)=>{
     const answered = dim.questions.filter(q=>state.answers[q.id]!==undefined).length;
-    const done = answered===dim.questions.length;
+    const done   = answered===dim.questions.length;
     const active = i===state.questionIdx;
     const tab = document.createElement('div');
-    tab.className='dim-tab'+(active?' active':'')+(done?' done':'');
-    tab.innerHTML=`<span style="font-size:18px;width:24px;text-align:center">${['🔵','🟢','🟡','🔴','🟣'][i]}</span>
-      <span>${dim.name[state.lang]}</span>
-      <span class="dim-count">${answered}/10</span>`;
-    tab.onclick=()=>{ state.questionIdx=i; renderSection(); };
-    tabs.appendChild(tab);
+    tab.className = 'odim-tab'+(active?' active':'')+(done?' done':'');
+    tab.innerHTML = `<span>${emojis[i]}</span><span>${dim.name[state.lang]}</span><span class="odim-count">${answered}/10</span>`;
+    tab.onclick = ()=>{ state.questionIdx=i; renderSection(); };
+    nav.appendChild(tab);
   });
-  grid.appendChild(tabs);
+  const total = sec.dimensions.reduce((s,d)=>s+d.questions.length, 0);
+  const answered = sec.dimensions.reduce((s,d)=>s+d.questions.filter(q=>state.answers[q.id]!==undefined).length, 0);
+  updateQProgress(answered-1, total, `${answered}/${total}`);
 }
 
 function renderOceanDim(sec, dim){
@@ -1985,6 +1977,7 @@ function showSectionEnd(timedOut){
   document.getElementById('testView').classList.add('hidden');
   document.getElementById('timerDisplay').classList.add('hidden');
   document.getElementById('headerProgress').textContent='';
+  hideQProgress();
 
   const allQ    = sec.isDimensional ? oceanAllQ(sec) : sec.questions;
   const answered= allQ.filter(q=>state.answers[q.id]!==undefined).length;
