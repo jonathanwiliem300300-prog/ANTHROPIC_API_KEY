@@ -197,6 +197,22 @@
   p{color:#555;line-height:1.7;margin-bottom:12px}
   h1{font-size:26px;margin-bottom:12px}
   h2{font-size:20px;margin-bottom:12px}
+
+  /* ── Commitment Modal ── */
+  .commit-modal{display:none;position:fixed;inset:0;background:rgba(10,10,30,0.7);backdrop-filter:blur(5px);z-index:9999;padding:32px 16px;align-items:flex-start;justify-content:center;overflow-y:auto}
+  .commit-modal.show{display:flex}
+  .commit-letter{background:#fff;max-width:620px;width:100%;border-radius:18px;box-shadow:0 28px 72px rgba(0,0,0,0.32);padding:44px 48px 40px;margin:auto;position:relative}
+  .commit-letter .commit-dear{font-size:15px;color:#666;margin-bottom:4px;line-height:1.5}
+  .commit-letter h2{font-size:22px;font-weight:800;color:#1a1a2e;margin:0 0 22px;line-height:1.3}
+  .commit-letter p{color:#444;line-height:1.8;margin-bottom:16px;font-size:15px}
+  .commit-letter .commit-commit{font-weight:700;color:#1a1a2e;margin-bottom:14px}
+  .commit-letter ul{margin:0 0 24px;padding:0;list-style:none}
+  .commit-letter ul li{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;color:#333;font-size:15px;line-height:1.6}
+  .commit-letter ul li .commit-check{color:#5c6bc0;font-weight:800;font-size:15px;margin-top:2px;flex-shrink:0}
+  .commit-divider{border:none;border-top:1px solid #eee;margin:20px 0}
+  .commit-closing{color:#444;line-height:1.8;margin-bottom:14px;font-size:15px}
+  .commit-statement{color:#5c6bc0;font-style:italic;font-weight:600;font-size:15px;margin-bottom:28px !important}
+  @media(max-width:600px){.commit-letter{padding:32px 24px 28px}}
 </style>
 </head>
 <body>
@@ -294,6 +310,22 @@
       </div>
     </div>
     <button class="btn btn-primary" id="btnStartReg" onclick="submitRegistration()">Start Assessment →</button>
+  </div>
+</div>
+
+<!-- ══════ COMMITMENT LETTER MODAL ══════ -->
+<div id="commitModal" class="commit-modal">
+  <div class="commit-letter">
+    <p class="commit-dear" id="commitDear"></p>
+    <h2 id="commitTitle"></h2>
+    <p id="commitP1"></p>
+    <p id="commitP2"></p>
+    <p class="commit-commit" id="commitP3"></p>
+    <ul id="commitList"></ul>
+    <hr class="commit-divider">
+    <p class="commit-closing" id="commitClosing"></p>
+    <p class="commit-statement" id="commitStatement"></p>
+    <button id="btnCommit" onclick="commitAndBegin()" class="btn btn-primary" style="width:100%;font-size:16px;padding:14px 0"></button>
   </div>
 </div>
 
@@ -1443,6 +1475,63 @@ function submitRegistration(){
 
   state.candidate = { name, position, email };
   document.getElementById('screenReg').classList.add('hidden');
+  showCommitmentModal();
+}
+
+// ═══════════════════════════════════════════════════════
+//  COMMITMENT MODAL
+// ═══════════════════════════════════════════════════════
+const COMMIT_TEXT = {
+  en:{
+    dear:    n => `Dear ${n},`,
+    title:   'A Note Before You Begin',
+    p1:      "There are no shortcuts here that will serve you better than your honest answers. If you look up answers or seek outside help, you may pass this test but find yourself in a role that doesn't match your true strengths — and that's a loss for both you and us.",
+    p2:      'We believe you are capable. This is your opportunity to prove it — to us, and to yourself.',
+    p3:      'By proceeding, you commit to:',
+    bullets: [
+      'Completing this assessment entirely on your own',
+      'Not using the internet, notes, or outside assistance',
+      'Answering every question with your genuine best effort'
+    ],
+    closing:   'Your honest result is the strongest result you can give us.',
+    statement: "I understand and I'm ready to begin.",
+    btn:       'Begin Test →'
+  },
+  id:{
+    dear:    n => `Kepada Yth. ${n},`,
+    title:   'Catatan Sebelum Anda Mulai',
+    p1:      'Tidak ada jalan pintas yang lebih baik daripada jawaban jujur Anda. Jika Anda mencari jawaban atau meminta bantuan dari luar, Anda mungkin lulus tes ini tetapi mendapati diri Anda dalam peran yang tidak sesuai dengan kekuatan sejati Anda — dan itu merugikan Anda maupun kami.',
+    p2:      'Kami percaya Anda mampu. Ini adalah kesempatan Anda untuk membuktikannya — kepada kami, dan kepada diri Anda sendiri.',
+    p3:      'Dengan melanjutkan, Anda berkomitmen untuk:',
+    bullets: [
+      'Menyelesaikan penilaian ini sepenuhnya secara mandiri',
+      'Tidak menggunakan internet, catatan, atau bantuan dari luar',
+      'Menjawab setiap pertanyaan dengan upaya terbaik Anda yang jujur'
+    ],
+    closing:   'Hasil jujur Anda adalah hasil terbaik yang dapat Anda berikan kepada kami.',
+    statement: 'Saya mengerti dan saya siap untuk memulai.',
+    btn:       'Mulai Tes →'
+  }
+};
+
+function showCommitmentModal(){
+  const ct = COMMIT_TEXT[state.lang];
+  document.getElementById('commitDear').textContent      = ct.dear(state.candidate.name);
+  document.getElementById('commitTitle').textContent     = ct.title;
+  document.getElementById('commitP1').textContent        = ct.p1;
+  document.getElementById('commitP2').textContent        = ct.p2;
+  document.getElementById('commitP3').textContent        = ct.p3;
+  document.getElementById('commitList').innerHTML        = ct.bullets.map(b =>
+    `<li><span class="commit-check">✓</span><span>${b}</span></li>`
+  ).join('');
+  document.getElementById('commitClosing').textContent   = ct.closing;
+  document.getElementById('commitStatement').textContent = ct.statement;
+  document.getElementById('btnCommit').textContent       = ct.btn;
+  document.getElementById('commitModal').classList.add('show');
+}
+
+function commitAndBegin(){
+  document.getElementById('commitModal').classList.remove('show');
   document.getElementById('screenWelcome').classList.remove('hidden');
 }
 
