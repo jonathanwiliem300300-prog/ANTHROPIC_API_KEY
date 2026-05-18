@@ -1840,6 +1840,7 @@ function renderSection(){
   if(sec.isDimensional){
     const dim = sec.dimensions[state.questionIdx];
     const total = sec.dimensions.length;
+    document.getElementById('sectionBadge').innerHTML = ''; // hide badge for OCEAN
     document.getElementById('headerProgress').textContent = '';
     buildSidebarOcean(sec);
     renderOceanDim(sec, dim);
@@ -1900,11 +1901,12 @@ function renderOceanDim(sec, dim){
     ? ['Sangat<br>Tidak Tepat','Kurang<br>Tepat','Netral','Cukup<br>Tepat','Sangat<br>Tepat']
     : ['Very<br>Inaccurate','Moderately<br>Inaccurate','Neither<br>Inaccurate<br>nor Accurate','Moderately<br>Accurate','Very<br>Accurate'];
 
+  const instrText = lang==='id'
+    ? 'Pilih poin yang paling sesuai dengan diri Anda.'
+    : 'Choose the point that resonates with you.';
+
   let html = `<div class="ocean-wrap">
-    <div class="ocean-dim-header" style="border-left:5px solid ${dim.color}">
-      <div class="ocean-dim-title">${dim.name[lang]}</div>
-      <div class="ocean-dim-sub">${lang==='id'?'Nilai seberapa akurat setiap pernyataan menggambarkan diri Anda:':'Rate how accurately each statement describes you:'}</div>
-    </div>
+    <p style="font-size:14px;color:#666;margin:0 0 20px;line-height:1.6">${instrText}</p>
     <div class="ocean-table-wrap">
     <table class="ocean-tbl">
       <thead><tr>
