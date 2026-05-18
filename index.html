@@ -1876,7 +1876,7 @@ function buildSidebar(){
 
 function buildSidebarOcean(sec){
   const nav = document.getElementById('oceanDimNav');
-  nav.classList.remove('hidden');
+  nav.classList.add('hidden');
   nav.innerHTML = '';
   const emojis = ['🔵','🟢','🟡','🔴','🟣'];
   sec.dimensions.forEach((dim,i)=>{
