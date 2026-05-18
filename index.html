@@ -228,6 +228,7 @@
   .commit-statement{color:#5c6bc0;font-style:italic;font-weight:600;font-size:15px;margin-bottom:28px !important}
   @media(max-width:600px){.commit-letter{padding:32px 24px 28px}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
 
@@ -459,6 +460,20 @@
 //  ⚙️  CONFIG — paste your Google Apps Script URL here
 // ═══════════════════════════════════════════════════════
 const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwFoXW72v7tT4qLwTNaH_tzcoLU--bFNrtL3-57vbbbFPnyH1kYBrIlpNxp8O3moKTK/exec';
+
+// ═══════════════════════════════════════════════════════
+//  📧  EMAILJS CONFIG — fill in to enable result emails
+//  1. Sign up free at https://www.emailjs.com
+//  2. Add a Gmail (or other) email service → copy Service ID
+//  3. Create a template with these variables (see sendResultEmail below)
+//     → copy Template ID
+//  4. Go to Account → copy Public Key
+// ═══════════════════════════════════════════════════════
+const EMAILJS_PUBLIC_KEY   = '';  // e.g. 'user_xxxxxxxxxxxxxxx'
+const EMAILJS_SERVICE_ID   = '';  // e.g. 'service_xxxxxxx'
+const EMAILJS_TEMPLATE_ID  = '';  // e.g. 'template_xxxxxxx'
+
+if(EMAILJS_PUBLIC_KEY) emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
 
 // ═══════════════════════════════════════════════════════
 //  TRANSLATIONS
@@ -2134,6 +2149,55 @@ async function submitToSheet(data){
   } catch(e){ return false; }
 }
 
+// ═══════════════════════════════════════════════════════
+//  EMAIL RESULTS
+// ═══════════════════════════════════════════════════════
+/*
+  Required EmailJS template variables — paste this as your template body:
+
+  To:      {{to_email}}
+  Subject: Your Assessment Results – {{to_name}}
+
+  Dear {{to_name}},
+
+  Thank you for completing the Hiring Assessment for {{position}}.
+  Below are your results:
+
+  📊 Problem Solving  : {{ps_result}}
+  ⏱  Time Management  : {{tm_result}}
+  💬 Communication    : {{cm_result}}
+
+  🧠 Big 5 Personality (OCEAN):
+    Openness           : {{ocean_o}}%
+    Conscientiousness  : {{ocean_c}}%
+    Extraversion       : {{ocean_e}}%
+    Agreeableness      : {{ocean_a}}%
+    Neuroticism        : {{ocean_n}}%
+
+  Best regards,
+  The HR Team
+*/
+async function sendResultEmail(ps, tm, cm, ocE, ocA, ocC, ocN, ocO){
+  if(!EMAILJS_PUBLIC_KEY || !EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID) return;
+  const {name, email, position} = state.candidate;
+  const pct = (sc) => `${sc.correct}/${sc.total} (${sc.pct}%)`;
+  try{
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      to_email:   email,
+      to_name:    name,
+      position:   position,
+      ps_result:  pct(ps),
+      tm_result:  pct(tm),
+      cm_result:  pct(cm),
+      ocean_e:    ocE,
+      ocean_a:    ocA,
+      ocean_c:    ocC,
+      ocean_n:    ocN,
+      ocean_o:    ocO
+    });
+  } catch(e){ console.warn('EmailJS error:', e); }
+}
+
 function showResults(){
   document.getElementById('screenSectionEnd').classList.add('hidden');
   document.getElementById('screenResults').classList.remove('hidden');
@@ -2167,6 +2231,9 @@ function showResults(){
 
   const rc = document.getElementById('resultsCard');
   rc.innerHTML = buildResultsHTML(ps, tm, cm, ocAnswered);
+
+  // Email results to candidate
+  sendResultEmail(ps, tm, cm, ocE, ocA, ocC, ocN, ocO);
 
   // Animate OCEAN bars + submit
   setTimeout(()=>{
