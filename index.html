@@ -335,9 +335,12 @@
     </div>
     <div class="form-group">
       <label class="form-label" id="lblPosition">Position Applied For</label>
-      <input class="form-input" type="text" id="inpPosition" list="positionList" placeholder="e.g. Marketing Manager" autocomplete="off">
-      <datalist id="positionList"></datalist>
-      <div class="form-error" id="errPosition">Please enter the position you are applying for.</div>
+      <select class="form-input" id="inpPosition">
+        <option value="" disabled selected>Select a position…</option>
+        <option value="Community &amp; Partnership Officer (Part Time)">Community &amp; Partnership Officer (Part Time)</option>
+        <option value="Content Creator (Part Time)">Content Creator (Part Time)</option>
+      </select>
+      <div class="form-error" id="errPosition">Please select the position you are applying for.</div>
     </div>
     <div class="form-group">
       <label class="form-label" id="lblEmail">Email Address</label>
@@ -507,7 +510,7 @@ const UI = {
     lblPosition: 'Position Applied For',
     lblEmail: 'Email Address',
     errName: 'Please enter your full name.',
-    errPosition: 'Please enter the position you are applying for.',
+    errPosition: 'Please select the position you are applying for.',
     errEmail: 'Please enter a valid email address.',
     alreadyDoneMsg: 'You have already completed this assessment.',
     alreadyDoneDesc: 'Each email address can only be used once. Please contact HR if you believe this is an error.',
@@ -574,7 +577,7 @@ const UI = {
     lblPosition: 'Posisi yang Dilamar',
     lblEmail: 'Alamat Email',
     errName: 'Mohon masukkan nama lengkap Anda.',
-    errPosition: 'Mohon masukkan posisi yang Anda lamar.',
+    errPosition: 'Mohon pilih posisi yang Anda lamar.',
     errEmail: 'Mohon masukkan alamat email yang valid.',
     alreadyDoneMsg: 'Anda sudah pernah menyelesaikan tes ini.',
     alreadyDoneDesc: 'Setiap alamat email hanya dapat digunakan satu kali. Hubungi tim HR jika Anda merasa ini adalah kesalahan.',
