@@ -15,6 +15,10 @@
   .timer-box{display:flex;align-items:center;gap:8px;background:#fff3e0;border:1.5px solid #ff9800;border-radius:8px;padding:6px 14px;font-weight:700;font-size:20px;color:#e65100;min-width:110px;justify-content:center}
   .timer-box.warning{background:#ffeaea;border-color:#e53935;color:#c62828;animation:pulse 1s infinite}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+  @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+  .shake{animation:shake .35s ease}
+  .answer-warn{display:none;background:#fff3f3;border:1.5px solid #f44336;border-radius:10px;padding:10px 16px;font-size:13px;font-weight:600;color:#c62828;margin-top:12px}
+  .answer-warn.show{display:block}
   .progress-pill{font-size:13px;color:#666;background:#f0f0f0;border-radius:20px;padding:4px 12px}
 
   /* Screens */
@@ -63,17 +67,27 @@
   .btn-sm{padding:8px 18px;font-size:13px}
 
   /* Test layout */
-  .test-wrapper{display:flex;min-height:calc(100vh - 64px)}
-  .sidebar{width:260px;background:#fff;border-right:1px solid #e0e0e0;padding:24px 16px;overflow-y:auto;position:sticky;top:64px;height:calc(100vh - 64px)}
-  .sidebar-title{font-size:12px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px}
-  .q-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
-  .q-dot{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;cursor:pointer;border:2px solid #e0e0e0;color:#888;background:#fafafa;transition:all .15s}
-  .q-dot:hover{border-color:#5c6bc0;color:#5c6bc0}
-  .q-dot.active{border-color:#5c6bc0;background:#5c6bc0;color:#fff}
-  .q-dot.answered{border-color:#43a047;background:#e8f5e9;color:#2e7d32}
-  .q-dot.answered.active{background:#43a047;color:#fff}
-  .main-content{flex:1;padding:32px;max-width:860px}
-  @media(max-width:768px){.sidebar{display:none}}
+  .test-wrapper{display:block;min-height:calc(100vh - 64px)}
+  .main-content{max-width:860px;margin:0 auto;padding:32px}
+  @media(max-width:768px){.main-content{padding:20px 16px}}
+
+  /* Question progress bar (header) */
+  .qp-wrap{display:none;align-items:center;gap:8px}
+  .qp-wrap.show{display:flex}
+  .qp-label{font-size:13px;font-weight:700;color:#444;white-space:nowrap;min-width:38px;text-align:right}
+  .qp-track{width:110px;height:5px;background:#e0e0e0;border-radius:3px;overflow:hidden}
+  .qp-fill{height:100%;background:#5c6bc0;border-radius:3px;transition:width .3s ease}
+  @media(max-width:500px){.qp-track{width:64px}}
+
+  /* OCEAN inline dimension nav */
+  .ocean-dim-nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+  .ocean-dim-nav.hidden{display:none}
+  .odim-tab{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:20px;border:2px solid #e0e0e0;background:#fafafa;cursor:pointer;font-size:13px;font-weight:600;color:#666;transition:all .15s}
+  .odim-tab:hover{border-color:#5c6bc0;color:#5c6bc0}
+  .odim-tab.active{border-color:#5c6bc0;background:#5c6bc0;color:#fff}
+  .odim-tab.done{border-color:#43a047;background:#e8f5e9;color:#2e7d32}
+  .odim-tab.done.active{background:#43a047;color:#fff;border-color:#43a047}
+  .odim-count{font-size:11px;opacity:.8}
 
   /* Section badge */
   .section-badge{display:inline-flex;align-items:center;gap:8px;background:#e8eaf6;color:#3f4faa;border-radius:20px;padding:6px 16px;font-size:13px;font-weight:600;margin-bottom:20px}
@@ -125,6 +139,37 @@
   .ocean-bar-bg{background:#f0f0f0;border-radius:8px;height:12px;overflow:hidden}
   .ocean-bar-fill{height:100%;border-radius:8px;transition:width .7s ease}
 
+  /* Break page */
+  .break-divider{border:none;border-top:1.5px solid #e8eaf6;margin:28px 0}
+  .break-done-badge{display:inline-flex;align-items:center;gap:10px;background:#e8f5e9;border:2px solid #43a047;border-radius:12px;padding:14px 22px;margin-bottom:24px}
+  .break-done-icon{font-size:28px}
+  .break-done-text{text-align:left}
+  .break-done-title{font-size:17px;font-weight:700;color:#2e7d32}
+  .break-done-sub{font-size:13px;color:#555;margin-top:2px}
+  .break-rest{text-align:center;padding:20px 0}
+  .break-rest-icon{font-size:40px;margin-bottom:10px}
+  .break-rest-title{font-size:16px;font-weight:700;color:#444;margin-bottom:6px}
+  .break-rest-desc{font-size:14px;color:#777;line-height:1.6}
+  .break-next-card{background:#f8f9ff;border:2px solid #c5cae9;border-radius:12px;padding:20px 24px;margin:8px 0 28px}
+  .break-next-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#888;margin-bottom:10px}
+  .break-next-name{font-size:18px;font-weight:700;color:#1a1a2e;margin-bottom:6px}
+  .break-next-meta{font-size:13px;color:#666}
+
+  /* Practice badge (intro screen) */
+  .practice-badge{display:inline-block;background:#dde8f7;color:#3a6fbd;border-radius:20px;padding:5px 16px;font-size:13px;font-weight:600;margin-bottom:4px}
+  /* Practice banner inside question card */
+  .practice-q-banner{display:flex;align-items:center;gap:10px;background:#e8eef8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:14px;color:#2c4a8a;font-weight:500}
+  .practice-q-banner-icon{font-size:18px;flex-shrink:0}
+
+  /* Section intro / countdown */
+  .intro-label{font-size:14px;color:#888;margin-bottom:12px}
+  .intro-name{font-size:32px;font-weight:800;color:#1a1a2e;margin-bottom:16px}
+  .intro-tagline{font-size:15px;color:#555;margin-bottom:28px}
+  .intro-divider{border:none;border-top:1.5px solid #e0e0e0;margin:28px 0}
+  .intro-countdown-label{font-size:15px;color:#444;margin-bottom:12px}
+  .intro-countdown-num{font-size:28px;font-weight:800;color:#e65100;display:inline}
+  .intro-warning{font-size:14px;color:#555;line-height:1.7;margin-top:16px}
+
   /* Candidate info box */
   .candidate-box{background:#f8f9ff;border:2px solid #e8eaf6;border-radius:12px;padding:20px;margin-bottom:24px;display:flex;gap:16px;flex-wrap:wrap}
   .candidate-box span{font-size:14px;color:#555}
@@ -166,7 +211,24 @@
   p{color:#555;line-height:1.7;margin-bottom:12px}
   h1{font-size:26px;margin-bottom:12px}
   h2{font-size:20px;margin-bottom:12px}
+
+  /* ── Commitment Modal ── */
+  .commit-modal{display:none;position:fixed;inset:0;background:rgba(10,10,30,0.7);backdrop-filter:blur(5px);z-index:9999;padding:32px 16px;align-items:flex-start;justify-content:center;overflow-y:auto}
+  .commit-modal.show{display:flex}
+  .commit-letter{background:#fff;max-width:620px;width:100%;border-radius:18px;box-shadow:0 28px 72px rgba(0,0,0,0.32);padding:44px 48px 40px;margin:auto;position:relative}
+  .commit-letter .commit-dear{font-size:15px;color:#666;margin-bottom:4px;line-height:1.5}
+  .commit-letter h2{font-size:22px;font-weight:800;color:#1a1a2e;margin:0 0 22px;line-height:1.3}
+  .commit-letter p{color:#444;line-height:1.8;margin-bottom:16px;font-size:15px}
+  .commit-letter .commit-commit{font-weight:700;color:#1a1a2e;margin-bottom:14px}
+  .commit-letter ul{margin:0 0 24px;padding:0;list-style:none}
+  .commit-letter ul li{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;color:#333;font-size:15px;line-height:1.6}
+  .commit-letter ul li .commit-check{color:#5c6bc0;font-weight:800;font-size:15px;margin-top:2px;flex-shrink:0}
+  .commit-divider{border:none;border-top:1px solid #eee;margin:20px 0}
+  .commit-closing{color:#444;line-height:1.8;margin-bottom:14px;font-size:15px}
+  .commit-statement{color:#5c6bc0;font-style:italic;font-weight:600;font-size:15px;margin-bottom:28px !important}
+  @media(max-width:600px){.commit-letter{padding:32px 24px 28px}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
 
@@ -229,6 +291,10 @@
 <div class="header" id="mainHeader">
   <div class="header-title" id="hTitle">Hiring Assessment</div>
   <div class="header-meta">
+    <div class="qp-wrap" id="qProgressWrap">
+      <span class="qp-label" id="qProgressLabel">1/12</span>
+      <div class="qp-track"><div class="qp-fill" id="qProgressFill" style="width:0%"></div></div>
+    </div>
     <span class="progress-pill" id="headerProgress"></span>
     <div class="timer-box hidden" id="timerDisplay">00:00</div>
   </div>
@@ -286,6 +352,22 @@
   </div>
 </div>
 
+<!-- ══════ COMMITMENT LETTER MODAL ══════ -->
+<div id="commitModal" class="commit-modal">
+  <div class="commit-letter">
+    <p class="commit-dear" id="commitDear"></p>
+    <h2 id="commitTitle"></h2>
+    <p id="commitP1"></p>
+    <p id="commitP2"></p>
+    <p class="commit-commit" id="commitP3"></p>
+    <ul id="commitList"></ul>
+    <hr class="commit-divider">
+    <p class="commit-closing" id="commitClosing"></p>
+    <p class="commit-statement" id="commitStatement"></p>
+    <button id="btnCommit" onclick="commitAndBegin()" class="btn btn-primary" style="width:100%;font-size:16px;padding:14px 0"></button>
+  </div>
+</div>
+
 <!-- ══════ SCREEN 2: WELCOME ══════ -->
 <div id="screenWelcome" class="screen hidden">
   <div class="card">
@@ -305,7 +387,7 @@
       <div class="category-card">
         <div class="cat-icon">💬</div>
         <div class="cat-name" id="catCM">Communication</div>
-        <div class="cat-meta" id="catCMmeta">15 questions · 8 minutes · Entry Level</div>
+        <div class="cat-meta" id="catCMmeta">16 questions · 8 minutes · Entry Level</div>
       </div>
       <div class="category-card">
         <div class="cat-icon">🧠</div>
@@ -315,22 +397,19 @@
     </div>
     <p><strong id="totalLabel">Total:</strong> <span id="totalDetail">93 questions · 4 sections · 36 minutes</span></p>
     <br>
-    <button class="btn btn-primary" onclick="startSection(0)" id="btnBegin">Begin Test →</button>
+    <button class="btn btn-primary" onclick="launchSection(0)" id="btnBegin">Begin Test →</button>
   </div>
 </div>
 
 <!-- ══════ SCREEN 3: TEST VIEW ══════ -->
 <div id="testView" class="test-wrapper hidden">
-  <div class="sidebar">
-    <div class="sidebar-title" id="sidebarTitle">Questions</div>
-    <div class="q-grid" id="qGrid"></div>
-  </div>
   <div class="main-content">
     <div class="section-badge" id="sectionBadge"></div>
+    <div id="oceanDimNav" class="ocean-dim-nav hidden"></div>
     <div class="question-card" id="questionCard"></div>
-    <div class="nav-row">
-      <button class="btn btn-secondary" id="prevBtn" onclick="navigate(-1)">← <span id="prevLabel">Previous</span></button>
-      <button class="btn btn-primary"   id="nextBtn" onclick="navigate(1)"><span id="nextLabel">Next</span> →</button>
+    <div id="answerWarn" class="answer-warn"></div>
+    <div class="nav-row" style="justify-content:flex-end">
+      <button class="btn btn-primary" id="nextBtn" onclick="navigate(1)"><span id="nextLabel">Next</span> →</button>
     </div>
   </div>
 </div>
@@ -338,6 +417,57 @@
 <!-- ══════ SCREEN 4: SECTION END ══════ -->
 <div id="screenSectionEnd" class="screen hidden">
   <div class="card" id="sectionEndCard"></div>
+</div>
+
+<!-- ══════ SCREEN 4b: BREAK ══════ -->
+<div id="screenBreak" class="screen hidden">
+  <div class="card" style="text-align:center">
+    <div id="breakDoneBadge" class="break-done-badge" style="display:inline-flex">
+      <div class="break-done-icon">✅</div>
+      <div class="break-done-text">
+        <div class="break-done-title" id="breakDoneTitle"></div>
+        <div class="break-done-sub" id="breakDoneSub"></div>
+      </div>
+    </div>
+    <hr class="break-divider">
+    <div class="break-rest">
+      <div class="break-rest-icon">☕</div>
+      <div class="break-rest-title" id="breakRestTitle">Take a short break</div>
+      <div class="break-rest-desc" id="breakRestDesc">Rest your eyes, grab some water, and come back when you're ready.</div>
+    </div>
+    <hr class="break-divider">
+    <div class="break-next-label" id="breakNextLabel">Up Next</div>
+    <div class="break-next-card">
+      <div class="break-next-name" id="breakNextName"></div>
+      <div class="break-next-meta" id="breakNextMeta"></div>
+    </div>
+    <button class="btn btn-primary" id="btnBreakContinue" onclick="continueFromBreak()"></button>
+  </div>
+</div>
+
+<!-- ══════ SCREEN 4b-2: PRACTICE INTRO / COUNTDOWN ══════ -->
+<div id="screenPracticeIntro" class="screen hidden">
+  <div class="card" style="text-align:left">
+    <p class="intro-label" id="practiceIntroLabel">This is the next test:</p>
+    <p class="intro-name" id="practiceIntroName"></p>
+    <span class="practice-badge" id="practiceBadge">Practice questions</span>
+    <p class="intro-tagline" style="margin-top:20px" id="practiceIntroTagline"></p>
+    <hr class="intro-divider">
+    <p class="intro-countdown-label" id="practiceCountdownLabel"></p>
+    <p class="intro-warning" id="practiceIntroWarning"></p>
+  </div>
+</div>
+
+<!-- ══════ SCREEN 4c: SECTION INTRO / COUNTDOWN ══════ -->
+<div id="screenIntro" class="screen hidden">
+  <div class="card" style="text-align:left">
+    <p class="intro-label" id="introLabel">This is the next test:</p>
+    <p class="intro-name" id="introName"></p>
+    <p class="intro-tagline" id="introTagline">The actual test starts now. Good luck!</p>
+    <hr class="intro-divider">
+    <p class="intro-countdown-label" id="introCountdownLabel">The test will start in <span class="intro-countdown-num" id="introCountdownNum">12</span> seconds</p>
+    <p class="intro-warning" id="introWarning">Please stay on this screen. The timer for your next test has <strong>started</strong> and <strong>cannot be paused</strong>. The timer continues even when you close the browser.</p>
+  </div>
 </div>
 
 <!-- ══════ SCREEN 5: RESULTS ══════ -->
@@ -350,6 +480,20 @@
 //  ⚙️  CONFIG — paste your Google Apps Script URL here
 // ═══════════════════════════════════════════════════════
 const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxMvieaiBDVmK0Y7EYGJv34cxMKn_zhvVGgwmSFQadBbIOEkxibUV9jobfZpTTBFRE2/exec';
+
+// ═══════════════════════════════════════════════════════
+//  📧  EMAILJS CONFIG — fill in to enable result emails
+//  1. Sign up free at https://www.emailjs.com
+//  2. Add a Gmail (or other) email service → copy Service ID
+//  3. Create a template with these variables (see sendResultEmail below)
+//     → copy Template ID
+//  4. Go to Account → copy Public Key
+// ═══════════════════════════════════════════════════════
+const EMAILJS_PUBLIC_KEY   = '';  // e.g. 'user_xxxxxxxxxxxxxxx'
+const EMAILJS_SERVICE_ID   = '';  // e.g. 'service_xxxxxxx'
+const EMAILJS_TEMPLATE_ID  = '';  // e.g. 'template_xxxxxxx'
+
+if(EMAILJS_PUBLIC_KEY) emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
 
 // ═══════════════════════════════════════════════════════
 //  TRANSLATIONS
@@ -372,7 +516,7 @@ const UI = {
     welcomeDesc: 'This assessment measures four key professional competencies. Please complete each section within the allotted time.',
     catPS: 'Problem Solving',    catPSmeta: '12 questions · 9 minutes · Intermediate',
     catTM: 'Time Management',    catTMmeta: '16 questions · 9 minutes · Intermediate',
-    catCM: 'Communication',      catCMmeta: '15 questions · 8 minutes · Entry Level',
+    catCM: 'Communication',      catCMmeta: '16 questions · 8 minutes · Entry Level',
     catOC: 'Big 5 (OCEAN)',      catOCmeta: '50 questions · 10 minutes · Self-Assessment',
     totalLabel: 'Total:',
     totalDetail: '93 questions · 4 sections · 36 minutes',
@@ -388,6 +532,19 @@ const UI = {
     nextSection: 'Next section:',
     btnNextSection: 'Start Next Section →',
     btnViewResults: 'View Full Results →',
+    breakRestTitle: 'Take a short break',
+    breakRestDesc: 'Rest your eyes, grab some water, and come back when you\'re ready.',
+    breakNextLabel: 'Up Next',
+    breakContinue: 'Continue to Next Section →',
+    introLabel: 'This is the next test:',
+    introTagline: 'The actual test starts now. Good luck!',
+    introCountdownLabel: 'The test will start in',
+    introCountdownSuffix: 'seconds',
+    introWarning: 'Please stay on this screen. The timer for your next test has <strong>started</strong> and <strong>cannot be paused</strong>. The timer continues even when you close the browser.',
+    practiceBadge: 'Practice questions',
+    practiceTagline: 'You will first see <strong>{n} practice questions</strong> for this test to get a sense of what to expect. After that, your actual tests will begin.',
+    practiceCountdownLabel: 'Practice questions will start in',
+    practiceCountdownSuffix: 'seconds',
     resultsTitle: 'Assessment Results',
     resultsSub: 'Here is a summary of your performance across all four sections.',
     oceanSub: 'This section has no right or wrong answers. The bars reflect your self-reported tendencies on each dimension.',
@@ -426,7 +583,7 @@ const UI = {
     welcomeDesc: 'Tes ini mengukur empat kompetensi profesional utama. Harap selesaikan setiap bagian dalam waktu yang ditentukan.',
     catPS: 'Pemecahan Masalah',  catPSmeta: '12 soal · 9 menit · Menengah',
     catTM: 'Manajemen Waktu',   catTMmeta: '16 soal · 9 menit · Menengah',
-    catCM: 'Komunikasi',        catCMmeta: '15 soal · 8 menit · Dasar',
+    catCM: 'Komunikasi',        catCMmeta: '16 soal · 8 menit · Dasar',
     catOC: 'Big 5 (OCEAN)',     catOCmeta: '50 pernyataan · 10 menit · Penilaian Diri',
     totalLabel: 'Total:',
     totalDetail: '93 soal · 4 bagian · 36 menit',
@@ -442,6 +599,19 @@ const UI = {
     nextSection: 'Bagian berikutnya:',
     btnNextSection: 'Mulai Bagian Berikutnya →',
     btnViewResults: 'Lihat Hasil Lengkap →',
+    breakRestTitle: 'Istirahat sejenak',
+    breakRestDesc: 'Istirahatkan mata Anda, minum air, dan kembali saat Anda siap.',
+    breakNextLabel: 'Selanjutnya',
+    breakContinue: 'Lanjut ke Bagian Berikutnya →',
+    introLabel: 'Tes berikutnya adalah:',
+    introTagline: 'Tes yang sebenarnya dimulai sekarang. Semoga berhasil!',
+    introCountdownLabel: 'Tes akan dimulai dalam',
+    introCountdownSuffix: 'detik',
+    introWarning: 'Harap tetap di layar ini. Timer untuk tes berikutnya telah <strong>dimulai</strong> dan <strong>tidak dapat dijeda</strong>. Timer terus berjalan meski Anda menutup browser.',
+    practiceBadge: 'Soal latihan',
+    practiceTagline: 'Anda akan melihat <strong>{n} soal latihan</strong> terlebih dahulu untuk memahami apa yang diharapkan. Setelah itu, tes sesungguhnya akan dimulai.',
+    practiceCountdownLabel: 'Soal latihan akan dimulai dalam',
+    practiceCountdownSuffix: 'detik',
     resultsTitle: 'Hasil Penilaian',
     resultsSub: 'Berikut adalah ringkasan performa Anda di keempat bagian.',
     oceanSub: 'Bagian ini tidak memiliki jawaban benar atau salah. Grafik mencerminkan kecenderungan yang Anda laporkan sendiri pada setiap dimensi.',
@@ -472,111 +642,202 @@ const SECTIONS = [
   // ── PROBLEM SOLVING ──────────────────────────────────
   {
     id:'ps', icon:'🧩', timeSeconds:9*60, scoreable:true,
-    name:{en:'Problem Solving', id:'Pemecahan Masalah'},
-    questions:[
+    meta:{en:'12 questions · 9 minutes · Intermediate', id:'12 soal · 9 menit · Menengah'},
+    practiceCount:4,
+    practiceQuestions:[
       {
-        id:'ps1',
+        id:'psp1',
         context:{
-          en:'The following is the schedule of Nathan, Sarah, and Violet:\n\nSun: Sarah | Mon: Violet, Nathan | Tue: Sarah, Violet | Wed: Violet, Nathan | Thu: Sarah, Violet | Fri: Nathan | Sat: Sarah\n\nNancy can work any day Nathan or Joy are scheduled. Joy can work any day Sarah or Violet are scheduled.',
-          id:'Berikut adalah jadwal Nathan, Sarah, dan Violet:\n\nMinggu: Sarah | Senin: Violet, Nathan | Selasa: Sarah, Violet | Rabu: Violet, Nathan | Kamis: Sarah, Violet | Jumat: Nathan | Sabtu: Sarah\n\nNancy bisa bekerja di hari mana pun Nathan atau Joy dijadwalkan. Joy bisa bekerja di hari mana pun Sarah atau Violet dijadwalkan.'
+          en:'The following is the schedule of Nathan, Sarah, and Violet:\n<table class="sched-tbl"><thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead><tbody><tr><td>Sarah</td><td>Violet</td><td>Sarah</td><td>Violet</td><td>Sarah</td><td>Nathan</td><td>Sarah</td></tr><tr><td></td><td>Nathan</td><td>Violet</td><td>Nathan</td><td>Violet</td><td></td><td></td></tr></tbody></table>\nNancy can work on any day either Nathan or Joy are scheduled. Joy can work on any day either Sarah or Violet are scheduled.',
+          id:'Berikut adalah jadwal Nathan, Sarah, dan Violet:\n<table class="sched-tbl"><thead><tr><th>Min</th><th>Sen</th><th>Sel</th><th>Rab</th><th>Kam</th><th>Jum</th><th>Sab</th></tr></thead><tbody><tr><td>Sarah</td><td>Violet</td><td>Sarah</td><td>Violet</td><td>Sarah</td><td>Nathan</td><td>Sarah</td></tr><tr><td></td><td>Nathan</td><td>Violet</td><td>Nathan</td><td>Violet</td><td></td><td></td></tr></tbody></table>\nNancy dapat bekerja pada hari apa pun Nathan atau Joy dijadwalkan. Joy dapat bekerja pada hari apa pun Sarah atau Violet dijadwalkan.'
         },
         text:{en:'Who can be scheduled for any day of the week?', id:'Siapa yang bisa dijadwalkan setiap hari dalam seminggu?'},
         type:'single',
-        options:{en:['No one','Nancy','Joy','Joy and Nancy'], id:['Tidak ada','Nancy','Joy','Joy dan Nancy']},
-        answer:2
+        options:{en:['No one','Joy','Joy and Nancy','Nancy'], id:['Tidak ada','Joy','Joy dan Nancy','Nancy']},
+        answer:3
       },
       {
-        id:'ps2',
-        context:{en:'45 people in a certain company can work together to finish a project in 15 days. For a project of the same workload, the company decided to use 15 people. Assume all people have the same level of productivity.', id:'45 orang di sebuah perusahaan dapat menyelesaikan sebuah proyek bersama dalam 15 hari. Untuk proyek dengan beban kerja yang sama, perusahaan memutuskan menggunakan 15 orang. Asumsikan semua orang memiliki produktivitas yang sama.'},
-        text:{en:'In how many days can this project be completed?', id:'Dalam berapa hari proyek ini bisa diselesaikan?'},
+        id:'psp2',
+        context:{
+          en:'45 people in a certain company can work together to finish a project in 15 days. For a project of the same workload, the company decided to use 15 people. Assume all people have the same level of productivity.',
+          id:'45 orang di suatu perusahaan dapat bekerja bersama untuk menyelesaikan sebuah proyek dalam 15 hari. Untuk proyek dengan beban kerja yang sama, perusahaan memutuskan menggunakan 15 orang. Asumsikan semua orang memiliki tingkat produktivitas yang sama.'
+        },
+        text:{en:'In how many days can this project be completed?', id:'Dalam berapa hari proyek ini dapat diselesaikan?'},
         type:'single',
         options:{en:['5 days','10 days','22.5 days','45 days'], id:['5 hari','10 hari','22,5 hari','45 hari']},
         answer:3
       },
       {
-        id:'ps3',
-        context:{en:'A table shows the order in which ingredients A–F need to be mixed (left = first). A is in position 3, C is in position 5. We also know: A and D are added in consecutive steps; B is added before A; F is not added right before or after C.', id:'Sebuah tabel menunjukkan urutan bahan A–F yang perlu dicampur (kiri = pertama). A ada di posisi 3, C ada di posisi 5. Kita juga tahu: A dan D ditambahkan dalam langkah yang berurutan; B ditambahkan sebelum A; F tidak ditambahkan tepat sebelum atau sesudah C.'},
+        id:'psp3',
+        context:{
+          en:'The following table shows the order in which certain ingredients, labelled A through F, need to be mixed (left goes first, right goes last).\n<div style="display:flex;gap:6px;margin:14px 0"><div style="background:#1a1a1a;width:48px;height:48px;border-radius:6px"></div><div style="background:#1a1a1a;width:48px;height:48px;border-radius:6px"></div><div style="background:#1a1a1a;width:48px;height:48px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px">A</div><div style="background:#1a1a1a;width:48px;height:48px;border-radius:6px"></div><div style="background:#1a1a1a;width:48px;height:48px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px">C</div><div style="background:#1a1a1a;width:48px;height:48px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px">?</div></div>\nAdditionally, we know that:\n• Ingredients A and D are added in consecutive steps\n• B is added before A\n• F is not added right before or after C',
+          id:'Tabel berikut menunjukkan urutan pencampuran bahan-bahan tertentu, berlabel A hingga F (kiri lebih dulu, kanan terakhir).\n<div style="display:flex;gap:6px;margin:14px 0"><div style="background:#1a1a1a;width:48px;height:48px;border-radius:6px"></div><div style="background:#1a1a1a;width:48px;height:48px;border-radius:6px"></div><div style="background:#1a1a1a;width:48px;height:48px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px">A</div><div style="background:#1a1a1a;width:48px;height:48px;border-radius:6px"></div><div style="background:#1a1a1a;width:48px;height:48px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px">C</div><div style="background:#1a1a1a;width:48px;height:48px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px">?</div></div>\nSelain itu, diketahui bahwa:\n• Bahan A dan D ditambahkan dalam langkah berurutan\n• B ditambahkan sebelum A\n• F tidak ditambahkan tepat sebelum atau sesudah C'
+        },
         text:{en:'Which ingredient needs to be added last?', id:'Bahan mana yang perlu ditambahkan terakhir?'},
         type:'single',
         options:{en:['B','D','E','F'], id:['B','D','E','F']},
         answer:2
       },
       {
-        id:'ps4',
-        context:{en:'A customer wants an eggless cake with an organic topping.\n\nOrganic toppings: Cherries, Strawberries, Apples, Pears\nNon-organic toppings: Oranges, Kiwis\nEggless cakes: Butter cakes, Sponge cakes, Chiffon cakes\nCakes with egg: Pound cakes, Carrot cakes, Genoise cakes', id:'Seorang pelanggan ingin memesan kue tanpa telur dengan topping organik.\n\nTopping organik: Ceri, Stroberi, Apel, Pir\nTopping non-organik: Jeruk, Kiwi\nKue tanpa telur: Butter cake, Sponge cake, Chiffon cake\nKue dengan telur: Pound cake, Carrot cake, Genoise cake'},
-        text:{en:'Which of the following can she order?', id:'Mana dari pilihan berikut yang bisa ia pesan?'},
+        id:'psp4',
+        context:{
+          en:'A customer wants an eggless cake with an organic topping.\n<table style="border-collapse:collapse;width:100%;margin:12px 0;font-size:13px"><thead><tr><th colspan="2" style="background:#2d6e65;color:#fff;padding:8px;text-align:center;border:1px solid #c0d8d4">Toppings</th><th colspan="2" style="background:#2d6e65;color:#fff;padding:8px;text-align:center;border:1px solid #c0d8d4">Cakes</th></tr><tr><th style="background:#4aaa9a;color:#fff;padding:6px 10px;border:1px solid #c0d8d4">Organic</th><th style="background:#4aaa9a;color:#fff;padding:6px 10px;border:1px solid #c0d8d4">Non-organic</th><th style="background:#4aaa9a;color:#fff;padding:6px 10px;border:1px solid #c0d8d4">Eggless</th><th style="background:#4aaa9a;color:#fff;padding:6px 10px;border:1px solid #c0d8d4">With egg</th></tr></thead><tbody><tr><td style="padding:6px 10px;border:1px solid #ddd">Cherries</td><td style="padding:6px 10px;border:1px solid #ddd">Oranges</td><td style="padding:6px 10px;border:1px solid #ddd">Butter cakes</td><td style="padding:6px 10px;border:1px solid #ddd">Pound cakes</td></tr><tr><td style="padding:6px 10px;border:1px solid #ddd">Strawberries</td><td style="padding:6px 10px;border:1px solid #ddd">Kiwis</td><td style="padding:6px 10px;border:1px solid #ddd">Sponge cakes</td><td style="padding:6px 10px;border:1px solid #ddd">Carrot cakes</td></tr><tr><td style="padding:6px 10px;border:1px solid #ddd">Apples</td><td style="padding:6px 10px;border:1px solid #ddd">Pears</td><td style="padding:6px 10px;border:1px solid #ddd">Chiffon cakes</td><td style="padding:6px 10px;border:1px solid #ddd">Genoise cakes</td></tr><tr><td style="padding:6px 10px;border:1px solid #ddd">Pears</td><td style="padding:6px 10px;border:1px solid #ddd"></td><td style="padding:6px 10px;border:1px solid #ddd"></td><td style="padding:6px 10px;border:1px solid #ddd"></td></tr></tbody></table>',
+          id:'Seorang pelanggan ingin memesan kue tanpa telur dengan topping organik.\n<table style="border-collapse:collapse;width:100%;margin:12px 0;font-size:13px"><thead><tr><th colspan="2" style="background:#2d6e65;color:#fff;padding:8px;text-align:center;border:1px solid #c0d8d4">Topping</th><th colspan="2" style="background:#2d6e65;color:#fff;padding:8px;text-align:center;border:1px solid #c0d8d4">Kue</th></tr><tr><th style="background:#4aaa9a;color:#fff;padding:6px 10px;border:1px solid #c0d8d4">Organik</th><th style="background:#4aaa9a;color:#fff;padding:6px 10px;border:1px solid #c0d8d4">Non-organik</th><th style="background:#4aaa9a;color:#fff;padding:6px 10px;border:1px solid #c0d8d4">Tanpa telur</th><th style="background:#4aaa9a;color:#fff;padding:6px 10px;border:1px solid #c0d8d4">Dengan telur</th></tr></thead><tbody><tr><td style="padding:6px 10px;border:1px solid #ddd">Ceri</td><td style="padding:6px 10px;border:1px solid #ddd">Jeruk</td><td style="padding:6px 10px;border:1px solid #ddd">Butter cake</td><td style="padding:6px 10px;border:1px solid #ddd">Pound cake</td></tr><tr><td style="padding:6px 10px;border:1px solid #ddd">Stroberi</td><td style="padding:6px 10px;border:1px solid #ddd">Kiwi</td><td style="padding:6px 10px;border:1px solid #ddd">Sponge cake</td><td style="padding:6px 10px;border:1px solid #ddd">Carrot cake</td></tr><tr><td style="padding:6px 10px;border:1px solid #ddd">Apel</td><td style="padding:6px 10px;border:1px solid #ddd">Pir</td><td style="padding:6px 10px;border:1px solid #ddd">Chiffon cake</td><td style="padding:6px 10px;border:1px solid #ddd">Genoise cake</td></tr><tr><td style="padding:6px 10px;border:1px solid #ddd">Pir</td><td style="padding:6px 10px;border:1px solid #ddd"></td><td style="padding:6px 10px;border:1px solid #ddd"></td><td style="padding:6px 10px;border:1px solid #ddd"></td></tr></tbody></table>'
+        },
+        text:{en:'Which of the following can she order?', id:'Mana dari pilihan berikut yang dapat dia pesan?'},
         type:'single',
         options:{
-          en:['Pound cake with pear and strawberry toppings','Butter cake with orange and kiwi toppings','Sponge cake with apple and cherry toppings','Carrot cake with strawberry and kiwi toppings'],
-          id:['Pound cake dengan topping pir dan stroberi','Butter cake dengan topping jeruk dan kiwi','Sponge cake dengan topping apel dan ceri','Carrot cake dengan topping stroberi dan kiwi']
+          en:['Carrot cake with strawberry and kiwi toppings.','Butter cake with orange and kiwi toppings.','Pound cake with pear and strawberry toppings.','Sponge cake with apple and cherry toppings.'],
+          id:['Carrot cake dengan topping stroberi dan kiwi.','Butter cake dengan topping jeruk dan kiwi.','Pound cake dengan topping pir dan stroberi.','Sponge cake dengan topping apel dan ceri.']
+        },
+        answer:3
+      }
+    ],
+    name:{en:'Problem Solving', id:'Pemecahan Masalah'},
+    questions:[
+      {
+        id:'ps1',
+        context:{
+          en:'The following is Ellen, Tony, Mitch, and Paige\'s schedule:\n<table class="sched-tbl"><thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead><tbody><tr><td>Ellen</td><td>Mitch</td><td>Ellen</td><td>Ellen</td><td>Ellen</td><td>Ellen</td><td></td></tr><tr><td>Tony</td><td>Tony</td><td>Mitch</td><td>Mitch</td><td>Paige</td><td>Tony</td><td></td></tr><tr><td></td><td></td><td>Paige</td><td>Paige</td><td></td><td></td><td></td></tr></tbody></table>\nValerie works Saturdays, and can <em>only</em> work on weekdays when Mitch is working. However, Valerie <em>never</em> works with Ellen or Paige.',
+          id:'Berikut adalah jadwal Ellen, Tony, Mitch, dan Paige:\n<table class="sched-tbl"><thead><tr><th>Min</th><th>Sen</th><th>Sel</th><th>Rab</th><th>Kam</th><th>Jum</th><th>Sab</th></tr></thead><tbody><tr><td>Ellen</td><td>Mitch</td><td>Ellen</td><td>Ellen</td><td>Ellen</td><td>Ellen</td><td></td></tr><tr><td>Tony</td><td>Tony</td><td>Mitch</td><td>Mitch</td><td>Paige</td><td>Tony</td><td></td></tr><tr><td></td><td></td><td>Paige</td><td>Paige</td><td></td><td></td><td></td></tr></tbody></table>\nValerie bekerja pada hari Sabtu, dan <em>hanya</em> bisa bekerja pada hari kerja ketika Mitch bekerja. Namun, Valerie <em>tidak pernah</em> bekerja dengan Ellen atau Paige.'
+        },
+        text:{en:'On which days can Valerie be scheduled?', id:'Pada hari apa saja Valerie bisa dijadwalkan?'},
+        type:'single',
+        options:{
+          en:['Sunday, Monday, Tuesday, Wednesday, and Saturday','Monday, Tuesday, Wednesday, and Saturday','Monday and Saturday','Monday'],
+          id:['Minggu, Senin, Selasa, Rabu, dan Sabtu','Senin, Selasa, Rabu, dan Sabtu','Senin dan Sabtu','Senin']
         },
         answer:2
       },
       {
-        id:'ps5',
-        text:{en:'What comes next in the series: 2, 6, 12, 20, 30, __?', id:'Angka berapa yang melanjutkan deret: 2, 6, 12, 20, 30, __?'},
+        id:'ps2',
+        context:{
+          en:'The following is Nat, Jodie, and Lola\'s schedule:\n<table class="sched-tbl"><thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead><tbody><tr><td>Nat</td><td>Lola</td><td>Jodie</td><td>Lola</td><td>Jodie</td><td>Lola</td><td>Nat</td></tr><tr><td>Jodie</td><td></td><td>Lola</td><td></td><td>Lola</td><td></td><td>Jodie</td></tr><tr><td>Lola</td><td></td><td></td><td></td><td></td><td></td><td>Lola</td></tr></tbody></table>\nPolly does not work on weekends. Tyler works <em>only</em> with Lola or Polly.',
+          id:'Berikut adalah jadwal Nat, Jodie, dan Lola:\n<table class="sched-tbl"><thead><tr><th>Min</th><th>Sen</th><th>Sel</th><th>Rab</th><th>Kam</th><th>Jum</th><th>Sab</th></tr></thead><tbody><tr><td>Nat</td><td>Lola</td><td>Jodie</td><td>Lola</td><td>Jodie</td><td>Lola</td><td>Nat</td></tr><tr><td>Jodie</td><td></td><td>Lola</td><td></td><td>Lola</td><td></td><td>Jodie</td></tr><tr><td>Lola</td><td></td><td></td><td></td><td></td><td></td><td>Lola</td></tr></tbody></table>\nPolly tidak bekerja pada akhir pekan. Tyler <em>hanya</em> bekerja dengan Lola atau Polly.'
+        },
+        text:{en:'On how many days of the week can Tyler be scheduled?', id:'Pada berapa hari dalam seminggu Tyler bisa dijadwalkan?'},
         type:'single',
-        options:{en:['36','40','42','44'], id:['36','40','42','44']},
+        options:{en:['2','3','4','7'], id:['2','3','4','7']},
+        answer:1
+      },
+      {
+        id:'ps3',
+        context:{en:'10 testers can complete 50 test cases in 40 days. All testers are equally productive. A project team has 40 testers available for 10 days.', id:'10 penguji dapat menyelesaikan 50 kasus uji dalam 40 hari. Semua penguji memiliki produktivitas yang sama. Sebuah tim proyek memiliki 40 penguji yang tersedia selama 10 hari.'},
+        text:{en:'How many test cases can they complete?', id:'Berapa banyak kasus uji yang bisa mereka selesaikan?'},
+        type:'single',
+        options:{en:['40','50','60','120'], id:['40','50','60','120']},
+        answer:1
+      },
+      {
+        id:'ps4',
+        context:{en:'There are 10 houses in a row. The local municipality plans to plant an oak tree sapling between all neighboring houses. The cost of an oak sapling is $10. The municipality gets a 10% discount on the price.', id:'Ada 10 rumah berjajar. Pemerintah daerah berencana menanam bibit pohon oak di antara semua rumah yang bersebelahan. Harga bibit oak adalah $10. Pemerintah daerah mendapat diskon 10% dari harga tersebut.'},
+        text:{en:'What would be the total budget for planting the saplings?', id:'Berapa total anggaran untuk penanaman bibit tersebut?'},
+        type:'single',
+        options:{en:['$81','$90','$99','$110'], id:['$81','$90','$99','$110']},
+        answer:0
+      },
+      {
+        id:'ps5',
+        context:{en:'Assume that 2 new hires can do the equivalent work of 1 experienced employee. A one month project can be completed by 10 new hires and 5 experienced employees. The salary of a new hire is $10/hour, and that of an experienced employee is $20/hour.', id:'Asumsikan bahwa 2 karyawan baru dapat melakukan pekerjaan setara dengan 1 karyawan berpengalaman. Sebuah proyek satu bulan dapat diselesaikan oleh 10 karyawan baru dan 5 karyawan berpengalaman. Gaji karyawan baru adalah $10/jam, dan karyawan berpengalaman adalah $20/jam.'},
+        text:{en:'Is there a difference in cost if the project were to be completed by just experienced hires?', id:'Apakah ada perbedaan biaya jika proyek diselesaikan hanya oleh karyawan berpengalaman?'},
+        type:'single',
+        options:{
+          en:['Yes, that will be lower in cost.','Yes, that will be higher in cost.','No, the cost will be the same.','Cannot be determined.'],
+          id:['Ya, biayanya akan lebih rendah.','Ya, biayanya akan lebih tinggi.','Tidak, biayanya akan sama.','Tidak dapat ditentukan.']
+        },
         answer:2
       },
       {
         id:'ps6',
-        context:{en:'Alex is taller than Sam. Sam is taller than Jordan.', id:'Alex lebih tinggi dari Sam. Sam lebih tinggi dari Jordan.'},
-        text:{en:'Which of the following must be true?', id:'Mana dari pernyataan berikut yang pasti benar?'},
+        context:{
+          en:'Assume a four-part opera.\n<ul style="margin:8px 0 0 16px;padding:0"><li>The Obbligato is played immediately before the Coloratura</li><li>The Cadenza is played right after the Coloratura</li><li>The Diva\'s solo is played first</li></ul>',
+          id:'Asumsikan sebuah opera empat bagian.\n<ul style="margin:8px 0 0 16px;padding:0"><li>Obbligato dimainkan tepat sebelum Coloratura</li><li>Cadenza dimainkan tepat setelah Coloratura</li><li>Solo Diva dimainkan pertama</li></ul>'
+        },
+        text:{en:'Which part of the opera is played last?', id:'Bagian opera mana yang dimainkan terakhir?'},
         type:'single',
         options:{
-          en:['Jordan is taller than Alex','Alex is the tallest of the three','Sam is the shortest of the three','Jordan is shorter than Sam'],
-          id:['Jordan lebih tinggi dari Alex','Alex adalah yang tertinggi dari ketiganya','Sam adalah yang terpendek dari ketiganya','Jordan lebih pendek dari Sam']
+          en:['Obbligato','Diva\'s solo','Coloratura','Cadenza'],
+          id:['Obbligato','Solo Diva','Coloratura','Cadenza']
         },
-        answer:1
+        answer:3
       },
       {
         id:'ps7',
-        context:{en:'A train travels from City A to City B at 60 km/h and returns at 40 km/h.', id:'Sebuah kereta berjalan dari Kota A ke Kota B dengan kecepatan 60 km/jam dan kembali dengan kecepatan 40 km/jam.'},
-        text:{en:'What is the average speed for the entire round trip?', id:'Berapa kecepatan rata-rata untuk keseluruhan perjalanan pulang-pergi?'},
-        type:'single',
-        options:{en:['48 km/h','50 km/h','52 km/h','45 km/h'], id:['48 km/jam','50 km/jam','52 km/jam','45 km/jam']},
-        answer:0
-      },
-      {
-        id:'ps8',
-        context:{en:"A company's quarterly sales (in thousands): Q1 = 120, Q2 = 150, Q3 = 90, Q4 = 180.", id:'Penjualan kuartalan perusahaan (dalam ribuan): Q1 = 120, Q2 = 150, Q3 = 90, Q4 = 180.'},
-        text:{en:'What percentage of total annual sales occurred in Q4?', id:'Berapa persen dari total penjualan tahunan yang terjadi di Q4?'},
-        type:'single',
-        options:{en:['25%','30%','33%','40%'], id:['25%','30%','33%','40%']},
-        answer:2
-      },
-      {
-        id:'ps9',
-        text:{en:'A product costs $80 after a 20% discount. What was the original price?', id:'Sebuah produk berharga $80 setelah diskon 20%. Berapa harga aslinya?'},
-        type:'single',
-        options:{en:['$88','$96','$100','$64'], id:['$88','$96','$100','$64']},
-        answer:2
-      },
-      {
-        id:'ps10',
-        text:{en:'All managers are employees. Some employees are remote workers. Which conclusion definitely follows?', id:'Semua manajer adalah karyawan. Beberapa karyawan adalah pekerja jarak jauh. Kesimpulan mana yang pasti benar?'},
+        context:{
+          en:'In a cafe, items are displayed in the following order:\n<div style="display:flex;gap:4px;margin:10px 0"><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">Scones</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">?</span></div>\nAdditionally,\n<ul style="margin:8px 0 0 16px;padding:0"><li>Cakes and Scones are kept next to each other</li><li>Cakes and Burgers are kept next to each other</li><li>Pastries and Waffles are kept next to each other</li></ul>',
+          id:'Di sebuah kafe, item ditampilkan dalam urutan berikut:\n<div style="display:flex;gap:4px;margin:10px 0"><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">Scones</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">?</span></div>\nTambahan,\n<ul style="margin:8px 0 0 16px;padding:0"><li>Cakes dan Scones diletakkan berdampingan</li><li>Cakes dan Burgers diletakkan berdampingan</li><li>Pastries dan Waffles diletakkan berdampingan</li></ul>'
+        },
+        text:{en:'Which item is displayed last?', id:'Item mana yang ditampilkan terakhir?'},
         type:'single',
         options:{
-          en:['All managers are remote workers','Some managers may be remote workers','No managers are remote workers','All remote workers are managers'],
-          id:['Semua manajer adalah pekerja jarak jauh','Beberapa manajer mungkin adalah pekerja jarak jauh','Tidak ada manajer yang merupakan pekerja jarak jauh','Semua pekerja jarak jauh adalah manajer']
+          en:['Pastries','Pastries or Waffles','Waffles','Burgers'],
+          id:['Pastries','Pastries atau Waffles','Waffles','Burgers']
         },
         answer:1
       },
       {
-        id:'ps11',
-        text:{en:'In a race, if you overtake the person in 2nd place, what position are you in?', id:'Dalam sebuah perlombaan, jika Anda menyalip orang di posisi ke-2, posisi berapa Anda sekarang?'},
+        id:'ps8',
+        context:{
+          en:'The following is the order of priority for 6 steps (D, E, L, O, S, and V):\n<div style="display:flex;gap:4px;margin:10px 0"><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">L</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">V</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">?</span></div>\nAdditionally,\n<ul style="margin:8px 0 0 16px;padding:0"><li>V and D are not consecutive</li><li>L is performed before both D and E</li></ul>',
+          id:'Berikut adalah urutan prioritas untuk 6 langkah (D, E, L, O, S, dan V):\n<div style="display:flex;gap:4px;margin:10px 0"><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">L</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">V</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="background:#1a1a2e;color:#fff;padding:6px 14px;border-radius:4px;font-weight:700">?</span></div>\nTambahan,\n<ul style="margin:8px 0 0 16px;padding:0"><li>V dan D tidak berurutan</li><li>L dilakukan sebelum D dan E</li></ul>'
+        },
+        text:{en:'What is the last step to be performed?', id:'Langkah apa yang terakhir dilakukan?'},
         type:'single',
-        options:{en:['1st place','2nd place','3rd place','4th place'], id:['Posisi ke-1','Posisi ke-2','Posisi ke-3','Posisi ke-4']},
+        options:{
+          en:['Step E','Step D','Step O','Step S'],
+          id:['Langkah E','Langkah D','Langkah O','Langkah S']
+        },
         answer:1
       },
       {
-        id:'ps12',
-        context:{en:'You have a 3×3 grid of squares. You draw a straight diagonal line from the top-left corner to the bottom-right corner.', id:'Anda memiliki kisi 3×3 kotak. Anda menggambar garis diagonal lurus dari sudut kiri atas ke sudut kanan bawah.'},
-        text:{en:'How many individual squares does the line pass through?', id:'Berapa kotak individual yang dilalui garis tersebut?'},
+        id:'ps9',
+        context:{
+          en:'Observe the following menu:\n<table class="sched-tbl"><thead><tr><th colspan="2">Salad</th><th colspan="2">Dressing</th></tr><tr><th>Vegetarian</th><th>Non-Vegetarian</th><th>Standard</th><th>Premium</th></tr></thead><tbody><tr><td>Carrot salad</td><td>Caesar salad</td><td>Balsamic vinegar</td><td>Coconut cream</td></tr><tr><td>Barley salad</td><td>Waldorf salad</td><td>Ranch dressing</td><td>Zesty lemon</td></tr><tr><td>Bean salad</td><td></td><td>Honey mustard dressing</td><td>Apple cider</td></tr><tr><td>Apple salad</td><td></td><td></td><td></td></tr></tbody></table>\nA customer wants a vegetarian salad with standard dressings.',
+          id:'Perhatikan menu berikut:\n<table class="sched-tbl"><thead><tr><th colspan="2">Salad</th><th colspan="2">Saus</th></tr><tr><th>Vegetarian</th><th>Non-Vegetarian</th><th>Standar</th><th>Premium</th></tr></thead><tbody><tr><td>Carrot salad</td><td>Caesar salad</td><td>Balsamic vinegar</td><td>Coconut cream</td></tr><tr><td>Barley salad</td><td>Waldorf salad</td><td>Ranch dressing</td><td>Zesty lemon</td></tr><tr><td>Bean salad</td><td></td><td>Honey mustard dressing</td><td>Apple cider</td></tr><tr><td>Apple salad</td><td></td><td></td><td></td></tr></tbody></table>\nSeorang pelanggan menginginkan salad vegetarian dengan saus standar.'
+        },
+        text:{en:'Which of the following can he order?', id:'Mana dari pilihan berikut yang bisa ia pesan?'},
         type:'single',
-        options:{en:['2','3','4','5'], id:['2','3','4','5']},
+        options:{
+          en:['Caesar salad with zesty lemon dressing','Carrot salad with honey mustard dressing','Bean salad with apple cider dressing','Waldorf salad with coconut cream dressing'],
+          id:['Caesar salad dengan saus zesty lemon','Carrot salad dengan saus honey mustard','Bean salad dengan saus apple cider','Waldorf salad dengan saus coconut cream']
+        },
         answer:1
+      },
+      {
+        id:'ps10',
+        context:{
+          en:'In a class of 100 students, the following is an analysis of the student\'s majors, with some information missing:\n<table class="sched-tbl"><thead><tr><th></th><th>Physics</th><th>Chemistry</th><th>Math</th><th>Total</th></tr></thead><tbody><tr><td><strong>Male</strong></td><td>?</td><td>15</td><td></td><td></td></tr><tr><td><strong>Female</strong></td><td></td><td>25</td><td>0</td><td>70</td></tr><tr><td><strong>Total</strong></td><td>50</td><td>40</td><td></td><td>100</td></tr></tbody></table>',
+          id:'Dalam kelas 100 siswa, berikut adalah analisis jurusan siswa dengan beberapa informasi yang hilang:\n<table class="sched-tbl"><thead><tr><th></th><th>Fisika</th><th>Kimia</th><th>Matematika</th><th>Total</th></tr></thead><tbody><tr><td><strong>Pria</strong></td><td>?</td><td>15</td><td></td><td></td></tr><tr><td><strong>Wanita</strong></td><td></td><td>25</td><td>0</td><td>70</td></tr><tr><td><strong>Total</strong></td><td>50</td><td>40</td><td></td><td>100</td></tr></tbody></table>'
+        },
+        text:{en:'How many male Physics majors are there in the class?', id:'Berapa banyak mahasiswa pria jurusan Fisika di kelas tersebut?'},
+        type:'single',
+        options:{en:['5','15','30','45'], id:['5','15','30','45']},
+        answer:0
+      },
+      {
+        id:'ps11',
+        context:{
+          en:'In a class, all students fall in one or more of the following categories: International, Scholarship-awardees, or Industry-sponsored.\n<svg viewBox="0 0 540 245" style="width:100%;max-width:520px;display:block;margin:10px auto"><circle cx="130" cy="135" r="90" fill="#1a7e75" opacity="0.88"/><circle cx="270" cy="135" r="90" fill="#26a96b" opacity="0.88"/><circle cx="410" cy="135" r="90" fill="#e0705c" opacity="0.88"/><text x="78" y="118" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">International</text><text x="270" y="56" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">Scholarship</text><text x="460" y="118" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">Industry</text><text x="460" y="133" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">Sponsored</text><text x="200" y="145" text-anchor="middle" fill="#fff" font-size="24" font-weight="bold">40</text><text x="340" y="145" text-anchor="middle" fill="#fff" font-size="24" font-weight="bold">90</text><text x="455" y="155" text-anchor="middle" fill="#fff" font-size="24" font-weight="bold">210</text></svg>\n<em>Additionally:</em> Total International = 100 &nbsp;·&nbsp; Total Scholarship-awardees = 200',
+          id:'Dalam sebuah kelas, semua siswa masuk dalam satu atau lebih kategori berikut: Internasional, Penerima Beasiswa, atau Disponsori Industri.\n<svg viewBox="0 0 540 245" style="width:100%;max-width:520px;display:block;margin:10px auto"><circle cx="130" cy="135" r="90" fill="#1a7e75" opacity="0.88"/><circle cx="270" cy="135" r="90" fill="#26a96b" opacity="0.88"/><circle cx="410" cy="135" r="90" fill="#e0705c" opacity="0.88"/><text x="78" y="118" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">Internasional</text><text x="270" y="56" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">Beasiswa</text><text x="460" y="118" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">Disponsori</text><text x="460" y="133" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">Industri</text><text x="200" y="145" text-anchor="middle" fill="#fff" font-size="24" font-weight="bold">40</text><text x="340" y="145" text-anchor="middle" fill="#fff" font-size="24" font-weight="bold">90</text><text x="455" y="155" text-anchor="middle" fill="#fff" font-size="24" font-weight="bold">210</text></svg>\n<em>Tambahan:</em> Total Internasional = 100 &nbsp;·&nbsp; Total Penerima Beasiswa = 200'
+        },
+        text:{en:'How many total students are there in the class?', id:'Berapa total siswa dalam kelas tersebut?'},
+        type:'single',
+        options:{en:['470','550','600','640'], id:['470','550','600','640']},
+        answer:0
+      },
+      {
+        id:'ps12',
+        context:{
+          en:'The following is Julie, Tom, and Mona\'s schedule:\n<table class="sched-tbl"><thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead><tbody><tr><td>Julie</td><td>Mona</td><td>Tom</td><td>Mona</td><td>Tom</td><td>Mona</td><td>Julie</td></tr><tr><td>Tom</td><td></td><td>Mona</td><td></td><td>Mona</td><td></td><td>Tom</td></tr></tbody></table>\nAssume that next week, Sarah is scheduled for 4 days and starts on a Sunday. Sarah works <em>only</em> on alternate days. Kylie works <em>only</em> with Sarah or Mona.',
+          id:'Berikut adalah jadwal Julie, Tom, dan Mona:\n<table class="sched-tbl"><thead><tr><th>Min</th><th>Sen</th><th>Sel</th><th>Rab</th><th>Kam</th><th>Jum</th><th>Sab</th></tr></thead><tbody><tr><td>Julie</td><td>Mona</td><td>Tom</td><td>Mona</td><td>Tom</td><td>Mona</td><td>Julie</td></tr><tr><td>Tom</td><td></td><td>Mona</td><td></td><td>Mona</td><td></td><td>Tom</td></tr></tbody></table>\nAsumsikan bahwa minggu depan, Sarah dijadwalkan selama 4 hari dan mulai pada hari Minggu. Sarah <em>hanya</em> bekerja pada hari selang-seling. Kylie <em>hanya</em> bekerja dengan Sarah atau Mona.'
+        },
+        text:{en:'Who can be scheduled the most days during next week (starting Sunday)?', id:'Siapa yang bisa dijadwalkan paling banyak hari dalam minggu depan (mulai Minggu)?'},
+        type:'single',
+        options:{
+          en:['Mona','Sarah','Kylie','Tom'],
+          id:['Mona','Sarah','Kylie','Tom']
+        },
+        answer:2
       }
     ]
   },
@@ -584,180 +845,240 @@ const SECTIONS = [
   // ── TIME MANAGEMENT ──────────────────────────────────
   {
     id:'tm', icon:'⏱️', timeSeconds:9*60, scoreable:true,
+    meta:{en:'16 questions · 9 minutes · Intermediate', id:'16 soal · 9 menit · Menengah'},
+    practiceCount:4,
+    practiceQuestions:[
+      {
+        id:'ptp1',
+        context:{
+          en:"You're a mid-level professional at an audit department of a large company.",
+          id:'Anda adalah profesional tingkat menengah di departemen audit sebuah perusahaan besar.'
+        },
+        text:{en:'Who should ideally set your goals at work?', id:'Siapa yang idealnya menetapkan tujuan kerja Anda?'},
+        type:'single',
+        options:{
+          en:['My manager and I compose my goals together.','The HR department; my goals are in my job description.','I set my own goals at work; I have that autonomy.','My manager hands them out to me.'],
+          id:['Manajer saya dan saya menyusun tujuan bersama-sama.','Departemen HR; tujuan saya ada dalam deskripsi pekerjaan.','Saya menetapkan tujuan sendiri; saya memiliki otonomi itu.','Manajer saya yang memberikannya kepada saya.']
+        },
+        answer:0
+      },
+      {
+        id:'ptp2',
+        context:{
+          en:"You have a busy job and often run out of time to complete all your tasks. In particular, you must respond to some emails every day that typically only require a short and simple response, but you can't seem to get these done during your normal day.",
+          id:'Anda memiliki pekerjaan yang sibuk dan sering kehabisan waktu untuk menyelesaikan semua tugas. Khususnya, Anda harus membalas beberapa email setiap hari yang biasanya hanya memerlukan respons singkat dan sederhana, tetapi Anda tidak dapat menyelesaikannya di hari biasa.'
+        },
+        text:{en:'How should you handle responding to these emails?', id:'Bagaimana cara terbaik untuk menangani balasan email tersebut?'},
+        type:'single',
+        options:{
+          en:['Schedule some blocks of time during the day only for responding to these emails.','Multitask and reply to these emails during other meetings.','Process these emails over your lunch break when you aren\'t working on other tasks.','Process these emails first thing in the morning.'],
+          id:['Jadwalkan beberapa blok waktu di siang hari khusus untuk membalas email-email ini.','Multitasking dan balas email ini selama rapat lainnya.','Proses email ini saat istirahat makan siang ketika Anda tidak mengerjakan tugas lain.','Proses email ini pertama kali di pagi hari.']
+        },
+        answer:0
+      },
+      {
+        id:'ptp3',
+        context:{
+          en:"You're an IT project manager at a tech company. You use both email and Slack (a chat and collaboration app).",
+          id:'Anda adalah manajer proyek IT di perusahaan teknologi. Anda menggunakan email dan Slack (aplikasi obrolan dan kolaborasi).'
+        },
+        text:{en:'When is the best time to process your emails?', id:'Kapan waktu terbaik untuk memproses email Anda?'},
+        type:'single',
+        options:{
+          en:['At various moments in the day or week that you dedicate only to processing emails, depending on the required response time.','Once a week because emails are a distraction from your real work and more urgent communications aren\'t emails.','All the time because you don\'t know what will be in there and need to respond as quickly as possible.','In the morning, when you have the most mental energy and sharpness.'],
+          id:['Pada berbagai momen di hari atau minggu yang Anda dedikasikan khusus untuk memproses email, tergantung waktu respons yang dibutuhkan.','Sekali seminggu karena email adalah gangguan dari pekerjaan nyata dan komunikasi mendesak bukan melalui email.','Sepanjang waktu karena Anda tidak tahu apa yang ada di sana dan perlu merespons secepat mungkin.','Di pagi hari, saat Anda memiliki energi mental dan ketajaman terbesar.']
+        },
+        answer:0
+      },
+      {
+        id:'ptp4',
+        context:{
+          en:"You work at a medium-sized company in an organizational environment that is quite busy and hectic. You've noticed that you have a hard time structuring your day. Your days seem quite chaotic; every morning feels derailed by a sudden inflow of emails, crises that need to be managed, or colleagues interrupting your work.",
+          id:'Anda bekerja di perusahaan menengah dalam lingkungan organisasi yang cukup sibuk dan kacau. Anda menyadari bahwa Anda kesulitan mengatur hari Anda. Hari-hari terasa kacau; setiap pagi terganggu oleh masuknya email mendadak, krisis yang perlu ditangani, atau rekan yang menginterupsi pekerjaan Anda.'
+        },
+        text:{en:'What are good strategies to deal with this?', id:'Apa strategi yang baik untuk menghadapi situasi ini?'},
+        type:'multi',
+        options:{
+          en:['Ignore the chaos and make a big effort to shut all the distractions out of your direct environment, including your colleagues.','Establish a morning routine to deal with at least some of the more important tasks that you need to get done that day.','Accept that you work in a chaotic environment and that it makes no sense to make plans.','Make a plan for the whole day and include some time for contingencies. That way, you\'ll have some extra time in your calendar to deal with incidents.','Ask your boss to hire an assistant to provide structure during your work day.'],
+          id:['Abaikan kekacauan dan lakukan upaya besar untuk menghilangkan semua gangguan dari lingkungan langsung Anda, termasuk rekan kerja.','Tetapkan rutinitas pagi untuk menyelesaikan setidaknya beberapa tugas terpenting yang perlu dilakukan hari itu.','Terima bahwa Anda bekerja di lingkungan yang kacau dan tidak masuk akal untuk membuat rencana.','Buat rencana untuk seluruh hari dan sertakan waktu untuk kemungkinan tak terduga. Dengan begitu, Anda memiliki waktu ekstra untuk menangani insiden.','Minta atasan Anda mempekerjakan asisten untuk memberikan struktur selama hari kerja Anda.']
+        },
+        answer:[1,3]
+      }
+    ],
     name:{en:'Time Management', id:'Manajemen Waktu'},
     questions:[
       {
         id:'tm1',
-        context:{en:"You're a mid-level professional at an audit department of a large company.", id:'Anda adalah profesional tingkat menengah di departemen audit sebuah perusahaan besar.'},
-        text:{en:'Who should ideally set your goals at work?', id:'Siapa yang idealnya menetapkan tujuan kerja Anda?'},
-        type:'single',
+        text:{en:'Why is it important to formulate your goals and actions so that they are concrete and measurable? (Select all that apply)', id:'Mengapa penting untuk merumuskan tujuan dan tindakan Anda agar konkret dan terukur? (Pilih semua yang sesuai)'},
+        type:'multi',
         options:{
-          en:['The HR department; my goals are in my job description','I set my own goals at work; I have that autonomy','My manager and I compose my goals together','My manager hands them out to me'],
-          id:['Departemen HR; tujuan saya sudah ada di deskripsi pekerjaan','Saya sendiri yang menetapkan tujuan; saya punya otonomi itu','Manajer dan saya menyusun tujuan bersama-sama','Manajer yang memberikannya kepada saya']
+          en:['It makes you reconsider whether they\'re feasible at all.','It makes it clearer what needs to be executed and when.','It gives you time to think whether it is important after all.','It gives your manager the idea that you\'re on top of things.','It gives you more of a sense of pride in your work.'],
+          id:['Membuat Anda mempertimbangkan kembali apakah itu layak dilakukan.','Membuat lebih jelas apa yang perlu dilaksanakan dan kapan.','Memberi Anda waktu untuk memikirkan apakah itu penting.','Memberi manajer kesan bahwa Anda menguasai segalanya.','Memberi Anda rasa bangga yang lebih terhadap pekerjaan Anda.']
         },
-        answer:2
+        answer:[0,1]
       },
       {
         id:'tm2',
-        context:{en:"You have a busy job and often run out of time for short daily emails you can't seem to finish during your normal day.", id:'Anda memiliki pekerjaan yang sibuk dan sering kehabisan waktu untuk membalas email singkat harian yang tidak bisa diselesaikan dalam hari kerja normal.'},
-        text:{en:'How should you handle responding to these emails?', id:'Bagaimana cara terbaik Anda menangani balasan email-email tersebut?'},
+        context:{en:"You're a researcher at a legal firm. You work on a combination of urgent tasks, important tasks, and routine tasks. You have already completed your most important tasks for the day and have half an hour at the end of your day.", id:'Anda adalah peneliti di sebuah firma hukum. Anda mengerjakan kombinasi tugas mendesak, tugas penting, dan tugas rutin. Anda sudah menyelesaikan tugas terpenting hari ini dan masih punya setengah jam di akhir hari.'},
+        text:{en:'How should you use this time?', id:'Bagaimana sebaiknya Anda menggunakan waktu ini?'},
         type:'single',
         options:{
-          en:['Process these emails over your lunch break','Schedule dedicated blocks of time during the day only for responding to these emails','Multitask and reply during other meetings','Process these emails first thing every morning'],
-          id:['Proses email ini saat jam makan siang','Jadwalkan blok waktu khusus untuk membalas email-email ini','Multitasking dengan membalas email saat rapat lain berlangsung','Proses email ini pertama kali setiap pagi']
+          en:['Divide your time between planning the next day and allocating time to urgent matters.','Complete the tasks you had avoided earlier in the day that are due next week.','Start your most important task of the week.','Answer any unread emails.'],
+          id:['Bagi waktu Anda antara merencanakan hari berikutnya dan mengalokasikan waktu untuk hal mendesak.','Selesaikan tugas yang Anda hindari sebelumnya yang jatuh tempo minggu depan.','Mulai tugas terpenting minggu ini.','Balas email yang belum dibaca.']
+        },
+        answer:0
+      },
+      {
+        id:'tm3',
+        context:{en:'You are an office worker who has just received two urgent tasks that are supposed to be completed by the end of the day. The first task is to prepare a presentation for a client meeting that is scheduled for tomorrow morning, and the second task is to review and approve a report that needs to be sent to your boss by the end of the day. Both tasks require your immediate attention.', id:'Anda adalah pekerja kantor yang baru saja menerima dua tugas mendesak yang harus diselesaikan pada akhir hari. Tugas pertama adalah menyiapkan presentasi untuk pertemuan klien yang dijadwalkan besok pagi, dan tugas kedua adalah meninjau dan menyetujui laporan yang harus dikirim ke atasan Anda pada akhir hari. Kedua tugas memerlukan perhatian segera.'},
+        text:{en:'Which of the following should you do?', id:'Mana dari pilihan berikut yang harus Anda lakukan?'},
+        type:'single',
+        options:{
+          en:['Work on the report approval first and hope you\'ll have enough time to prepare for the client meeting.','Inform your boss that you\'ll work on the client meeting first and do your best to approve the report on time, but it might be late.','Work on both tasks simultaneously, dividing your time equally between them.','Work for a maximum of one hour preparing for the client meeting and spend the rest of your time on the report for your boss.'],
+          id:['Kerjakan persetujuan laporan terlebih dahulu dan berharap masih ada cukup waktu untuk mempersiapkan pertemuan klien.','Beritahu atasan bahwa Anda akan mengerjakan pertemuan klien terlebih dahulu dan berusaha menyelesaikan laporan tepat waktu, tapi mungkin terlambat.','Kerjakan kedua tugas secara bersamaan dengan membagi waktu secara merata.','Gunakan maksimal satu jam untuk mempersiapkan pertemuan klien dan sisanya untuk laporan atasan.']
         },
         answer:1
       },
       {
-        id:'tm3',
-        context:{en:"You're an IT project manager using both email and Slack.", id:'Anda adalah manajer proyek IT yang menggunakan email dan Slack.'},
-        text:{en:'When is the best time to process your emails?', id:'Kapan waktu terbaik untuk memproses email Anda?'},
+        id:'tm4',
+        context:{en:'You are an HR professional designing a presentation for employees about using planning and time blocking to increase efficiency. Some employees at your company work remotely and some work in the office, but they all generally must be working from 9 a.m. to 5 p.m. with a standard lunch break.', id:'Anda adalah profesional HR yang merancang presentasi untuk karyawan tentang penggunaan perencanaan dan time blocking untuk meningkatkan efisiensi. Beberapa karyawan bekerja dari jarak jauh dan beberapa bekerja di kantor, namun semua umumnya bekerja dari pukul 09.00 hingga 17.00 dengan istirahat makan siang standar.'},
+        text:{en:'When should you suggest most employees plan the tasks that require most of their concentration?', id:'Kapan sebaiknya Anda menyarankan karyawan merencanakan tugas-tugas yang membutuhkan konsentrasi tinggi?'},
         type:'single',
         options:{
-          en:['All the time — you need to respond as quickly as possible','In the morning when you have the most energy','At dedicated moments in the day/week depending on required response time','Once a week because emails are a distraction'],
-          id:['Setiap saat — Anda harus merespons secepat mungkin','Di pagi hari ketika energi Anda paling tinggi','Pada momen khusus di hari/minggu tergantung waktu respons yang dibutuhkan','Seminggu sekali karena email adalah gangguan']
+          en:['Just before ending the work day.','When their energy levels are at their highest.','When they\'re not in the office.','During a break at work.'],
+          id:['Tepat sebelum mengakhiri hari kerja.','Ketika tingkat energi mereka sedang paling tinggi.','Ketika mereka tidak sedang di kantor.','Saat istirahat kerja.']
         },
-        answer:2
+        answer:1
       },
       {
-        id:'tm4',
-        context:{en:"You work in a hectic environment. Every morning feels derailed by emails, crises, and interruptions from colleagues.", id:'Anda bekerja di lingkungan yang sibuk dan kacau. Setiap pagi terasa terganggu oleh email, krisis, dan interupsi dari rekan kerja.'},
-        text:{en:'What are good strategies to deal with this? (Select all that apply)', id:'Strategi apa yang baik untuk menghadapi situasi ini? (Pilih semua yang sesuai)'},
+        id:'tm5',
+        context:{en:'Halfway through a one-hour meeting, you think of a solution to a relatively minor problem from a separate project. You need to remember the idea while still ensuring the meeting is productive.', id:'Di tengah-tengah rapat satu jam, Anda terpikirkan solusi untuk masalah kecil dari proyek lain. Anda perlu mengingat ide tersebut sambil tetap memastikan rapat berjalan produktif.'},
+        text:{en:'What is usually the best way to capture the idea in such a situation?', id:'Apa cara terbaik untuk menangkap ide dalam situasi seperti ini?'},
+        type:'single',
+        options:{
+          en:['You write down the full solution to your problem during the meeting.','You write it down discreetly, using a couple of keywords to be expanded on later.','You step out of the meeting to capture your idea fully.','You focus on remembering the idea during the meeting and write it down afterward.'],
+          id:['Anda menuliskan solusi lengkap selama rapat.','Anda menuliskannya secara diam-diam dengan beberapa kata kunci untuk dikembangkan nanti.','Anda keluar dari rapat untuk mencatat ide sepenuhnya.','Anda fokus mengingat ide selama rapat dan menuliskannya setelah selesai.']
+        },
+        answer:1
+      },
+      {
+        id:'tm6',
+        context:{en:'You have a complicated task with many steps, and you need to register this task in your task management system. Your task management system is quite flexible and allows tasks, steps to achieve the task, and goals to be entered in many different ways.', id:'Anda memiliki tugas yang rumit dengan banyak langkah dan perlu mendaftarkan tugas ini ke sistem manajemen tugas Anda. Sistem manajemen tugas Anda cukup fleksibel dan memungkinkan tugas, langkah-langkah untuk mencapai tugas, dan tujuan dimasukkan dengan berbagai cara.'},
+        text:{en:'Which is the most efficient way to quickly register your task in this system?', id:'Cara mana yang paling efisien untuk mendaftarkan tugas Anda dengan cepat di sistem ini?'},
+        type:'single',
+        options:{
+          en:['Include the end goal of the task and the first action to take.','Include only the end goal that you want to accomplish with your task.','Include every step individually.','Include only the subject of the task in a couple of keywords.'],
+          id:['Cantumkan tujuan akhir tugas dan tindakan pertama yang harus dilakukan.','Cantumkan hanya tujuan akhir yang ingin Anda capai.','Cantumkan setiap langkah satu per satu.','Cantumkan hanya subjek tugas dalam beberapa kata kunci.']
+        },
+        answer:0
+      },
+      {
+        id:'tm7',
+        context:{en:"You're working from home but are regularly distracted by family members who wander into your office.", id:'Anda bekerja dari rumah tetapi sering terganggu oleh anggota keluarga yang masuk ke ruang kerja Anda.'},
+        text:{en:'How do you handle these wandering family members?', id:'Bagaimana cara Anda menangani anggota keluarga yang sering masuk ini?'},
+        type:'single',
+        options:{
+          en:['Make an agreement with them to leave you alone when the door is closed.','Tell them to leave you alone at all times.','Let them wander in.','Ignore them by using earplugs/noise reduction headphones.'],
+          id:['Buat kesepakatan agar mereka membiarkan Anda sendiri saat pintu tertutup.','Beritahu mereka untuk selalu membiarkan Anda sendiri.','Biarkan mereka masuk.','Abaikan mereka dengan menggunakan earplug/headphone peredam suara.']
+        },
+        answer:0
+      },
+      {
+        id:'tm8',
+        context:{en:"You're a team leader at a production company. You're often struggling with important tasks being crowded out because you need to respond to daily issues, such as questions from machine operators on your team.", id:'Anda adalah pemimpin tim di perusahaan produksi. Anda sering kesulitan menyelesaikan tugas-tugas penting karena harus merespons isu harian, seperti pertanyaan dari operator mesin di tim Anda.'},
+        text:{en:'What is the best way to get enough important tasks done?', id:'Apa cara terbaik agar tugas-tugas penting tetap dapat diselesaikan?'},
+        type:'single',
+        options:{
+          en:['Create a calendar reminder at the end of the day to remind you of the "most important thing."','Schedule enough dedicated time to work only on important tasks.','Reward yourself with a break every time you complete something important.','Force yourself to complete any task you didn\'t finish during the work day during your evening.'],
+          id:['Buat pengingat kalender di akhir hari untuk mengingatkan Anda tentang "hal terpenting."','Jadwalkan waktu khusus yang cukup untuk hanya mengerjakan tugas-tugas penting.','Hadiahi diri sendiri dengan istirahat setiap kali menyelesaikan sesuatu yang penting.','Paksa diri untuk menyelesaikan tugas yang tidak selesai di siang hari pada malam hari.']
+        },
+        answer:1
+      },
+      {
+        id:'tm9',
+        context:{en:'You want to limit your email inflow using effective time management practices.', id:'Anda ingin membatasi masuknya email menggunakan praktik manajemen waktu yang efektif.'},
+        text:{en:'Which of the following strategies should you use? (Select all that apply)', id:'Strategi mana dari berikut ini yang harus Anda gunakan? (Pilih semua yang sesuai)'},
         type:'multi',
         options:{
-          en:['Make a daily plan including time for contingencies','Accept the chaos and stop planning altogether','Establish a morning routine to handle the most important tasks first','Shut out all distractions including your colleagues','Ask your boss to hire an assistant'],
-          id:['Buat rencana harian termasuk waktu untuk hal tak terduga','Terima kekacauan dan berhenti membuat rencana','Buat rutinitas pagi untuk menyelesaikan tugas terpenting terlebih dahulu','Abaikan semua gangguan termasuk rekan kerja','Minta bos Anda merekrut asisten']
+          en:['Ask people to send you WhatsApp messages instead.','Send fewer emails yourself and choose other effective communication channels instead.','Ask your direct colleagues, such as people in your team, not to send you certain types of emails.','Don\'t reply to emails you receive.','Set up a permanent out-of-office response.','Unsubscribe from newsletters, subscriptions, and other clutter.'],
+          id:['Minta orang-orang mengirim pesan WhatsApp sebagai gantinya.','Kirim lebih sedikit email sendiri dan gunakan saluran komunikasi efektif lainnya.','Minta rekan langsung Anda, seperti orang-orang di tim Anda, untuk tidak mengirim jenis email tertentu kepada Anda.','Jangan balas email yang Anda terima.','Siapkan respons tidak ada di kantor secara permanen.','Berhenti berlangganan newsletter, langganan, dan konten yang tidak perlu.']
+        },
+        answer:[1,2,5]
+      },
+      {
+        id:'tm10',
+        context:{en:'You work for a local government department that relies heavily on group texting to communicate internally. You\'re also part of other text groups related to various volunteer initiatives in which you are active. In total, you\'re a part of many texting groups, and the constant stream of messages is becoming quite overwhelming.', id:'Anda bekerja untuk departemen pemerintah daerah yang sangat bergantung pada pesan grup untuk komunikasi internal. Anda juga tergabung dalam grup teks lain terkait berbagai inisiatif sukarela yang Anda ikuti. Secara keseluruhan, Anda tergabung dalam banyak grup teks, dan aliran pesan yang terus-menerus menjadi sangat melelahkan.'},
+        text:{en:'What strategies can you use to limit your stream of messages while still staying up to date with important information? (Select all that apply)', id:'Strategi apa yang dapat Anda gunakan untuk membatasi aliran pesan sambil tetap mengikuti informasi penting? (Pilih semua yang sesuai)'},
+        type:'multi',
+        options:{
+          en:['Mute all notifications from group texts to avoid distractions.','Schedule specific times of the day to check messages from different groups and prioritize based on urgency.','Leave all group texts except for the ones that are relevant to your work.','Respond to all messages as soon as they come in to demonstrate that you are always available.','Disable group text functionality to avoid being constantly bombarded with messages.'],
+          id:['Matikan semua notifikasi dari pesan grup untuk menghindari gangguan.','Jadwalkan waktu tertentu dalam sehari untuk memeriksa pesan dari berbagai grup dan prioritaskan berdasarkan urgensi.','Tinggalkan semua grup teks kecuali yang relevan dengan pekerjaan Anda.','Balas semua pesan segera setelah masuk untuk menunjukkan bahwa Anda selalu tersedia.','Nonaktifkan fungsi pesan grup untuk menghindari dibanjiri pesan.']
+        },
+        answer:[0,1,2]
+      },
+      {
+        id:'tm11',
+        context:{en:'At work, you get a phone call from a colleague. They ask you to sort something out that will take you about 15 minutes to complete. It\'s urgent but not important. After the phone call, you immediately have to attend a meeting with your boss.', id:'Di tempat kerja, Anda mendapat telepon dari rekan kerja. Mereka meminta Anda menyelesaikan sesuatu yang membutuhkan sekitar 15 menit. Ini mendesak tapi tidak penting. Setelah telepon, Anda langsung harus menghadiri rapat dengan atasan Anda.'},
+        text:{en:'What should you do?', id:'Apa yang harus Anda lakukan?'},
+        type:'single',
+        options:{
+          en:['You tell your colleague you can\'t help them right now and attend the meeting.','You tell your boss you will attend in 15 minutes and first complete the task.','You complete the task before you attend the meeting, knowing that you will be late.','You write the task down, attend the meeting, and then complete the task.'],
+          id:['Anda memberi tahu rekan bahwa Anda tidak bisa membantu sekarang dan menghadiri rapat.','Anda memberi tahu atasan bahwa Anda akan hadir dalam 15 menit dan menyelesaikan tugas dulu.','Anda menyelesaikan tugas sebelum menghadiri rapat, meski tahu Anda akan terlambat.','Anda mencatat tugas tersebut, menghadiri rapat, lalu menyelesaikan tugas setelahnya.']
+        },
+        answer:3
+      },
+      {
+        id:'tm12',
+        context:{en:'Your manager asks you to complete a new task that was not in the original project plan you set together. If you want to do this properly, you don\'t think you have enough time to complete the new task and keep the project on schedule.', id:'Manajer Anda meminta Anda menyelesaikan tugas baru yang tidak ada dalam rencana proyek awal yang Anda susun bersama. Jika ingin melakukannya dengan benar, Anda merasa tidak punya cukup waktu untuk menyelesaikan tugas baru dan menjaga proyek tetap sesuai jadwal.'},
+        text:{en:'What should you do?', id:'Apa yang harus Anda lakukan?'},
+        type:'single',
+        options:{
+          en:['Complete the new task poorly so you can finish both within the due date.','Complete the new task well and let the project run past its due date.','Complete your original project well and do as much of the new task as possible by the due date.','Show the impact on the timeline of the inclusion of the new task to your manager, and decide together on the total scope and due date.'],
+          id:['Selesaikan tugas baru dengan kualitas rendah agar bisa menyelesaikan keduanya sebelum tenggat.','Selesaikan tugas baru dengan baik dan biarkan proyek melewati tenggat waktu.','Selesaikan proyek awal dengan baik dan kerjakan sebanyak mungkin tugas baru sebelum tenggat.','Tunjukkan dampak tugas baru pada timeline kepada manajer dan putuskan bersama tentang ruang lingkup dan tenggat waktu total.']
+        },
+        answer:3
+      },
+      {
+        id:'tm13',
+        context:{en:'In your calendar management, you\'ve been successfully allocating time to complete tasks instead of just using your calendar for meetings. However, you\'ve noticed that your tasks regularly take longer than the time you allow, so you won\'t get everything done that you\'d like to.', id:'Dalam manajemen kalender Anda, Anda telah berhasil mengalokasikan waktu untuk menyelesaikan tugas alih-alih hanya menggunakan kalender untuk rapat. Namun, Anda menyadari bahwa tugas-tugas Anda secara teratur memakan waktu lebih lama dari yang Anda alokasikan, sehingga Anda tidak bisa menyelesaikan semua yang ingin Anda lakukan.'},
+        text:{en:'What could be effective strategies to address this problem? (Select all that apply)', id:'Strategi apa yang efektif untuk mengatasi masalah ini? (Pilih semua yang sesuai)'},
+        type:'multi',
+        options:{
+          en:['Schedule more time for the tasks in question in the future.','Accept a lower level of quality and use shortcuts to complete the tasks within the time allotted.','Find an environment or time where you can be more focused and productive.','Stop allocating time for tasks and go back to using your calendar for just meetings.'],
+          id:['Jadwalkan lebih banyak waktu untuk tugas-tugas tersebut di masa mendatang.','Terima kualitas yang lebih rendah dan gunakan jalan pintas untuk menyelesaikan tugas dalam waktu yang dialokasikan.','Temukan lingkungan atau waktu di mana Anda bisa lebih fokus dan produktif.','Berhenti mengalokasikan waktu untuk tugas dan kembali menggunakan kalender hanya untuk rapat.']
         },
         answer:[0,2]
       },
       {
-        id:'tm5',
-        context:{en:'You have two important deadlines on the same day but can only complete one on time.', id:'Anda memiliki dua tenggat waktu penting pada hari yang sama tetapi hanya bisa menyelesaikan satu tepat waktu.'},
-        text:{en:'What should you do?', id:'Apa yang harus Anda lakukan?'},
-        type:'single',
-        options:{
-          en:['Complete the internal report first','Complete whichever task you started first','Communicate with both stakeholders and negotiate a solution','Work overtime even if quality suffers'],
-          id:['Selesaikan laporan internal terlebih dahulu','Selesaikan tugas yang lebih dulu Anda mulai','Komunikasikan kepada kedua pihak dan negosiasikan solusi','Lembur meskipun kualitas menurun']
-        },
-        answer:2
-      },
-      {
-        id:'tm6',
-        context:{en:'You have back-to-back meetings all day and no time for focused work.', id:'Anda memiliki rapat yang terus-menerus sepanjang hari dan tidak ada waktu untuk kerja fokus.'},
-        text:{en:'What is the best long-term strategy?', id:'Apa strategi jangka panjang terbaik?'},
-        type:'single',
-        options:{
-          en:['Stay late every day to make up for it','Proactively block focused work time on your calendar before others can schedule meetings','Skip meetings without telling anyone','Ask your manager to reduce your workload'],
-          id:['Lembur setiap hari untuk menggantinya','Blokir waktu kerja fokus di kalender Anda secara proaktif sebelum orang lain menjadwalkan rapat','Bolos rapat tanpa memberitahu siapa pun','Minta manajer mengurangi beban kerja Anda']
-        },
-        answer:1
-      },
-      {
-        id:'tm7',
-        text:{en:'A task is important but not urgent. According to the Eisenhower Matrix, what should you do?', id:'Sebuah tugas penting tetapi tidak mendesak. Menurut Matriks Eisenhower, apa yang harus Anda lakukan?'},
-        type:'single',
-        options:{
-          en:["Do it immediately — it's important",'Delegate it to someone else','Schedule dedicated time for it in the near future','Drop it since it\'s not urgent'],
-          id:['Kerjakan segera — itu penting','Delegasikan kepada orang lain','Jadwalkan waktu khusus untuk itu dalam waktu dekat','Abaikan karena tidak mendesak']
-        },
-        answer:2
-      },
-      {
-        id:'tm8',
-        context:{en:'You are working on a high-priority project when a colleague stops by with a non-urgent question.', id:'Anda sedang mengerjakan proyek berprioritas tinggi ketika seorang rekan kerja datang dengan pertanyaan yang tidak mendesak.'},
-        text:{en:'What is the best response?', id:'Apa respons terbaik?'},
-        type:'single',
-        options:{
-          en:['Stop and help immediately','Tell them you are busy and will never help','Politely let them know you are focused and arrange a specific time to connect later','Ignore them'],
-          id:['Berhenti dan bantu segera','Katakan Anda sibuk dan tidak akan pernah bisa membantu','Dengan sopan beri tahu bahwa Anda sedang fokus dan atur waktu khusus untuk bicara nanti','Abaikan mereka']
-        },
-        answer:2
-      },
-      {
-        id:'tm9',
-        context:{en:'You are overwhelmed with tasks and have a junior team member who could handle some with guidance.', id:'Anda kewalahan dengan tugas dan memiliki anggota tim junior yang bisa menangani beberapa tugas dengan bimbingan.'},
-        text:{en:'What is the best approach?', id:'Apa pendekatan terbaik?'},
-        type:'single',
-        options:{
-          en:['Keep all tasks yourself to ensure quality','Delegate appropriate tasks with clear instructions and check-ins','Delegate everything and never follow up','Ask your manager to reassign their work to you'],
-          id:['Pertahankan semua tugas sendiri untuk menjaga kualitas','Delegasikan tugas yang sesuai dengan instruksi jelas dan pemantauan berkala','Delegasikan semuanya dan tidak pernah memantau','Minta manajer memindahkan pekerjaan mereka kepada Anda']
-        },
-        answer:1
-      },
-      {
-        id:'tm10',
-        context:{en:"You often feel you haven't accomplished your goals by the end of the day.", id:'Anda sering merasa tidak mencapai tujuan Anda di akhir hari.'},
-        text:{en:'What is the best strategy to fix this?', id:'Strategi terbaik apa untuk memperbaiki ini?'},
-        type:'single',
-        options:{
-          en:['Set an unrealistically large number of goals','Avoid setting daily goals and just react','Set 3–5 clear prioritized daily goals each morning','Review your goals only at month-end'],
-          id:['Tetapkan jumlah tujuan yang tidak realistis','Hindari menetapkan tujuan harian dan hanya bereaksi','Tetapkan 3–5 tujuan harian yang jelas dan terurut setiap pagi','Tinjau tujuan Anda hanya di akhir bulan']
-        },
-        answer:2
-      },
-      {
-        id:'tm11',
-        text:{en:'You have significantly higher energy in the morning. How should you best use this?', id:'Anda memiliki energi yang jauh lebih tinggi di pagi hari. Bagaimana sebaiknya Anda memanfaatkannya?'},
-        type:'single',
-        options:{
-          en:['Use mornings for routine emails and low-effort tasks','Schedule your most demanding tasks during morning hours','Use mornings for casual team socializing','Save morning energy specifically for afternoon meetings'],
-          id:['Gunakan pagi untuk email rutin dan tugas ringan','Jadwalkan tugas paling menantang di jam pagi','Gunakan pagi untuk sosialisasi santai dengan tim','Simpan energi pagi khusus untuk rapat sore hari']
-        },
-        answer:1
-      },
-      {
-        id:'tm12',
-        context:{en:'Your manager gives you an urgent task midway through your day, disrupting your planned work.', id:'Manajer Anda memberikan tugas mendesak di tengah hari, mengganggu rencana kerja Anda.'},
-        text:{en:'What is the best approach?', id:'Apa pendekatan terbaik?'},
-        type:'single',
-        options:{
-          en:['Refuse it since it was not planned','Drop everything and only focus on the new task','Assess what can be postponed, do the urgent task, then reschedule remaining work','Finish all planned work first before the urgent task'],
-          id:['Tolak karena tidak direncanakan','Tinggalkan semua dan fokus hanya pada tugas baru','Nilai apa yang bisa ditunda, kerjakan tugas mendesak, lalu jadwal ulang sisa pekerjaan','Selesaikan semua pekerjaan yang direncanakan sebelum mengerjakan tugas mendesak']
-        },
-        answer:2
-      },
-      {
-        id:'tm13',
-        context:{en:'Your manager believes multitasking significantly increases team productivity.', id:'Manajer Anda percaya bahwa multitasking secara signifikan meningkatkan produktivitas tim.'},
-        text:{en:'What is the most evidence-based response?', id:'Apa respons yang paling berbasis bukti?'},
-        type:'single',
-        options:{
-          en:['Agree and start multitasking immediately','Explain that task-switching reduces efficiency and suggest focused work blocks instead','Say nothing and just multitask as requested','Ask to be transferred to another team'],
-          id:['Setuju dan mulai multitasking segera','Jelaskan bahwa perpindahan tugas mengurangi efisiensi dan sarankan blok kerja fokus sebagai gantinya','Diam saja dan lakukan multitasking sesuai permintaan','Minta dipindahkan ke tim lain']
-        },
-        answer:1
-      },
-      {
         id:'tm14',
-        context:{en:'You are assigned a complex 3-month project with no existing structure.', id:'Anda ditugaskan pada proyek kompleks 3 bulan tanpa struktur yang sudah ada.'},
-        text:{en:'What is the most effective first step?', id:'Apa langkah pertama yang paling efektif?'},
+        context:{en:'Your manager gives you feedback that Task A, which you perform weekly, is taking too long. You perform it the same way each week and always work hard to complete it.', id:'Manajer Anda memberi tahu bahwa Tugas A, yang Anda lakukan setiap minggu, memakan waktu terlalu lama. Anda melakukannya dengan cara yang sama setiap minggu dan selalu bekerja keras untuk menyelesaikannya.'},
+        text:{en:'What should you say to your manager?', id:'Apa yang harus Anda katakan kepada manajer Anda?'},
         type:'single',
         options:{
-          en:['Start working immediately on whatever comes to mind','Break it into milestones with deadlines and identify dependencies','Wait until the last month to start','Ask your manager to build the project plan'],
-          id:['Mulai bekerja segera pada apapun yang terlintas di pikiran','Bagi menjadi milestone dengan tenggat waktu dan identifikasi dependensi','Tunggu hingga bulan terakhir untuk memulai','Minta manajer Anda membuat rencana proyek']
+          en:['"I am working as fast as I can."','"Do you know of a better way to do it?"','"Have you ever tried to do it?"','"I do it much faster than the previous person."'],
+          id:['"Saya sudah bekerja secepat yang saya bisa."','"Apakah Anda tahu cara yang lebih baik untuk melakukannya?"','"Apakah Anda pernah mencoba melakukannya?"','"Saya melakukannya jauh lebih cepat dari orang sebelumnya."']
         },
         answer:1
       },
       {
         id:'tm15',
-        text:{en:'At the end of each week, what habit is most effective for continuous time management improvement?', id:'Di akhir setiap minggu, kebiasaan apa yang paling efektif untuk perbaikan manajemen waktu berkelanjutan?'},
+        text:{en:'What is the most accurate way to capture and review data on how efficiently you complete tasks?', id:'Apa cara paling akurat untuk mencatat dan meninjau data tentang seberapa efisien Anda menyelesaikan tugas?'},
         type:'single',
         options:{
-          en:['Ignore the past week and only focus on next week','Review accomplishments, identify time wasters, and intentionally plan the next week','Celebrate with social activities','Ask your manager to evaluate your entire week'],
-          id:['Abaikan minggu lalu dan fokus hanya pada minggu depan','Tinjau pencapaian, identifikasi pembuang waktu, dan rencanakan minggu depan secara sengaja','Rayakan dengan kegiatan sosial','Minta manajer mengevaluasi seluruh minggu Anda']
+          en:['Track your time using an app or spreadsheet.','Add a note to your notebook every time you finish a task on time.','Write yourself an email when a task is done.','Ask your coworkers how efficient they think you are.'],
+          id:['Lacak waktu Anda menggunakan aplikasi atau spreadsheet.','Tambahkan catatan di buku Anda setiap kali Anda menyelesaikan tugas tepat waktu.','Tulis email untuk diri sendiri ketika tugas selesai.','Tanya rekan kerja Anda seberapa efisien mereka pikir Anda.']
         },
-        answer:1
+        answer:0
       },
       {
         id:'tm16',
-        context:{en:'A colleague frequently asks for your help on small tasks, cumulatively taking up significant time each day.', id:'Seorang rekan kerja sering meminta bantuan untuk tugas-tugas kecil, yang secara kumulatif menghabiskan banyak waktu setiap hari.'},
-        text:{en:'What is the best way to handle this while maintaining a good working relationship?', id:'Apa cara terbaik untuk menangani ini sambil menjaga hubungan kerja yang baik?'},
+        text:{en:'What is the easiest way to get rid of a bad habit?', id:'Apa cara termudah untuk menghilangkan kebiasaan buruk?'},
         type:'single',
         options:{
-          en:['Always help them immediately no matter what','Set boundaries by designating a specific short window each day for helping colleagues','Ignore all their requests','Report them to HR for wasting your time'],
-          id:['Selalu bantu mereka segera tidak peduli apapun','Tetapkan batasan dengan menentukan jendela waktu singkat khusus setiap hari untuk membantu rekan','Abaikan semua permintaan mereka','Laporkan ke HR karena membuang waktu Anda']
+          en:['Replacing the bad habit with a good habit.','Promising yourself a monetary award if you succeed.','Being more disciplined and strict with yourself.','Writing a social media post about getting rid of the bad habit.'],
+          id:['Menggantikan kebiasaan buruk dengan kebiasaan baik.','Menjanjikan diri sendiri hadiah uang jika berhasil.','Menjadi lebih disiplin dan tegas terhadap diri sendiri.','Menulis postingan media sosial tentang menghilangkan kebiasaan buruk.']
         },
-        answer:1
+        answer:0
       }
     ]
   },
@@ -765,172 +1086,225 @@ const SECTIONS = [
   // ── COMMUNICATION ─────────────────────────────────────
   {
     id:'cm', icon:'💬', timeSeconds:8*60, scoreable:true,
-    name:{en:'Communication', id:'Komunikasi'},
-    questions:[
+    meta:{en:'16 questions · 8 minutes · Entry Level', id:'16 soal · 8 menit · Dasar'},
+    practiceCount:3,
+    practiceQuestions:[
       {
-        id:'cm1',
-        context:{en:'"Thanks for checking in. We\'re busier than ever here at the clinic. It\'s a busy time of year — more and more people are wanting to get procedures done here instead of the hospital. I think we\'re going to have to put this off until next spring. Sorry to string you along. We usually slow down a bit in April and May. I\'ll reach out to you early next year."', id:'"Terima kasih sudah menghubungi. Kami lebih sibuk dari sebelumnya di klinik ini. Ini adalah waktu yang sibuk dalam setahun — semakin banyak orang yang ingin melakukan prosedur di sini daripada di rumah sakit. Saya rasa kita harus menunda ini hingga musim semi berikutnya. Maaf sudah membuat Anda menunggu. Kami biasanya sedikit lebih santai di April dan Mei. Saya akan menghubungi Anda di awal tahun depan."'},
-        text:{en:'What is the main point of the message?', id:'Apa poin utama dari pesan tersebut?'},
+        id:'pcp1',
+        context:{
+          en:'What is the main point of the message below?\n\n<div style="border-left:4px solid #bbb;padding:12px 16px;background:#f9f9f9;border-radius:0 8px 8px 0;font-style:italic;color:#333;line-height:1.7">"Thanks for checking in. We\'re busier than ever here at the clinic. It\'s a busy time of year—more and more people are wanting to get procedures done here instead of the hospital. I think we\'re going to have to put this off until next spring. Sorry to string you along. We usually slow down a bit in April and May. I\'ll reach out to you early next year."</div>',
+          id:'Apa inti pesan di bawah ini?\n\n<div style="border-left:4px solid #bbb;padding:12px 16px;background:#f9f9f9;border-radius:0 8px 8px 0;font-style:italic;color:#333;line-height:1.7">"Terima kasih sudah menghubungi. Kami sangat sibuk di klinik ini. Ini musim sibuk—semakin banyak orang ingin melakukan prosedur di sini daripada di rumah sakit. Saya rasa kita harus menunda ini hingga musim semi tahun depan. Maaf sudah membuat Anda menunggu. Kami biasanya lebih santai di bulan April dan Mei. Saya akan menghubungi Anda di awal tahun depan."</div>'
+        },
+        text:{en:'What is the main point of the message?', id:'Apa inti dari pesan tersebut?'},
         type:'single',
         options:{
-          en:['The sender does not want to work with the recipient','The sender is upset that the recipient delayed things','The sender is very busy due to health issues','The sender wants to work with the recipient at a later time'],
-          id:['Pengirim tidak ingin bekerja sama dengan penerima','Pengirim kesal karena penerima menunda hal-hal','Pengirim sangat sibuk karena masalah kesehatan','Pengirim ingin bekerja sama dengan penerima di lain waktu']
+          en:['The sender does not want to work with the recipient.','The sender is upset that the recipient has delayed things.','The sender is very busy due to health issues.','The sender wants to work with the recipient at a later time.'],
+          id:['Pengirim tidak ingin bekerja sama dengan penerima.','Pengirim kecewa karena penerima telah menunda hal-hal.','Pengirim sangat sibuk karena masalah kesehatan.','Pengirim ingin bekerja sama dengan penerima di waktu yang lebih tepat.']
         },
         answer:3
       },
       {
-        id:'cm2',
-        context:{en:'A manager says to a team member: "You did a great job on the presentation visuals, but your delivery was a bit unclear."', id:'Seorang manajer berkata kepada anggota tim: "Kamu melakukan pekerjaan yang bagus pada visual presentasi, tapi penyampaianmu agak kurang jelas."'},
-        text:{en:'What is the main issue with how this feedback is communicated?', id:'Apa masalah utama dalam cara umpan balik ini disampaikan?'},
+        id:'pcp2',
+        context:{
+          en:'You are told by your supervisor that a colleague is avoiding you because you hurt their feelings with something you said.',
+          id:'Supervisor Anda memberi tahu bahwa seorang rekan menghindari Anda karena Anda menyakiti perasaan mereka dengan sesuatu yang Anda katakan.'
+        },
+        text:{en:"What's the best way to move forward to address the situation?", id:'Apa cara terbaik untuk mengatasi situasi ini?'},
         type:'single',
         options:{
-          en:['The word "but" negates and detracts from the compliment','Nothing — it is fine the way it is','The manager should lead with the negative feedback','The manager should not be positive when giving constructive feedback'],
-          id:['Kata "tapi" meniadakan dan mengurangi makna pujian','Tidak ada masalah — sudah baik seperti itu','Manajer sebaiknya memulai dengan umpan balik negatif','Manajer tidak boleh positif ketika memberikan umpan balik konstruktif']
+          en:['Leave the colleague alone because you make them uncomfortable.','Ask the colleague for a private conversation so you can apologize and find out exactly what hurt their feelings.','Ask your supervisor to apologize for you, and then send an email yourself apologizing to your colleague.','Ask your supervisor what part of what you said has hurt your colleague\'s feelings, so you can avoid that in the future.'],
+          id:['Biarkan rekan tersebut sendiri karena Anda membuat mereka tidak nyaman.','Ajak rekan bicara secara pribadi agar Anda bisa meminta maaf dan mengetahui apa yang menyakiti perasaan mereka.','Minta supervisor Anda meminta maaf untuk Anda, lalu kirim email sendiri untuk meminta maaf kepada rekan.','Tanyakan kepada supervisor apa yang Anda katakan sehingga menyakiti perasaan rekan, agar Anda bisa menghindarinya di masa depan.']
+        },
+        answer:1
+      },
+      {
+        id:'pcp3',
+        context:{
+          en:'You forgot to set your out-of-office message and were gone for a week. You have three voice messages from the same colleague, getting progressively more urgent.',
+          id:'Anda lupa mengatur pesan tidak di kantor dan pergi selama seminggu. Anda memiliki tiga pesan suara dari rekan yang sama, dengan nada yang semakin mendesak.'
+        },
+        text:{en:'What is the first action you take?', id:'Apa tindakan pertama yang Anda lakukan?'},
+        type:'single',
+        options:{
+          en:['Email the colleague to explain that you were out of the office.','Forward the voice messages to your supervisor to handle.','Call the colleague to apologize.','Email the colleague and copy your supervisor so they know what\'s going on.'],
+          id:['Kirim email ke rekan untuk menjelaskan bahwa Anda sedang tidak di kantor.','Teruskan pesan suara ke supervisor Anda untuk ditangani.','Hubungi rekan tersebut untuk meminta maaf.','Kirim email ke rekan dan salin supervisor agar mereka tahu apa yang terjadi.']
+        },
+        answer:2
+      }
+    ],
+    name:{en:'Communication', id:'Komunikasi'},
+    questions:[
+      {
+        id:'cm1',
+        text:{en:'When you must give a colleague feedback about something they did not complete to your specifications, what is the best way to approach the situation?', id:'Ketika Anda harus memberikan umpan balik kepada rekan tentang sesuatu yang tidak mereka selesaikan sesuai spesifikasi Anda, apa cara terbaik untuk mendekati situasi tersebut?'},
+        type:'single',
+        options:{
+          en:['Let them know early that you need to talk to them, giving them time to think about what you might want to discuss.','Tell them you need to talk, and schedule a meeting at least three days later to give them time to make improvements.','Wait for your regular check-in meeting with the colleague to address the concern with a specific, written list of what needs to be improved.','As soon as you see the project was not completed to your specifications, confront your colleague with a bullet point list of issues to be understood.'],
+          id:['Beri tahu mereka lebih awal bahwa Anda perlu berbicara, memberi mereka waktu untuk memikirkan apa yang ingin Anda bahas.','Beritahu mereka Anda perlu berbicara, dan jadwalkan pertemuan setidaknya tiga hari kemudian agar mereka punya waktu untuk memperbaiki diri.','Tunggu rapat check-in rutin dengan rekan untuk membahas masalah dengan daftar tertulis tentang apa yang perlu diperbaiki.','Segera setelah Anda melihat proyek tidak selesai sesuai spesifikasi, hadapi rekan Anda dengan daftar poin masalah yang perlu dipahami.']
         },
         answer:0
       },
       {
-        id:'cm3',
-        context:{en:'Your supervisor tells you a colleague is avoiding you because you hurt their feelings with something you said.', id:'Supervisor Anda memberitahu bahwa seorang rekan menghindari Anda karena Anda menyakiti perasaan mereka dengan sesuatu yang Anda katakan.'},
-        text:{en:'What is the best way to address the situation?', id:'Apa cara terbaik untuk menangani situasi ini?'},
+        id:'cm2',
+        text:{en:'When texting a colleague or client, which of these is most clear?', id:'Saat mengirim pesan teks kepada rekan atau klien, mana yang paling jelas?'},
         type:'single',
         options:{
-          en:['Leave the colleague alone since you make them uncomfortable','Ask the colleague privately to apologize and understand exactly what hurt their feelings','Ask your supervisor to apologize on your behalf','Ask your supervisor what specifically hurt your colleague so you can avoid it'],
-          id:['Biarkan rekan tersebut sendiri karena Anda membuat mereka tidak nyaman','Ajak rekan tersebut bicara secara pribadi untuk meminta maaf dan memahami apa yang menyakiti perasaan mereka','Minta supervisor meminta maaf atas nama Anda','Tanyakan kepada supervisor apa yang menyakiti rekan tersebut agar Anda bisa menghindarinya']
+          en:['We are meeting Zach and the others at the office at 10 a.m.','We are meeting Zach Megan Julie at the office at 10 a.m.','We are meeting Zach, Megan, and Julie at the office tomorrow at 10 a.m.','We are meeting Zach Megan and Julie at the office tomorrow at 10 a.m.'],
+          id:['Kita bertemu Zach dan yang lainnya di kantor pukul 10 pagi.','Kita bertemu Zach Megan Julie di kantor pukul 10 pagi.','Kita bertemu Zach, Megan, dan Julie di kantor besok pukul 10 pagi.','Kita bertemu Zach Megan dan Julie di kantor besok pukul 10 pagi.']
+        },
+        answer:2
+      },
+      {
+        id:'cm3',
+        text:{en:'Which of the following messages is written appropriately?', id:'Pesan mana dari berikut ini yang ditulis dengan tepat?'},
+        type:'single',
+        options:{
+          en:['THANK YOU FOR YOUR FEEDBACK ABOUT OUR PRODUCT.','Thank you for the feedback about our product.','Thank you for THE FEEDBACK about our product.','THANK YOU for the feedback about our product!!!'],
+          id:['TERIMA KASIH ATAS MASUKAN ANDA TENTANG PRODUK KAMI.','Terima kasih atas masukan tentang produk kami.','Terima kasih atas MASUKAN tentang produk kami.','TERIMA KASIH atas masukan tentang produk kami!!!']
         },
         answer:1
       },
       {
         id:'cm4',
-        context:{en:'You forgot to set your out-of-office message and were gone for a week. You have three voice messages from the same colleague, getting progressively more urgent.', id:'Anda lupa mengaktifkan pesan tidak ada di kantor dan pergi selama seminggu. Anda memiliki tiga pesan suara dari rekan yang sama, semakin mendesak.'},
-        text:{en:'What is the first action you take?', id:'Apa tindakan pertama yang Anda ambil?'},
+        text:{en:'What is the best tool to accompany a detailed and complicated presentation?', id:'Apa alat terbaik untuk mendampingi presentasi yang mendetail dan rumit?'},
         type:'single',
         options:{
-          en:['Email the colleague to explain you were out of office','Forward the voicemails to your supervisor to handle','Call the colleague directly to apologize and address their concern','Email and copy your supervisor'],
-          id:['Kirim email kepada rekan untuk menjelaskan bahwa Anda tidak ada di kantor','Teruskan pesan suara ke supervisor untuk ditangani','Hubungi rekan secara langsung untuk meminta maaf dan menangani kekhawatiran mereka','Kirim email dan salin supervisor']
+          en:['Detailed black-and-white spreadsheet printouts.','Detailed color-coded spreadsheet printouts.','Detailed PowerPoint slides with printed handouts.','Color-coded spreadsheet printouts with accompanying charts and graphs.'],
+          id:['Cetakan spreadsheet hitam-putih yang mendetail.','Cetakan spreadsheet berkode warna yang mendetail.','Slide PowerPoint mendetail dengan handout cetak.','Cetakan spreadsheet berkode warna dengan grafik dan diagram pendamping.']
         },
-        answer:2
+        answer:3
       },
       {
         id:'cm5',
-        context:{en:'You need to send a company-wide update about a policy change that some employees may find frustrating.', id:'Anda perlu mengirimkan pembaruan kepada seluruh perusahaan tentang perubahan kebijakan yang mungkin dirasakan menjengkelkan oleh sebagian karyawan.'},
-        text:{en:'What is the best approach for this communication?', id:'Apa pendekatan terbaik untuk komunikasi ini?'},
+        context:{en:'"Thanks for checking in. We\'re busier than ever here at the clinic. It\'s a busy time of year—more and more people are wanting to get procedures done here instead of the hospital. I think we\'re going to have to put this off until next spring. Sorry to string you along. We usually slow down a bit in April and May. I\'ll reach out to you early next year."', id:'"Terima kasih sudah menghubungi. Kami lebih sibuk dari sebelumnya di klinik ini. Ini adalah waktu yang sibuk—semakin banyak orang yang ingin melakukan prosedur di sini daripada di rumah sakit. Kami rasa kita perlu menundanya hingga musim semi berikutnya. Maaf sudah membuat Anda menunggu. Kami biasanya sedikit lebih santai di April dan Mei. Saya akan menghubungi Anda di awal tahun depan."'},
+        text:{en:'What is the best response to the following message?', id:'Apa respons terbaik untuk pesan berikut?'},
         type:'single',
         options:{
-          en:['Send a brief email with just the key changes and no context','Send a detailed message explaining the reason, what is changing, and how it affects employees','Ask your manager to send it instead','Post it informally on the company chat'],
-          id:['Kirim email singkat hanya dengan perubahan utama tanpa konteks','Kirim pesan terperinci yang menjelaskan alasan, apa yang berubah, dan bagaimana dampaknya terhadap karyawan','Minta manajer Anda yang mengirimkannya','Posting secara informal di chat perusahaan']
+          en:['"Thanks for following up. I look forward to a conversation next year, and will mark my calendar to check in with you in March."','"Thanks for following up. I\'m adding you to my email list so you can receive my newsletter, which contains great resources for you."','"I\'m sorry to hear that you are delaying our contract. Let me know if you change your mind."','"I don\'t think you\'re right. Now is the best time to work together to improve the situation of your team!"'],
+          id:['"Terima kasih atas kabarnya. Saya menantikan percakapan tahun depan, dan akan menandai kalender saya untuk menghubungi Anda di bulan Maret."','"Terima kasih atas kabarnya. Saya menambahkan Anda ke daftar email saya agar Anda bisa menerima newsletter saya yang berisi sumber daya berguna."','"Saya turut prihatin mendengar Anda menunda kontrak kami. Beri tahu saya jika Anda berubah pikiran."','"Saya rasa Anda tidak tepat. Sekarang adalah waktu terbaik untuk bekerja sama meningkatkan situasi tim Anda!"']
         },
-        answer:1
+        answer:0
       },
       {
         id:'cm6',
-        context:{en:'During a meeting, a colleague is explaining a problem at length. You think you understand halfway through.', id:'Saat rapat, seorang rekan menjelaskan suatu masalah panjang lebar. Anda merasa sudah mengerti di tengah-tengah penjelasannya.'},
-        text:{en:'What should you do?', id:'Apa yang harus Anda lakukan?'},
+        context:{en:'', id:''},
+        text:{en:'When attending a meeting via video conference, how can you best demonstrate that you are listening and engaged?', id:'Saat menghadiri rapat melalui konferensi video, bagaimana cara terbaik untuk menunjukkan bahwa Anda mendengarkan dan terlibat?'},
         type:'single',
         options:{
-          en:['Interrupt them to share your solution immediately','Let them finish, then summarize what you heard and ask clarifying questions','Nod and wait for the meeting to end','Take notes for your own unrelated work'],
-          id:['Potong pembicaraan mereka untuk langsung membagikan solusi Anda','Biarkan mereka selesai bicara, lalu rangkum yang Anda dengar dan ajukan pertanyaan klarifikasi','Angguk saja dan tunggu rapat selesai','Catat hal-hal tidak terkait untuk pekerjaan Anda sendiri']
+          en:['Turn off your video so you can focus on listening','Frequently interrupt with your own points to show engagement','Ask questions via the chat feature or Q&A section','Look straight into the camera at all times'],
+          id:['Matikan video Anda agar bisa fokus mendengarkan','Sering memotong dengan poin Anda sendiri untuk menunjukkan keterlibatan','Ajukan pertanyaan melalui fitur obrolan atau bagian tanya jawab','Selalu menatap langsung ke kamera setiap saat']
         },
-        answer:1
+        answer:2
       },
       {
         id:'cm7',
-        context:{en:'A colleague frequently interrupts you during your presentations in front of the team.', id:'Seorang rekan kerja sering memotong pembicaraan Anda saat presentasi di depan tim.'},
-        text:{en:'What is the best professional way to address this?', id:'Apa cara profesional terbaik untuk mengatasi ini?'},
+        context:{en:'', id:''},
+        text:{en:'In a meeting where people are offering ideas or brainstorming solutions to a problem, what is the most effective way to express your ideas?', id:'Dalam rapat di mana orang-orang menawarkan ide atau bertukar pikiran untuk memecahkan masalah, apa cara paling efektif untuk mengungkapkan ide Anda?'},
         type:'single',
         options:{
-          en:['Never address it; just talk faster','Complain to your manager without speaking to them first','Privately and respectfully tell them the interruptions affect your flow and ask them to hold questions','Start interrupting them in their presentations as payback'],
-          id:['Jangan pernah membahasnya; cukup berbicara lebih cepat','Mengadu kepada manajer tanpa berbicara langsung kepada mereka terlebih dahulu','Secara pribadi dan sopan katakan bahwa interupsi mereka mengganggu alur Anda dan minta mereka menahan pertanyaan','Mulai memotong pembicaraan mereka saat presentasi sebagai balasan']
+          en:['Share your ideas immediately, even if it means interrupting someone else','Email your ideas to the group after the meeting','Give feedback on each idea as it is shared, before offering your own','Share your ideas without interrupting others, and hold your opinions until all ideas have been considered'],
+          id:['Bagikan ide Anda segera, bahkan jika itu berarti memotong pembicaraan orang lain','Kirimkan ide Anda ke grup melalui email setelah rapat','Berikan umpan balik pada setiap ide saat disampaikan, sebelum menawarkan ide Anda sendiri','Bagikan ide Anda tanpa memotong orang lain, dan tahan pendapat Anda hingga semua ide telah dipertimbangkan']
         },
-        answer:2
+        answer:3
       },
       {
         id:'cm8',
-        context:{en:'You receive an email from a frustrated client about a delay in your service.', id:'Anda menerima email dari klien yang frustrasi mengenai keterlambatan layanan Anda.'},
-        text:{en:'Before responding, what should you do first?', id:'Sebelum membalas, apa yang harus Anda lakukan terlebih dahulu?'},
+        context:{en:'', id:''},
+        text:{en:'You are giving feedback to a colleague and you notice them lean back in their chair and cross their arms in front of their chest. What is the likely meaning of that non-verbal cue?', id:'Anda memberikan umpan balik kepada rekan kerja dan Anda melihat mereka bersandar ke belakang di kursinya dan menyilangkan tangan di depan dada. Apa kemungkinan arti dari isyarat non-verbal tersebut?'},
         type:'single',
         options:{
-          en:['Reply immediately with a defensive explanation','Forward it to your manager and say nothing to the client','Take time to understand their concern, then write a calm, empathetic, solution-focused reply','Wait a week to let the situation cool down'],
-          id:['Balas segera dengan penjelasan defensif','Teruskan ke manajer Anda dan tidak mengatakan apa-apa kepada klien','Luangkan waktu untuk memahami keluhan mereka, lalu tulis balasan yang tenang, empatik, dan berfokus pada solusi','Tunggu seminggu agar situasi mereda']
+          en:['They are feeling cold','They clearly agree with what you are saying','They think you are teasing them','They are feeling uncomfortable or angry'],
+          id:['Mereka merasa kedinginan','Mereka jelas setuju dengan apa yang Anda katakan','Mereka pikir Anda sedang menggoda mereka','Mereka merasa tidak nyaman atau marah']
         },
-        answer:2
+        answer:3
       },
       {
         id:'cm9',
-        context:{en:'You are facilitating a meeting where one person dominates the conversation while others stay silent.', id:'Anda memfasilitasi rapat di mana satu orang mendominasi percakapan sementara yang lain diam.'},
-        text:{en:'What should you do as the facilitator?', id:'Apa yang harus Anda lakukan sebagai fasilitator?'},
+        context:{en:'', id:''},
+        text:{en:'When a colleague tells you about a project that was successful, what is the best thing to say to demonstrate empathy?', id:'Ketika seorang rekan menceritakan tentang proyek yang berhasil, apa yang paling baik untuk dikatakan untuk menunjukkan empati?'},
         type:'single',
         options:{
-          en:['Let the dominant person continue; they clearly have the most to say','Interrupt them and tell them to stop talking','Actively invite quieter participants to share and gently redirect the conversation','End the meeting early'],
-          id:['Biarkan orang yang dominan berbicara terus; mereka jelas memiliki paling banyak untuk disampaikan','Potong dan suruh mereka berhenti berbicara','Secara aktif ajak peserta yang lebih pendiam untuk berbagi dan arahkan kembali percakapan dengan lembut','Akhiri rapat lebih awal']
+          en:['"That\'s amazing! You must be very proud."','"Congratulations on your success!"','"That\'s great, but I bet next time you can do even better!"','"That\'s great! Do you think you\'ll get promoted?"'],
+          id:['"Itu luar biasa! Kamu pasti sangat bangga."','"Selamat atas kesuksesanmu!"','"Itu bagus, tapi saya yakin kamu bisa melakukan lebih baik lagi lain kali!"','"Itu bagus! Menurutmu kamu akan dipromosikan?"']
+        },
+        answer:0
+      },
+      {
+        id:'cm10',
+        context:{en:'', id:''},
+        text:{en:'What is an important thing to do immediately after you host a meeting?', id:'Apa hal penting yang harus dilakukan segera setelah Anda memimpin rapat?'},
+        type:'single',
+        options:{
+          en:['Take a break to get food and water','Read the materials that were given to participants before the meeting','Follow up with an email listing the action items for each participant','Schedule another meeting without an agenda'],
+          id:['Istirahat untuk makan dan minum','Baca materi yang diberikan kepada peserta sebelum rapat','Tindak lanjuti dengan email yang mencantumkan item tindakan untuk setiap peserta','Jadwalkan rapat lain tanpa agenda']
         },
         answer:2
       },
       {
-        id:'cm10',
-        context:{en:'You are working with an international colleague and realize there may be a cultural misunderstanding about communication norms.', id:'Anda bekerja dengan rekan internasional dan menyadari ada kemungkinan kesalahpahaman budaya mengenai norma komunikasi.'},
-        text:{en:'What is the best approach?', id:'Apa pendekatan terbaik?'},
-        type:'single',
-        options:{
-          en:['Assume your communication style is correct and they must adapt','Acknowledge the difference, ask questions to understand their perspective, and find a mutual approach','Avoid communicating with them unless absolutely necessary','Escalate to HR immediately'],
-          id:['Anggap gaya komunikasi Anda yang benar dan mereka harus beradaptasi','Akui perbedaan tersebut, tanyakan untuk memahami perspektif mereka, dan temukan pendekatan bersama','Hindari berkomunikasi dengan mereka kecuali sangat diperlukan','Segera laporkan ke HR']
-        },
-        answer:1
-      },
-      {
         id:'cm11',
-        context:{en:'During your performance review, your manager is avoiding eye contact, crossing their arms, and giving short answers.', id:'Saat evaluasi kinerja, manajer Anda menghindari kontak mata, menyilangkan lengan, dan memberikan jawaban singkat.'},
-        text:{en:'What does this most likely suggest?', id:'Apa yang paling mungkin ditunjukkan oleh bahasa tubuh ini?'},
+        context:{en:'', id:''},
+        text:{en:'What is the best way to describe a problem you solved so people understand why the solution is effective?', id:'Apa cara terbaik untuk mendeskripsikan masalah yang telah Anda selesaikan agar orang-orang memahami mengapa solusinya efektif?'},
         type:'single',
         options:{
-          en:['They are fully engaged and listening carefully','They may be uncomfortable, distracted, or withholding something','They think you are performing at an outstanding level','Body language is irrelevant and should be ignored'],
-          id:['Mereka sepenuhnya terlibat dan mendengarkan dengan seksama','Mereka mungkin tidak nyaman, terganggu, atau menyembunyikan sesuatu','Mereka menganggap kinerja Anda luar biasa','Bahasa tubuh tidak relevan dan harus diabaikan']
+          en:['A full, multi-paragraph story with complete details to offer context for how the problem began and how you fixed it.','Bullet points in three categories: The problem itself, the steps you took to solve it, and the solution and its impact.','Don\'t write a description of a problem you solved because it seems like bragging.','A one-paragraph summary of the solution.'],
+          id:['Cerita panjang beberapa paragraf dengan detail lengkap untuk memberikan konteks bagaimana masalah dimulai dan bagaimana Anda memperbaikinya.','Poin-poin dalam tiga kategori: Masalah itu sendiri, langkah-langkah yang Anda ambil untuk menyelesaikannya, serta solusi dan dampaknya.','Jangan menulis deskripsi masalah yang sudah Anda selesaikan karena terkesan seperti membanggakan diri.','Ringkasan satu paragraf tentang solusinya.']
         },
         answer:1
       },
       {
         id:'cm12',
-        context:{en:'You discover a significant error in a report being presented to senior leadership tomorrow.', id:'Anda menemukan kesalahan signifikan dalam laporan yang akan dipresentasikan kepada pimpinan senior besok.'},
-        text:{en:'What should you do?', id:'Apa yang harus Anda lakukan?'},
+        context:{en:'', id:''},
+        text:{en:'When facilitating a meeting or conversation, what is your primary role?', id:'Saat memfasilitasi rapat atau percakapan, apa peran utama Anda?'},
         type:'single',
         options:{
-          en:['Say nothing and hope no one notices','Fix the error secretly without telling anyone','Immediately inform your manager, explain the issue, and suggest a solution','Wait for someone else to catch it'],
-          id:['Diam saja dan harap tidak ada yang memperhatikan','Perbaiki kesalahan secara diam-diam tanpa memberi tahu siapa pun','Segera informasikan manajer Anda, jelaskan masalahnya, dan sarankan solusi','Tunggu orang lain yang menemukan kesalahan tersebut']
+          en:['To lead the meeting and explain everything to participants in detail.','To keep the meeting on track with the agenda and ensure all voices are heard.','To schedule the meeting for a time everyone can attend.','To keep the meeting on track with the agenda and be the primary person speaking.','To provide snacks and keep participants happy.'],
+          id:['Memimpin rapat dan menjelaskan segalanya kepada peserta secara rinci.','Menjaga agar rapat sesuai agenda dan memastikan semua suara didengar.','Menjadwalkan rapat pada waktu yang semua orang bisa hadir.','Menjaga agar rapat sesuai agenda dan menjadi orang utama yang berbicara.','Menyediakan makanan ringan dan membuat peserta senang.']
         },
-        answer:2
+        answer:1
       },
       {
         id:'cm13',
-        context:{en:"A client sends a glowing email praising your team's work on the last project.", id:'Klien mengirimkan email pujian tentang pekerjaan tim Anda pada proyek terakhir.'},
-        text:{en:'What is the most professional response?', id:'Apa respons yang paling profesional?'},
+        context:{en:'You are supervising a colleague and they complete a task using a different strategy than you suggested. The goal was met, but you had a reason to do it differently.', id:'Anda mengawasi seorang rekan dan mereka menyelesaikan tugas menggunakan strategi yang berbeda dari yang Anda sarankan. Tujuan tercapai, tetapi Anda memiliki alasan untuk melakukannya secara berbeda.'},
+        text:{en:'What is the best way to begin the conversation to avoid this in the future?', id:'Apa cara terbaik untuk memulai percakapan guna menghindari hal ini di masa depan?'},
         type:'single',
         options:{
-          en:['Forward to your team without acknowledging the client','Reply thanking the client warmly and share the praise with your team','Keep it to yourself to avoid inflating egos','Do not respond — it is just a compliment'],
-          id:['Teruskan ke tim Anda tanpa membalas klien','Balas dengan hangat dan bagikan pujian tersebut kepada tim Anda','Simpan untuk diri sendiri agar ego tim tidak membesar','Tidak perlu membalas — itu hanya pujian']
+          en:['Ask the colleague why they did the task differently from how you suggested.','Tell the colleague they must do it your way next time.','Tell the colleague they did a good job, but must do it your way next time.','Don\'t approach the colleague now because they got the task completed and their strategy worked.'],
+          id:['Tanyakan kepada rekan mengapa mereka mengerjakan tugas secara berbeda dari yang Anda sarankan.','Beritahu rekan bahwa mereka harus melakukannya dengan cara Anda lain kali.','Beritahu rekan bahwa mereka melakukan pekerjaan yang bagus, tetapi harus melakukannya dengan cara Anda lain kali.','Jangan dekati rekan sekarang karena mereka telah menyelesaikan tugas dan strategi mereka berhasil.']
         },
-        answer:1
+        answer:0
       },
       {
         id:'cm14',
-        context:{en:'You sent an email with incorrect data to a large internal distribution list.', id:'Anda mengirim email dengan data yang salah ke daftar distribusi internal yang besar.'},
-        text:{en:'What should you do?', id:'Apa yang harus Anda lakukan?'},
+        context:{en:'', id:''},
+        text:{en:'You must give critical feedback to a colleague. Which of the following is the best option?', id:'Anda harus memberikan umpan balik kritis kepada seorang rekan. Mana dari pilihan berikut yang merupakan pilihan terbaik?'},
         type:'single',
         options:{
-          en:['Wait and see if anyone notices','Send a clear correction to the same list immediately, briefly acknowledging the error','Blame the error on a data source','Try to delete the original email'],
-          id:['Tunggu dan lihat apakah ada yang menyadarinya','Kirim koreksi yang jelas ke daftar yang sama segera, dengan mengakui kesalahan secara singkat','Salahkan sumber data','Coba hapus email asli']
+          en:['Write a detailed email with bullet points, using ALL CAPS for the most important corrections.','Call the colleague at a time you know they are out and leave a detailed message about what is wrong.','Wait until the annual review to explain what they did wrong.','Call the employee at a time you know they are in the office to explain what is wrong, and follow up with a detailed email.'],
+          id:['Tulis email terperinci dengan poin-poin, menggunakan HURUF KAPITAL untuk koreksi terpenting.','Hubungi rekan saat Anda tahu mereka sedang tidak ada dan tinggalkan pesan terperinci tentang apa yang salah.','Tunggu hingga ulasan tahunan untuk menjelaskan apa yang mereka lakukan salah.','Hubungi karyawan saat Anda tahu mereka ada di kantor untuk menjelaskan apa yang salah, dan tindak lanjuti dengan email terperinci.']
         },
-        answer:1
+        answer:3
       },
       {
         id:'cm15',
-        context:{en:'You need to deliver critical performance feedback to a remote team member.', id:'Anda perlu menyampaikan umpan balik kinerja yang kritis kepada anggota tim yang bekerja jarak jauh.'},
-        text:{en:'What communication channel is most appropriate?', id:'Saluran komunikasi mana yang paling tepat?'},
+        context:{en:'', id:''},
+        text:{en:'Which of the following is the most appropriate situation for using written communication?', id:'Manakah dari situasi berikut yang paling tepat untuk menggunakan komunikasi tertulis?'},
         type:'single',
         options:{
-          en:['Send a long detailed critical email','Post it in the public team chat for visibility','Schedule a private video call for a face-to-face conversation','Leave a voicemail and do not follow up'],
-          id:['Kirim email panjang yang terperinci','Posting di chat tim publik agar semua bisa melihat','Jadwalkan panggilan video pribadi untuk percakapan tatap muka','Tinggalkan pesan suara dan tidak menindaklanjuti']
+          en:['When acknowledging someone\'s good work.','When correcting someone on their work.','When discussing sensitive information.','When communicating changes in processes and deadlines.'],
+          id:['Saat mengakui pekerjaan baik seseorang.','Saat mengoreksi seseorang tentang pekerjaan mereka.','Saat mendiskusikan informasi sensitif.','Saat mengkomunikasikan perubahan dalam proses dan tenggat waktu.']
         },
-        answer:2
+        answer:3
+      },
+      {
+        id:'cm16',
+        context:{en:'', id:''},
+        text:{en:'When is it okay to use abbreviations or acronyms?', id:'Kapan boleh menggunakan singkatan atau akronim?'},
+        type:'single',
+        options:{
+          en:['When talking to a client in the same industry as your company.','In an internal message within your company.','On social media where it is easy to look up the meaning.','When you are talking and a person can ask if they don\'t understand the acronym.'],
+          id:['Saat berbicara dengan klien di industri yang sama dengan perusahaan Anda.','Dalam pesan internal di dalam perusahaan Anda.','Di media sosial di mana mudah untuk mencari artinya.','Saat Anda berbicara dan seseorang bisa bertanya jika tidak memahami akronimnya.']
+        },
+        answer:1
       }
     ]
   },
@@ -938,6 +1312,7 @@ const SECTIONS = [
   // ── BIG 5 OCEAN ──────────────────────────────────────
   {
     id:'oc', icon:'🧠', timeSeconds:10*60, scoreable:false, isDimensional:true,
+    meta:{en:'50 statements · 10 minutes · Self-Assessment', id:'50 pernyataan · 10 menit · Penilaian Diri'},
     name:{en:'Big 5 (OCEAN)', id:'Big 5 (OCEAN)'},
     dimensions:[
       {
@@ -1036,7 +1411,11 @@ const state = {
   timerInterval: null,
   secondsLeft: 0,
   sectionStartTime: 0,
-  timeTaken: {}   // { sectionId: secondsUsed }
+  timeTaken: {},
+  practiceMode: false,
+  practiceQIdx: 0,
+  practiceAnswers: {},
+  practiceDone: null
 };
 
 function t(key){ return UI[state.lang][key] || UI.en[key] || key; }
@@ -1068,7 +1447,7 @@ function applyUIStrings(){
     'errName','errPosition','errEmail','alreadyDoneMsg','alreadyDoneDesc',
     'welcomeTitle','welcomeDesc','catPS','catPSmeta','catTM','catTMmeta',
     'catCM','catCMmeta','catOC','catOCmeta','totalLabel','totalDetail','btnBegin',
-    'prevLabel','nextLabel'];
+    'nextLabel'];
   ids.forEach(id=>{
     const el = document.getElementById(id);
     if(el) el.textContent = t(id);
@@ -1146,11 +1525,19 @@ function submitRegistration(){
 
   state.candidate = { name, position, email };
 
-  // Record registration immediately so partial attempts are captured
+  // Lock the email immediately so the same address cannot be used again,
+  // even if the candidate abandons the test before finishing.
+  markEmailUsed(email);
+
+  // Send a "STARTED" record to the Sheet right now so the admin can
+  // see who registered even if they never reach the results page.
   submitToSheet({
     timestamp: new Date().toISOString(),
-    name, email, position,
-    language: state.lang === 'en' ? 'English' : 'Bahasa Indonesia',
+    name,
+    email,
+    position,
+    language:  state.lang==='en' ? 'English' : 'Bahasa Indonesia',
+    status:    'STARTED',
     ps_score:'', ps_pct:'', ps_time:'',
     tm_score:'', tm_pct:'', tm_time:'',
     comm_score:'', comm_pct:'', comm_time:'',
@@ -1159,6 +1546,63 @@ function submitRegistration(){
   });
 
   document.getElementById('screenReg').classList.add('hidden');
+  showCommitmentModal();
+}
+
+// ═══════════════════════════════════════════════════════
+//  COMMITMENT MODAL
+// ═══════════════════════════════════════════════════════
+const COMMIT_TEXT = {
+  en:{
+    dear:    n => `Dear ${n},`,
+    title:   'A Note Before You Begin',
+    p1:      "There are no shortcuts here that will serve you better than your honest answers. If you look up answers or seek outside help, you may pass this test but find yourself in a role that doesn't match your true strengths — and that's a loss for both you and us.",
+    p2:      'We believe you are capable. This is your opportunity to prove it — to us, and to yourself.',
+    p3:      'By proceeding, you commit to:',
+    bullets: [
+      'Completing this assessment entirely on your own',
+      'Not using the internet, notes, or outside assistance',
+      'Answering every question with your genuine best effort'
+    ],
+    closing:   'Your honest result is the strongest result you can give us.',
+    statement: "I understand and I'm ready to begin.",
+    btn:       'Begin Test →'
+  },
+  id:{
+    dear:    n => `Kepada Yth. ${n},`,
+    title:   'Catatan Sebelum Anda Mulai',
+    p1:      'Tidak ada jalan pintas yang lebih baik daripada jawaban jujur Anda. Jika Anda mencari jawaban atau meminta bantuan dari luar, Anda mungkin lulus tes ini tetapi mendapati diri Anda dalam peran yang tidak sesuai dengan kekuatan sejati Anda — dan itu merugikan Anda maupun kami.',
+    p2:      'Kami percaya Anda mampu. Ini adalah kesempatan Anda untuk membuktikannya — kepada kami, dan kepada diri Anda sendiri.',
+    p3:      'Dengan melanjutkan, Anda berkomitmen untuk:',
+    bullets: [
+      'Menyelesaikan penilaian ini sepenuhnya secara mandiri',
+      'Tidak menggunakan internet, catatan, atau bantuan dari luar',
+      'Menjawab setiap pertanyaan dengan upaya terbaik Anda yang jujur'
+    ],
+    closing:   'Hasil jujur Anda adalah hasil terbaik yang dapat Anda berikan kepada kami.',
+    statement: 'Saya mengerti dan saya siap untuk memulai.',
+    btn:       'Mulai Tes →'
+  }
+};
+
+function showCommitmentModal(){
+  const ct = COMMIT_TEXT[state.lang];
+  document.getElementById('commitDear').textContent      = ct.dear(state.candidate.name);
+  document.getElementById('commitTitle').textContent     = ct.title;
+  document.getElementById('commitP1').textContent        = ct.p1;
+  document.getElementById('commitP2').textContent        = ct.p2;
+  document.getElementById('commitP3').textContent        = ct.p3;
+  document.getElementById('commitList').innerHTML        = ct.bullets.map(b =>
+    `<li><span class="commit-check">✓</span><span>${b}</span></li>`
+  ).join('');
+  document.getElementById('commitClosing').textContent   = ct.closing;
+  document.getElementById('commitStatement').textContent = ct.statement;
+  document.getElementById('btnCommit').textContent       = ct.btn;
+  document.getElementById('commitModal').classList.add('show');
+}
+
+function commitAndBegin(){
+  document.getElementById('commitModal').classList.remove('show');
   document.getElementById('screenWelcome').classList.remove('hidden');
 }
 
@@ -1185,17 +1629,235 @@ function updateTimerDisplay(){
   el.className = 'timer-box' + (state.secondsLeft<=60?' warning':'');
 }
 
-function timeUp(){ showSectionEnd(true); }
+function timeUp(){
+  if(state.practiceMode){
+    state.practiceMode = false;
+    document.getElementById('testView').classList.add('hidden');
+    document.getElementById('timerDisplay').classList.add('hidden');
+    hideQProgress();
+    state.practiceDone();
+  } else {
+    showSectionEnd(true);
+  }
+}
 
 // ═══════════════════════════════════════════════════════
 //  TEST FLOW
 // ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+//  PRACTICE QUESTIONS
+// ═══════════════════════════════════════════════════════
+const ORDINALS = {
+  en:['1st','2nd','3rd','4th','5th','6th','7th','8th'],
+  id:['ke-1','ke-2','ke-3','ke-4','ke-5','ke-6','ke-7','ke-8']
+};
+
+function runPractice(sectionIdx, onDone){
+  const sec = SECTIONS[sectionIdx];
+  if(!sec.practiceQuestions || sec.practiceQuestions.length===0){ onDone(); return; }
+  state.practiceMode = true;
+  state.practiceQIdx = 0;
+  state.practiceDone = onDone;
+  state.practiceAnswers = {};
+  state.sectionIdx = sectionIdx;
+  ['screenWelcome','screenSectionEnd','screenBreak','screenIntro','screenPracticeIntro','screenResults'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.classList.add('hidden');
+  });
+  document.getElementById('testView').classList.remove('hidden');
+  startTimer(5*60);
+  renderPracticeQ();
+}
+
+function renderPracticeQ(){
+  const sec = SECTIONS[state.sectionIdx];
+  const qs  = sec.practiceQuestions;
+  const q   = qs[state.practiceQIdx];
+  const total = qs.length;
+  const isLast = state.practiceQIdx === total-1;
+  const nth = ORDINALS[state.lang][state.practiceQIdx] || (state.practiceQIdx+1)+'';
+
+  let bannerText;
+  if(state.lang==='en'){
+    bannerText = isLast
+      ? `This is the ${nth} and last practice question.`
+      : `This is the ${nth} practice question.`;
+  } else {
+    bannerText = isLast
+      ? `Ini adalah soal latihan ${nth} dan terakhir.`
+      : `Ini adalah soal latihan ${nth}.`;
+  }
+
+  updateQProgress(state.practiceQIdx, total,
+    `${state.lang==='en'?'Practice':'Latihan'} ${state.practiceQIdx+1}/${total}`);
+
+  document.getElementById('sectionBadge').innerHTML =
+    `${sec.icon} ${sec.name[state.lang]} <span style="color:#3a6fbd;font-weight:600;margin-left:6px;font-size:12px">[${state.lang==='en'?'Practice':'Latihan'}]</span>`;
+  document.getElementById('headerProgress').textContent = '';
+
+  // Question card
+  const ctx = q.context ? q.context[state.lang] : '';
+  const saved = state.practiceAnswers[q.id];
+  const opts  = q.options[state.lang];
+
+  let html = `<div class="question-number">${state.lang==='en'?'Practice Question':'Soal Latihan'} ${state.practiceQIdx+1} / ${total}</div>`;
+  html += `<div class="practice-q-banner"><span class="practice-q-banner-icon">ℹ</span> ${bannerText}</div>`;
+  if(ctx) html += `<div class="question-context">${ctx.replace(/\n/g,'<br>')}</div>`;
+  html += `<div class="question-text">${q.text[state.lang]}</div>`;
+  const isMulti = q.type==='multi';
+  html += `<p class="question-instruction">${isMulti ? t('selectAll') : t('selectOne')}</p>`;
+  html += `<div class="options-list">`;
+  opts.forEach((opt,i)=>{
+    const sel = isMulti
+      ? (Array.isArray(saved) && saved.includes(i) ? ' selected' : '')
+      : (saved===i ? ' selected' : '');
+    html += `<div class="option-item${isMulti?' multi':''}${sel}" onclick="selectPracticeAnswer('${q.id}',${i},${isMulti})">
+      <div class="option-radio${isMulti?' multi':''}"></div><div class="option-text">${opt}</div></div>`;
+  });
+  html += `</div>`;
+
+  document.getElementById('answerWarn').classList.remove('show');
+  document.getElementById('questionCard').innerHTML = html;
+
+  document.getElementById('nextBtn').innerHTML = isLast
+    ? (state.lang==='en'?'Finish Practice ✓':'Selesai Latihan ✓')
+    : `${t('nextLabel')} →`;
+}
+
+function selectPracticeAnswer(qId, idx, isMulti){
+  if(isMulti){
+    const cur = Array.isArray(state.practiceAnswers[qId]) ? state.practiceAnswers[qId] : [];
+    const pos = cur.indexOf(idx);
+    if(pos>=0) cur.splice(pos,1); else cur.push(idx);
+    state.practiceAnswers[qId] = [...cur];
+    const items = document.getElementById('questionCard').querySelectorAll('.option-item');
+    items.forEach((el,i)=>el.classList.toggle('selected', state.practiceAnswers[qId].includes(i)));
+  } else {
+    state.practiceAnswers[qId] = idx;
+    const items = document.getElementById('questionCard').querySelectorAll('.option-item');
+    items.forEach((el,i)=>el.classList.toggle('selected', i===idx));
+  }
+}
+
+function runCountdown(numElId, labelElId, labelFn, seconds, onDone){
+  let secs = seconds;
+  function updateLabel(){ document.getElementById(labelElId).innerHTML = labelFn(secs); }
+  updateLabel();
+  const iv = setInterval(()=>{
+    secs--;
+    updateLabel();
+    if(secs<=0){ clearInterval(iv); onDone(); }
+  },1000);
+}
+
+function requireAnswer(){
+  const lang = state.lang;
+  const msg  = lang==='id'
+    ? '⚠ Pilih jawaban terlebih dahulu sebelum melanjutkan.'
+    : '⚠ Please select an answer before continuing.';
+  const warn = document.getElementById('answerWarn');
+  warn.textContent = msg;
+  warn.classList.add('show');
+  const opts = document.getElementById('questionCard').querySelector('.options-list');
+  if(opts){ opts.classList.remove('shake'); void opts.offsetWidth; opts.classList.add('shake'); }
+  setTimeout(()=>warn.classList.remove('show'), 3000);
+}
+
+function hasAnswer(){
+  if(state.practiceMode){
+    const q   = SECTIONS[state.sectionIdx].practiceQuestions[state.practiceQIdx];
+    const ans = state.practiceAnswers[q.id];
+    return ans!==undefined && !(Array.isArray(ans) && ans.length===0);
+  }
+  const sec = SECTIONS[state.sectionIdx];
+  if(sec.isDimensional){
+    const dim = sec.dimensions[state.questionIdx];
+    return dim.questions.every(q=>state.answers[q.id]!==undefined);
+  }
+  const q   = sec.questions[state.questionIdx];
+  const ans = state.answers[q.id];
+  return ans!==undefined && !(Array.isArray(ans) && ans.length===0);
+}
+
+function navigate(dir){
+  // Block forward navigation if no answer selected
+  if(dir===1 && !hasAnswer()){ requireAnswer(); return; }
+
+  // Clear any warning on valid advance
+  document.getElementById('answerWarn').classList.remove('show');
+
+  if(state.practiceMode){
+    const total = SECTIONS[state.sectionIdx].practiceQuestions.length;
+    const ni = state.practiceQIdx + dir;
+    if(ni<0) return;
+    if(ni>=total){
+      clearInterval(state.timerInterval);
+      state.practiceMode = false;
+      document.getElementById('testView').classList.add('hidden');
+      document.getElementById('timerDisplay').classList.add('hidden');
+      hideQProgress();
+      state.practiceDone();
+      return;
+    }
+    state.practiceQIdx = ni;
+    renderPracticeQ();
+    return;
+  }
+  const sec=SECTIONS[state.sectionIdx];
+  const limit = sec.isDimensional ? sec.dimensions.length : sec.questions.length;
+  const ni=state.questionIdx+dir;
+  if(ni<0) return;
+  if(ni>=limit){ showSectionEnd(false); return; }
+  state.questionIdx=ni;
+  renderSection();
+}
+
+function showPracticeIntro(idx, onDone){
+  const sec = SECTIONS[idx];
+  ['screenWelcome','screenSectionEnd','screenBreak','screenResults','screenIntro'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.classList.add('hidden');
+  });
+  const n = sec.practiceCount || 4;
+  document.getElementById('practiceIntroLabel').textContent  = t('introLabel');
+  document.getElementById('practiceIntroName').textContent   = `${sec.icon} ${sec.name[state.lang]}`;
+  document.getElementById('practiceBadge').textContent       = t('practiceBadge');
+  document.getElementById('practiceIntroTagline').innerHTML  = t('practiceTagline').replace('{n}', n);
+  document.getElementById('practiceIntroWarning').innerHTML  = t('introWarning');
+  document.getElementById('screenPracticeIntro').classList.remove('hidden');
+
+  runCountdown('_','practiceCountdownLabel',
+    s=>`${t('practiceCountdownLabel')} <strong>${s}</strong> ${t('practiceCountdownSuffix')}`,
+    12,
+    ()=>{
+      document.getElementById('screenPracticeIntro').classList.add('hidden');
+      runPractice(idx, onDone);
+    }
+  );
+}
+
+function showSectionIntro(idx, callback){
+  const sec = SECTIONS[idx];
+  ['screenWelcome','screenSectionEnd','screenBreak','screenResults','screenPracticeIntro'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.classList.add('hidden');
+  });
+  document.getElementById('introLabel').textContent   = t('introLabel');
+  document.getElementById('introName').textContent    = `${sec.icon} ${sec.name[state.lang]}`;
+  document.getElementById('introTagline').textContent = t('introTagline');
+  document.getElementById('introWarning').innerHTML   = t('introWarning');
+  document.getElementById('screenIntro').classList.remove('hidden');
+
+  runCountdown('_','introCountdownLabel',
+    s=>`${t('introCountdownLabel')} <strong>${s}</strong> ${t('introCountdownSuffix')}`,
+    12,
+    ()=>{ document.getElementById('screenIntro').classList.add('hidden'); callback(); }
+  );
+}
+
 function startSection(idx){
   state.sectionIdx = idx;
   state.questionIdx = 0;
   state.sectionStartTime = Date.now();
-  ['screenWelcome','screenSectionEnd','screenResults'].forEach(id=>
-    document.getElementById(id).classList.add('hidden'));
   document.getElementById('testView').classList.remove('hidden');
   startTimer(SECTIONS[idx].timeSeconds);
   renderSection();
@@ -1213,61 +1875,59 @@ function renderSection(){
   if(sec.isDimensional){
     const dim = sec.dimensions[state.questionIdx];
     const total = sec.dimensions.length;
-    document.getElementById('headerProgress').textContent =
-      `${sec.name[state.lang]} · ${dim.name[state.lang]} (${state.questionIdx+1}/${total})`;
+    document.getElementById('sectionBadge').innerHTML = ''; // hide badge for OCEAN
+    document.getElementById('headerProgress').textContent = '';
     buildSidebarOcean(sec);
     renderOceanDim(sec, dim);
-    document.getElementById('prevBtn').disabled = state.questionIdx===0;
     const isLast = state.questionIdx===total-1;
     document.getElementById('nextBtn').innerHTML = isLast ? t('finishSection') : `${t('nextLabel')} →`;
   } else {
     const q = sec.questions[state.questionIdx];
-    document.getElementById('headerProgress').textContent =
-      `${sec.name[state.lang]} · ${t('qOf')} ${state.questionIdx+1} / ${sec.questions.length}`;
+    document.getElementById('headerProgress').textContent = '';
+    document.getElementById('oceanDimNav').classList.add('hidden');
     buildSidebar();
     renderQuestion(q);
-    document.getElementById('prevBtn').disabled = state.questionIdx===0;
     const isLast = state.questionIdx===sec.questions.length-1;
     document.getElementById('nextBtn').innerHTML = isLast ? t('finishSection') : `${t('nextLabel')} →`;
   }
 }
 
+function updateQProgress(current, total, label){
+  const wrap  = document.getElementById('qProgressWrap');
+  const lbl   = document.getElementById('qProgressLabel');
+  const fill  = document.getElementById('qProgressFill');
+  wrap.classList.add('show');
+  lbl.textContent  = label || `${current+1}/${total}`;
+  fill.style.width = `${Math.round(((current+1)/total)*100)}%`;
+}
+
+function hideQProgress(){
+  document.getElementById('qProgressWrap').classList.remove('show');
+}
+
 function buildSidebar(){
   const sec = SECTIONS[state.sectionIdx];
-  document.getElementById('sidebarTitle').textContent =
-    `${sec.icon} ${sec.name[state.lang]} (${sec.questions.length})`;
-  const grid = document.getElementById('qGrid');
-  grid.innerHTML='';
-  sec.questions.forEach((q,i)=>{
-    const d = document.createElement('div');
-    d.className = 'q-dot'
-      +(i===state.questionIdx?' active':'')
-      +(state.answers[q.id]!==undefined?' answered':'');
-    d.textContent = i+1;
-    d.onclick = ()=>{ state.questionIdx=i; renderSection(); };
-    grid.appendChild(d);
-  });
+  updateQProgress(state.questionIdx, sec.questions.length);
 }
 
 function buildSidebarOcean(sec){
-  document.getElementById('sidebarTitle').textContent = `${sec.icon} ${sec.name[state.lang]}`;
-  const grid = document.getElementById('qGrid');
-  grid.innerHTML='';
-  const tabs = document.createElement('div');
-  tabs.className='dim-tabs';
+  const nav = document.getElementById('oceanDimNav');
+  nav.classList.add('hidden');
+  nav.innerHTML = '';
+  const emojis = ['🔵','🟢','🟡','🔴','🟣'];
   sec.dimensions.forEach((dim,i)=>{
     const answered = dim.questions.filter(q=>state.answers[q.id]!==undefined).length;
-    const done = answered===dim.questions.length;
+    const done   = answered===dim.questions.length;
     const active = i===state.questionIdx;
     const tab = document.createElement('div');
-    tab.className='dim-tab'+(active?' active':'')+(done?' done':'');
-    tab.innerHTML=`<span style="font-size:18px;width:24px;text-align:center">${['🔵','🟢','🟡','🔴','🟣'][i]}</span>
-      <span>${dim.name[state.lang]}</span>
-      <span class="dim-count">${answered}/10</span>`;
-    tab.onclick=()=>{ state.questionIdx=i; renderSection(); };
-    tabs.appendChild(tab);
+    tab.className = 'odim-tab'+(active?' active':'')+(done?' done':'');
+    tab.innerHTML = `<span>${emojis[i]}</span><span>${dim.name[state.lang]}</span><span class="odim-count">${answered}/10</span>`;
+    tab.onclick = ()=>{ state.questionIdx=i; renderSection(); };
+    nav.appendChild(tab);
   });
-  grid.appendChild(tabs);
+  const total = sec.dimensions.reduce((s,d)=>s+d.questions.length, 0);
+  const answered = sec.dimensions.reduce((s,d)=>s+d.questions.filter(q=>state.answers[q.id]!==undefined).length, 0);
+  updateQProgress(answered-1, total, `${answered}/${total}`);
 }
 
 function renderOceanDim(sec, dim){
@@ -1276,11 +1936,12 @@ function renderOceanDim(sec, dim){
     ? ['Sangat<br>Tidak Tepat','Kurang<br>Tepat','Netral','Cukup<br>Tepat','Sangat<br>Tepat']
     : ['Very<br>Inaccurate','Moderately<br>Inaccurate','Neither<br>Inaccurate<br>nor Accurate','Moderately<br>Accurate','Very<br>Accurate'];
 
+  const instrText = lang==='id'
+    ? 'Pilih poin yang paling sesuai dengan diri Anda.'
+    : 'Choose the point that resonates with you.';
+
   let html = `<div class="ocean-wrap">
-    <div class="ocean-dim-header" style="border-left:5px solid ${dim.color}">
-      <div class="ocean-dim-title">${dim.name[lang]}</div>
-      <div class="ocean-dim-sub">${lang==='id'?'Nilai seberapa akurat setiap pernyataan menggambarkan diri Anda:':'Rate how accurately each statement describes you:'}</div>
-    </div>
+    <p style="font-size:14px;color:#666;margin:0 0 20px;line-height:1.6">${instrText}</p>
     <div class="ocean-table-wrap">
     <table class="ocean-tbl">
       <thead><tr>
@@ -1300,6 +1961,7 @@ function renderOceanDim(sec, dim){
   });
 
   html += `</tbody></table></div></div>`;
+  document.getElementById('answerWarn').classList.remove('show');
   document.getElementById('questionCard').innerHTML = html;
 }
 
@@ -1320,6 +1982,7 @@ function renderQuestion(q){
     html += `<div class="question-instruction">${t('selectOne')}</div>`;
     html += buildSingle(q);
   }
+  document.getElementById('answerWarn').classList.remove('show');
   document.getElementById('questionCard').innerHTML = html;
 }
 
@@ -1399,16 +2062,6 @@ function selectOcean(qid, val){
   if(sec.isDimensional) buildSidebarOcean(sec);
 }
 
-function navigate(dir){
-  const sec=SECTIONS[state.sectionIdx];
-  const limit = sec.isDimensional ? sec.dimensions.length : sec.questions.length;
-  const ni=state.questionIdx+dir;
-  if(ni<0) return;
-  if(ni>=limit){ showSectionEnd(false); return; }
-  state.questionIdx=ni;
-  renderSection();
-}
-
 // ═══════════════════════════════════════════════════════
 //  SECTION END
 // ═══════════════════════════════════════════════════════
@@ -1424,29 +2077,52 @@ function showSectionEnd(timedOut){
   state.timeTaken[sec.id] = timedOut ? sec.timeSeconds : elapsed;
   document.getElementById('testView').classList.add('hidden');
   document.getElementById('timerDisplay').classList.add('hidden');
+  document.getElementById('headerProgress').textContent='';
+  hideQProgress();
 
-  const sec     = SECTIONS[state.sectionIdx];
   const allQ    = sec.isDimensional ? oceanAllQ(sec) : sec.questions;
   const answered= allQ.filter(q=>state.answers[q.id]!==undefined).length;
   const total   = allQ.length;
   const isLast  = state.sectionIdx===SECTIONS.length-1;
   const next    = !isLast ? SECTIONS[state.sectionIdx+1] : null;
 
-  let html = `<h2>${sec.icon} ${sec.name[state.lang]} ${t('secCompleteLabel')}</h2>`;
-  if(timedOut) html += `<p style="color:#e53935;font-weight:600">${t('timeUpMsg')}</p>`;
-  html += `<p>${t('answeredOf')} <strong>${answered} ${t('of')} ${total}</strong> ${t('questions')}</p>`;
-
   if(!isLast){
-    const nextQLen = next.isDimensional ? oceanAllQ(next).length : next.questions.length;
-    html += `<p style="margin-top:8px">${t('nextSection')} <strong>${next.icon} ${next.name[state.lang]}</strong> · ${nextQLen} ${t('questions')} · ${Math.floor(next.timeSeconds/60)} min</p><br>`;
-    html += `<button class="btn btn-primary" onclick="startSection(${state.sectionIdx+1})">${t('btnNextSection')}</button>`;
+    // Show break page
+    document.getElementById('breakDoneTitle').textContent = `${sec.icon} ${sec.name[state.lang]} — ${t('secCompleteLabel').replace('—','').trim()}`;
+    let sub = `${t('answeredOf')} ${answered} ${t('of')} ${total} ${t('questions')}`;
+    if(timedOut) sub = `⏱ ${t('timeUpMsg')} · ` + sub;
+    document.getElementById('breakDoneSub').textContent = sub;
+    document.getElementById('breakRestTitle').textContent = t('breakRestTitle');
+    document.getElementById('breakRestDesc').textContent  = t('breakRestDesc');
+    document.getElementById('breakNextLabel').textContent = t('breakNextLabel');
+    document.getElementById('breakNextName').textContent  = `${next.icon} ${next.name[state.lang]}`;
+    document.getElementById('breakNextMeta').textContent  = next.meta ? next.meta[state.lang] : '';
+    document.getElementById('btnBreakContinue').textContent = t('breakContinue');
+    document.getElementById('screenBreak').classList.remove('hidden');
   } else {
+    // Last section — show simple end card then go to results
+    let html = `<h2>${sec.icon} ${sec.name[state.lang]} ${t('secCompleteLabel')}</h2>`;
+    if(timedOut) html += `<p style="color:#e53935;font-weight:600">${t('timeUpMsg')}</p>`;
+    html += `<p>${t('answeredOf')} <strong>${answered} ${t('of')} ${total}</strong> ${t('questions')}</p>`;
     html += `<br><button class="btn btn-success" onclick="showResults()">${t('btnViewResults')}</button>`;
+    document.getElementById('sectionEndCard').innerHTML = html;
+    document.getElementById('screenSectionEnd').classList.remove('hidden');
   }
+}
 
-  document.getElementById('sectionEndCard').innerHTML = html;
-  document.getElementById('screenSectionEnd').classList.remove('hidden');
-  document.getElementById('headerProgress').textContent='';
+function launchSection(idx){
+  const sec = SECTIONS[idx];
+  const hasPractice = !sec.isDimensional;
+  if(hasPractice){
+    showPracticeIntro(idx, ()=>showSectionIntro(idx, ()=>startSection(idx)));
+  } else {
+    showSectionIntro(idx, ()=>startSection(idx));
+  }
+}
+
+function continueFromBreak(){
+  document.getElementById('screenBreak').classList.add('hidden');
+  launchSection(state.sectionIdx+1);
 }
 
 // ═══════════════════════════════════════════════════════
@@ -1492,6 +2168,55 @@ async function submitToSheet(data){
   } catch(e){ return false; }
 }
 
+// ═══════════════════════════════════════════════════════
+//  EMAIL RESULTS
+// ═══════════════════════════════════════════════════════
+/*
+  Required EmailJS template variables — paste this as your template body:
+
+  To:      {{to_email}}
+  Subject: Your Assessment Results – {{to_name}}
+
+  Dear {{to_name}},
+
+  Thank you for completing the Hiring Assessment for {{position}}.
+  Below are your results:
+
+  📊 Problem Solving  : {{ps_result}}
+  ⏱  Time Management  : {{tm_result}}
+  💬 Communication    : {{cm_result}}
+
+  🧠 Big 5 Personality (OCEAN):
+    Openness           : {{ocean_o}}%
+    Conscientiousness  : {{ocean_c}}%
+    Extraversion       : {{ocean_e}}%
+    Agreeableness      : {{ocean_a}}%
+    Neuroticism        : {{ocean_n}}%
+
+  Best regards,
+  The HR Team
+*/
+async function sendResultEmail(ps, tm, cm, ocE, ocA, ocC, ocN, ocO){
+  if(!EMAILJS_PUBLIC_KEY || !EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID) return;
+  const {name, email, position} = state.candidate;
+  const pct = (sc) => `${sc.correct}/${sc.total} (${sc.pct}%)`;
+  try{
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      to_email:   email,
+      to_name:    name,
+      position:   position,
+      ps_result:  pct(ps),
+      tm_result:  pct(tm),
+      cm_result:  pct(cm),
+      ocean_e:    ocE,
+      ocean_a:    ocA,
+      ocean_c:    ocC,
+      ocean_n:    ocN,
+      ocean_o:    ocO
+    });
+  } catch(e){ console.warn('EmailJS error:', e); }
+}
+
 function showResults(){
   document.getElementById('screenSectionEnd').classList.add('hidden');
   document.getElementById('screenResults').classList.remove('hidden');
@@ -1515,6 +2240,7 @@ function showResults(){
     email:     state.candidate.email,
     position:  state.candidate.position,
     language:  state.lang==='en' ? 'English' : 'Bahasa Indonesia',
+    status:    'COMPLETED',
     ps_score:  `${ps.correct}/${ps.total}`,  ps_pct:  ps.pct,  ps_time: fmtTime(state.timeTaken['ps']||0),
     tm_score:  `${tm.correct}/${tm.total}`,  tm_pct:  tm.pct,  tm_time: fmtTime(state.timeTaken['tm']||0),
     comm_score:`${cm.correct}/${cm.total}`,  comm_pct:cm.pct,  comm_time: fmtTime(state.timeTaken['cm']||0),
@@ -1522,12 +2248,13 @@ function showResults(){
     ocean_E: ocE, ocean_A: ocA, ocean_C: ocC, ocean_N: ocN, ocean_O: ocO
   };
 
-  // Mark email as used
-  markEmailUsed(state.candidate.email);
   state.lastPayload = payload;
 
   const rc = document.getElementById('resultsCard');
   rc.innerHTML = buildResultsHTML(ps, tm, cm, ocAnswered);
+
+  // Email results to candidate
+  sendResultEmail(ps, tm, cm, ocE, ocA, ocC, ocN, ocO);
 
   // Animate OCEAN bars + submit
   setTimeout(()=>{
