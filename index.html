@@ -1145,6 +1145,19 @@ function submitRegistration(){
   if(!valid) return;
 
   state.candidate = { name, position, email };
+
+  // Record registration immediately so partial attempts are captured
+  submitToSheet({
+    timestamp: new Date().toISOString(),
+    name, email, position,
+    language: state.lang === 'en' ? 'English' : 'Bahasa Indonesia',
+    ps_score:'', ps_pct:'', ps_time:'',
+    tm_score:'', tm_pct:'', tm_time:'',
+    comm_score:'', comm_pct:'', comm_time:'',
+    ocean_answered:'', ocean_time:'',
+    ocean_E:'', ocean_A:'', ocean_C:'', ocean_N:'', ocean_O:''
+  });
+
   document.getElementById('screenReg').classList.add('hidden');
   document.getElementById('screenWelcome').classList.remove('hidden');
 }
