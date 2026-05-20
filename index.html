@@ -181,9 +181,8 @@
   3. Copy the Web App URL and paste it into SHEET_ENDPOINT below.
 
   --- Apps Script code ---
-  function doPost(e) {
+  function writeRow(d) {
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    var d = JSON.parse(e.postData.contents);
     if (sheet.getLastRow() === 0) {
       sheet.appendRow([
         'Timestamp','Name','Email','Position','Language',
@@ -198,16 +197,29 @@
       d.comm_score, d.comm_pct, d.comm_time, d.ocean_answered, d.ocean_time,
       d.ocean_E, d.ocean_A, d.ocean_C, d.ocean_N, d.ocean_O
     ]);
+  }
+
+  // Primary handler — browser sends GET to avoid POST-redirect body loss
+  function doGet(e) {
+    if (e.parameter && e.parameter.data) {
+      var d = JSON.parse(decodeURIComponent(e.parameter.data));
+      writeRow(d);
+      return ContentService
+        .createTextOutput(JSON.stringify({status:'ok'}))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    // Health-check: open the URL in a browser tab — you should see {"status":"ok","message":"Script is live!"}
     return ContentService
-      .createTextOutput(JSON.stringify({status:'ok'}))
+      .createTextOutput(JSON.stringify({status:'ok', message:'Script is live!'}))
       .setMimeType(ContentService.MimeType.JSON);
   }
 
-  // Optional: paste this URL in a browser tab to test the script is deployed correctly.
-  // You should see {"status":"ok","message":"Script is live!"}
-  function doGet(e) {
+  // Fallback handler kept for any direct POST calls
+  function doPost(e) {
+    var d = JSON.parse(e.postData.contents);
+    writeRow(d);
     return ContentService
-      .createTextOutput(JSON.stringify({status:'ok', message:'Script is live!'}))
+      .createTextOutput(JSON.stringify({status:'ok'}))
       .setMimeType(ContentService.MimeType.JSON);
   }
 =======================================================================
@@ -1459,13 +1471,10 @@ function calcOceanDim(sec, dimKey){
 async function submitToSheet(data){
   if(!SHEET_ENDPOINT || SHEET_ENDPOINT==='YOUR_APPS_SCRIPT_URL') return false;
   try{
-    // Must use text/plain — no-cors only allows CORS-safelisted content types.
-    // Apps Script still reads the JSON from e.postData.contents regardless.
-    await fetch(SHEET_ENDPOINT,{
-      method:'POST', mode:'no-cors',
-      headers:{'Content-Type':'text/plain'},
-      body: JSON.stringify(data)
-    });
+    // GET avoids the POST→302 redirect that strips the request body.
+    // Apps Script reads the payload from e.parameter.data in doGet.
+    const url = SHEET_ENDPOINT + '?data=' + encodeURIComponent(JSON.stringify(data));
+    await fetch(url, {method:'GET', mode:'no-cors'});
     return true;
   } catch(e){ return false; }
 }
