@@ -202,6 +202,14 @@
       .createTextOutput(JSON.stringify({status:'ok'}))
       .setMimeType(ContentService.MimeType.JSON);
   }
+
+  // Optional: paste this URL in a browser tab to test the script is deployed correctly.
+  // You should see {"status":"ok","message":"Script is live!"}
+  function doGet(e) {
+    return ContentService
+      .createTextOutput(JSON.stringify({status:'ok', message:'Script is live!'}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
 =======================================================================
 -->
 
@@ -1451,9 +1459,11 @@ function calcOceanDim(sec, dimKey){
 async function submitToSheet(data){
   if(!SHEET_ENDPOINT || SHEET_ENDPOINT==='YOUR_APPS_SCRIPT_URL') return false;
   try{
+    // Must use text/plain — no-cors only allows CORS-safelisted content types.
+    // Apps Script still reads the JSON from e.postData.contents regardless.
     await fetch(SHEET_ENDPOINT,{
       method:'POST', mode:'no-cors',
-      headers:{'Content-Type':'application/json'},
+      headers:{'Content-Type':'text/plain'},
       body: JSON.stringify(data)
     });
     return true;
@@ -1492,6 +1502,7 @@ function showResults(){
 
   // Mark email as used
   markEmailUsed(state.candidate.email);
+  state.lastPayload = payload;
 
   const rc = document.getElementById('resultsCard');
   rc.innerHTML = buildResultsHTML(ps, tm, cm, ocAnswered);
@@ -1512,10 +1523,33 @@ function showResults(){
     statusEl.textContent = t('submitting');
     statusEl.style.display='block';
     submitToSheet(payload).then(ok=>{
-      statusEl.textContent  = ok ? t('submitOk') : t('submitFail');
+      statusEl.textContent = ok ? t('submitOk') : t('submitFail');
       statusEl.className = 'submit-status '+(ok?'ok':'fail');
+      // Always show CSV fallback so data is never lost
+      const dlBtn = document.getElementById('csvDownloadBtn');
+      if(dlBtn) dlBtn.style.display='inline-block';
     });
   }
+}
+
+function downloadCSV(){
+  const p = state.lastPayload;
+  if(!p) return;
+  const headers = ['Timestamp','Name','Email','Position','Language',
+    'PS Score','PS %','PS Time','TM Score','TM %','TM Time',
+    'Comm Score','Comm %','Comm Time','OCEAN Answered','OCEAN Time',
+    'E%','A%','C%','N%','O%'];
+  const row = [
+    p.timestamp, p.name, p.email, p.position, p.language,
+    p.ps_score, p.ps_pct, p.ps_time, p.tm_score, p.tm_pct, p.tm_time,
+    p.comm_score, p.comm_pct, p.comm_time, p.ocean_answered, p.ocean_time,
+    p.ocean_E, p.ocean_A, p.ocean_C, p.ocean_N, p.ocean_O
+  ];
+  const csv = [headers, row].map(r => r.map(v => `"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
+  a.download = `result_${p.name.replace(/\s+/g,'_')}_${Date.now()}.csv`;
+  a.click();
 }
 
 function buildResultsHTML(ps, tm, cm, ocAnswered){
@@ -1576,7 +1610,8 @@ function buildResultsHTML(ps, tm, cm, ocAnswered){
     <div class="ocean-results">${oceanBars}</div>
 
     <div id="submitStatus" class="submit-status"></div>
-    <br>
+    <button id="csvDownloadBtn" onclick="downloadCSV()" style="display:none;margin-top:12px;padding:9px 20px;background:#1a73e8;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">⬇ Download Results as CSV</button>
+    <br><br>
     <button class="btn btn-secondary" onclick="location.reload()">${t('btnRetake')}</button>
   `;
 }
